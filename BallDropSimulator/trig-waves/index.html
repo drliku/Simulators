@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Brain Maze Unit Circle</title>
+  <meta name="description" content="Watch a point rotating around the unit circle draw sine and cosine waves, and explore amplitude, frequency and phase." />
+  <meta name="theme-color" content="#121a33" />
+  <link rel="icon" href="assets/brain-mark.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Saira:wght@400;500;600&family=Saira+Semi+Condensed:wght@400&family=STIX+Two+Text:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="wordmark" aria-label="The Brain Maze">
+        <span class="wordmark-text" aria-hidden="true"><span>The Brain</span><span>Maze</span></span>
+        <img class="brand-mark" src="assets/brain-mark.png" alt="" width="42" height="42" />
+      </div>
+      <span class="brand-divider" aria-hidden="true"></span>
+      <div>
+        <h1>Unit Circle Waves</h1>
+        <p class="tagline">How circular motion draws sine and cosine</p>
+      </div>
+    </div>
+    <div class="kbd-hints" aria-hidden="true">
+      <span><kbd>Space</kbd> play / pause</span>
+      <span><kbd>←</kbd><kbd>→</kbd> nudge 1°</span>
+      <span><kbd>Shift</kbd>+<kbd>←</kbd><kbd>→</kbd> 15°</span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- ============ Stage ============ -->
+    <section class="card stage" aria-label="Unit circle and wave graph">
+      <div class="toolbar">
+        <div class="tb-group">
+          <button id="btnPlay" class="btn btn-primary" type="button" aria-pressed="true">
+            <svg class="icon icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" /></svg>
+            <svg class="icon icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" /></svg>
+            <span class="btn-label">Pause</span>
+          </button>
+          <button id="btnSlow" class="btn btn-toggle" type="button" aria-pressed="false" title="Run at one fifth speed">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="7.5" fill="none" stroke="currentColor" stroke-width="1.8" /><path d="M12 13V9M12 3.5h0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg>
+            Slow motion
+          </button>
+          <button id="btnReset" class="btn btn-ghost" type="button" title="Restore default settings">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4v4h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            Reset
+          </button>
+        </div>
+        <div class="tb-group" role="group" aria-label="Display options">
+          <button id="tgSin" class="chip chip-sin" type="button" aria-pressed="true"><i aria-hidden="true"></i>Sine</button>
+          <button id="tgCos" class="chip chip-cos" type="button" aria-pressed="true"><i aria-hidden="true"></i>Cosine</button>
+          <button id="tgTrace" class="chip" type="button" aria-pressed="false" title="Draw the wave progressively as the point rotates">Trace</button>
+          <button id="tgCompare" class="chip" type="button" aria-pressed="false" title="Show the 90° phase difference">Compare</button>
+        </div>
+      </div>
+
+      <div class="canvas-wrap">
+        <canvas id="stage" role="img" aria-label="A point rotating on the unit circle, projected onto sine and cosine wave graphs"></canvas>
+        <p class="drag-hint" id="dragHint">Drag the point or the graph</p>
+      </div>
+
+      <div class="angle-row">
+        <label for="angle" class="field-label">Angle <span class="sym">θ</span></label>
+        <input id="angle" type="range" min="0" max="360" step="0.5" value="0" />
+        <output id="angleOut" for="angle" class="field-value">0.0°</output>
+      </div>
+      <div class="presets" role="group" aria-label="Special angles">
+        <span class="presets-label">Special angles</span>
+        <button type="button" data-deg="0">0°</button>
+        <button type="button" data-deg="30">30°</button>
+        <button type="button" data-deg="45">45°</button>
+        <button type="button" data-deg="60">60°</button>
+        <button type="button" data-deg="90">90°</button>
+        <button type="button" data-deg="180">180°</button>
+        <button type="button" data-deg="270">270°</button>
+        <button type="button" data-deg="360">360°</button>
+      </div>
+    </section>
+
+    <!-- ============ Live data ============ -->
+    <aside class="card data" aria-label="Live values">
+      <h2 class="card-title">Live data</h2>
+
+      <div class="angle-hero">
+        <div class="angle-hero-deg" id="dDeg">0.0°</div>
+        <div class="angle-hero-rad"><span id="dRad">0.0000 rad</span><span class="pi" id="dRadPi"></span></div>
+        <div class="quadrant" id="dQuad">On the positive x-axis</div>
+      </div>
+
+      <dl class="rows">
+        <div class="row row-sin"><dt><i class="dot"></i>sin θ</dt><dd id="dSin">0.0000</dd></div>
+        <div class="row row-cos"><dt><i class="dot"></i>cos θ</dt><dd id="dCos">1.0000</dd></div>
+        <div class="row"><dt><i class="dot dot-tan"></i>tan θ</dt><dd id="dTan">0.0000</dd></div>
+        <div class="row row-exact" id="exactRow" hidden><dt>Exact</dt><dd id="dExact"></dd></div>
+      </dl>
+
+      <h3 class="sub-title">Transformed wave</h3>
+      <dl class="rows rows-compact">
+        <div class="row"><dt>Amplitude <i>A</i></dt><dd id="dA">1.00</dd></div>
+        <div class="row"><dt>Frequency <i>ω</i></dt><dd id="dW">1.00</dd></div>
+        <div class="row"><dt>Period <i>T</i> = 2π/ω</dt><dd id="dT">2π</dd></div>
+        <div class="row"><dt>Phase shift <i>φ</i></dt><dd id="dPhi">0°</dd></div>
+        <div class="row"><dt>Horizontal shift −φ/ω</dt><dd id="dShift">0</dd></div>
+        <div class="row row-sin"><dt><i class="dot"></i><i>A</i> sin(ωθ + φ)</dt><dd id="dYs">0.0000</dd></div>
+        <div class="row row-cos"><dt><i class="dot"></i><i>A</i> cos(ωθ + φ)</dt><dd id="dYc">1.0000</dd></div>
+      </dl>
+    </aside>
+
+    <!-- ============ Parameters ============ -->
+    <section class="card params" aria-label="Wave parameters">
+      <h2 class="card-title">Wave parameters</h2>
+
+      <div class="field">
+        <div class="field-head"><label class="field-label" for="speed">Rotation speed</label><output id="speedOut" class="field-value">45°/s</output></div>
+        <input id="speed" type="range" min="5" max="180" step="5" value="45" />
+      </div>
+      <div class="field">
+        <div class="field-head"><label class="field-label" for="amp">Amplitude <i class="var">A</i></label><output id="ampOut" class="field-value">1.00</output></div>
+        <input id="amp" type="range" min="0.1" max="2" step="0.05" value="1" />
+      </div>
+      <div class="field">
+        <div class="field-head"><label class="field-label" for="freq">Frequency <i class="var">ω</i></label><output id="freqOut" class="field-value">1.00</output></div>
+        <input id="freq" type="range" min="0.25" max="5" step="0.25" value="1" />
+      </div>
+      <div class="field">
+        <div class="field-head"><label class="field-label" for="phase">Phase shift <i class="var">φ</i></label><output id="phaseOut" class="field-value">0°</output></div>
+        <input id="phase" type="range" min="-180" max="180" step="5" value="0" />
+      </div>
+      <p class="hint">The unit circle always shows the base functions. Dashed curves on the graph are the original sin <i>t</i> and cos <i>t</i>; solid curves are the transformed waves.</p>
+    </section>
+
+    <!-- ============ Formula ============ -->
+    <section class="card formula" aria-label="Interactive formula">
+      <h2 class="card-title">Interactive formula</h2>
+      <p class="formula-general">y = <i>A</i> sin(<i>ω</i><i>t</i> + <i>φ</i>) &nbsp;·&nbsp; y = <i>A</i> cos(<i>ω</i><i>t</i> + <i>φ</i>)</p>
+      <div class="eq eq-sin" id="eqSin"></div>
+      <div class="eq eq-cos" id="eqCos"></div>
+      <p class="hint">Drag a highlighted number sideways, or focus it and use the arrow keys, to change it.</p>
+      <p class="eq-note" id="eqNote"></p>
+      <div class="identities">
+        <div><span class="lbl">sin <span class="sym">θ</span></span> = opposite / hypotenuse = <span class="sin-c">y</span> / 1</div>
+        <div><span class="lbl">cos <span class="sym">θ</span></span> = adjacent / hypotenuse = <span class="cos-c">x</span> / 1</div>
+        <div><span class="lbl">Compare</span> sin θ = cos(θ − 90°)</div>
+      </div>
+    </section>
+
+    <!-- ============ Challenge ============ -->
+    <section class="card challenge" aria-label="Challenge mode" id="challenge">
+      <div class="ch-head">
+        <h2 class="card-title">Challenge</h2>
+        <span class="ch-score" id="chScore" hidden></span>
+      </div>
+
+      <div id="chIdle">
+        <p class="ch-intro">Get a random angle, predict its sine or cosine, then reveal the answer.</p>
+        <div class="segmented" role="radiogroup" aria-label="Challenge difficulty" id="chMode">
+          <button type="button" role="radio" aria-checked="true" data-mode="special">Special angles</button>
+          <button type="button" role="radio" aria-checked="false" data-mode="any">Any angle</button>
+        </div>
+        <button id="chStart" class="btn btn-primary btn-block" type="button">Start challenge</button>
+      </div>
+
+      <div id="chActive" hidden>
+        <p class="ch-question" id="chQuestion"></p>
+        <div class="field">
+          <div class="field-head"><label class="field-label" for="chGuess">Your prediction</label><output id="chGuessOut" class="field-value">0.00</output></div>
+          <input id="chGuess" type="range" min="-1" max="1" step="0.01" value="0" />
+        </div>
+        <div class="exact-chips" id="chChips" role="group" aria-label="Exact values"></div>
+        <div class="ch-feedback" id="chFeedback" hidden></div>
+        <div class="ch-actions">
+          <button id="chReveal" class="btn btn-primary" type="button">Reveal answer</button>
+          <button id="chNext" class="btn btn-primary" type="button" hidden>Next angle</button>
+          <button id="chExit" class="btn btn-ghost" type="button">Exit</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ Learn ============ -->
+  <section class="learn" aria-labelledby="learnTitle">
+    <h2 id="learnTitle">What you are seeing</h2>
+    <div class="learn-grid">
+      <article class="card learn-card">
+        <h3>A point on a circle</h3>
+        <p>The point sits at angle θ on a circle of radius 1. Its coordinates are (cos θ, sin θ): the <span class="cos-c">horizontal leg</span> of the right triangle is cos θ and the <span class="sin-c">vertical leg</span> is sin θ, because the hypotenuse has length 1.</p>
+      </article>
+      <article class="card learn-card">
+        <h3>Unrolling the motion</h3>
+        <p>Plot the height of the point against the angle it has turned and you get the sine wave. The dotted lines carry each value straight across to the graph, so one turn of the circle draws exactly one period, 2π.</p>
+      </article>
+      <article class="card learn-card">
+        <h3>A quarter turn apart</h3>
+        <p>Cosine reaches its peak at 0°, a quarter turn before sine peaks at 90°. Slide the cosine wave 90° to the right and it lands exactly on the sine wave: sin θ = cos(θ − 90°). Turn on <em>Compare</em> to watch the shift. (The orange arc on the circle turns the cosine length onto the vertical axis so it can be plotted as a height.)</p>
+      </article>
+      <article class="card learn-card">
+        <h3>Stretch, squeeze, slide</h3>
+        <p><i>A</i> scales the height, <i>ω</i> fits more cycles into one turn so the period becomes 2π/ω, and <i>φ</i> slides the wave sideways by −φ/ω. The circle keeps showing the plain functions so you can compare.</p>
+      </article>
+    </div>
+  </section>
+
+  <footer class="footer">
+    Angles are measured counter-clockwise from the positive x-axis. The graph uses the same vertical scale as the circle, so every projection lines up exactly.
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

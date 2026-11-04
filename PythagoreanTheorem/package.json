@@ -1,0 +1,35 @@
+{
+  "name": "pythagorean-theorem-simulator",
+  "version": "1.0.0",
+  "description": "Interactive Pythagorean Theorem simulator built with React, TypeScript, Tailwind CSS and SVG",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -b"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/drliku/PythagoreanTheorem.git"
+  },
+  "bugs": {
+    "url": "https://github.com/drliku/PythagoreanTheorem/issues"
+  },
+  "homepage": "https://github.com/drliku/PythagoreanTheorem#readme",
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "@vitejs/plugin-react": "^4.7.0",
+    "autoprefixer": "^10.6.1",
+    "postcss": "^8.5.29",
+    "tailwindcss": "^3.4.19",
+    "typescript": "^5.9.3",
+    "vite": "^5.4.21"
+  },
+  "private": true,
+  "type": "module"
+}

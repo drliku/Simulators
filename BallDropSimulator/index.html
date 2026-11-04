@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Brain Maze Galton Board</title>
+  <meta name="description" content="An interactive Galton board that shows how random left/right bounces build a binomial — and eventually normal — distribution." />
+  <meta name="theme-color" content="#121a33" />
+  <link rel="icon" href="assets/brain-mark.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Saira:wght@400;500;600&family=Saira+Semi+Condensed:wght@400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="wordmark" aria-label="The Brain Maze">
+        <span class="wordmark-text" aria-hidden="true"><span>The Brain</span><span>Maze</span></span>
+        <img class="brand-mark" src="assets/brain-mark.png" alt="" width="42" height="42" />
+      </div>
+      <span class="brand-divider" aria-hidden="true"></span>
+      <div>
+        <h1>Galton Board</h1>
+        <p class="tagline">How randomness builds a predictable pattern</p>
+      </div>
+    </div>
+    <div class="kbd-hints" aria-hidden="true">
+      <span><kbd>Space</kbd> drop / pause</span>
+      <span><kbd>S</kbd> single ball</span>
+      <span><kbd>R</kbd> reset</span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- ============ Controls ============ -->
+    <aside class="panel controls" aria-label="Simulation controls">
+      <button id="btnRun" class="btn btn-primary btn-run" type="button">
+        <svg class="icon icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" /></svg>
+        <svg class="icon icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" /></svg>
+        <span class="btn-label">Drop Balls</span>
+      </button>
+
+      <div class="progress" aria-hidden="true">
+        <div class="progress-bar"><span id="progressFill"></span></div>
+        <div class="progress-text"><span id="progressText">0 / 1,000</span><span id="progressState">Ready</span></div>
+      </div>
+
+      <div class="btn-row">
+        <button id="btnSingle" class="btn btn-ghost" type="button" title="Release one traced ball (S)">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="6" r="3" /><path d="M12 11v8m-3.5-3.5L12 19l3.5-3.5" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          Single Ball
+        </button>
+        <button id="btnReset" class="btn btn-ghost" type="button" title="Clear all balls and statistics (R)">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4v4h4" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          Reset
+        </button>
+      </div>
+
+      <div class="field">
+        <div class="field-head"><span class="field-label" id="countLabel">Ball count</span></div>
+        <div class="segmented" role="radiogroup" aria-labelledby="countLabel" id="countGroup">
+          <button type="button" role="radio" data-count="100">100</button>
+          <button type="button" role="radio" data-count="500">500</button>
+          <button type="button" role="radio" data-count="1000">1,000</button>
+          <button type="button" role="radio" data-count="5000">5,000</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-head">
+          <label class="field-label" for="rows">Peg rows</label>
+          <output id="rowsOut" class="field-value">12</output>
+        </div>
+        <input id="rows" type="range" min="5" max="20" step="1" value="12" />
+        <div class="field-scale"><span>5</span><span>20</span></div>
+      </div>
+
+      <div class="field">
+        <div class="field-head">
+          <label class="field-label" for="speed">Drop speed</label>
+          <output id="speedOut" class="field-value">40 balls/s</output>
+        </div>
+        <input id="speed" type="range" min="0" max="100" step="1" value="62" />
+        <div class="field-scale"><span>Slow</span><span>Fast</span></div>
+      </div>
+
+      <div class="field">
+        <div class="field-head">
+          <label class="field-label" for="prob">Probability of bouncing right</label>
+          <output id="probOut" class="field-value">50%</output>
+        </div>
+        <input id="prob" type="range" min="0" max="100" step="1" value="50" />
+        <div class="field-scale prob-scale"><span id="probLeft">← Left 50%</span><span id="probRight">Right 50% →</span></div>
+      </div>
+
+      <p class="hint">Changing rows or probability starts a fresh experiment.</p>
+    </aside>
+
+    <!-- ============ Board + histogram ============ -->
+    <section class="stage" aria-label="Galton board">
+      <div class="board-wrap" id="boardWrap">
+        <canvas id="board" aria-label="Animated Galton board" role="img"></canvas>
+        <div class="path-chip" id="pathChip" hidden>
+          <span class="path-title">Traced ball</span>
+          <span class="path-steps" id="pathSteps"></span>
+          <span class="path-result" id="pathResult"></span>
+        </div>
+        <div class="board-legend" aria-hidden="true">
+          <span><i class="swatch swatch-curve"></i>Expected (binomial)</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card hist-card" aria-label="Distribution histogram">
+        <div class="hist-head">
+          <h2>Observed vs. theoretical distribution</h2>
+          <div class="hist-tools">
+            <div class="segmented segmented-sm" role="radiogroup" aria-label="Histogram units" id="unitGroup">
+              <button type="button" role="radio" data-unit="count" aria-checked="true">Counts</button>
+              <button type="button" role="radio" data-unit="prob" aria-checked="false">Probability</button>
+            </div>
+            <label class="toggle"><input type="checkbox" id="normalToggle" /><span>Normal approx.</span></label>
+          </div>
+        </div>
+        <div class="hist-legend" aria-hidden="true">
+          <span><i class="swatch swatch-bar"></i>Observed</span>
+          <span><i class="swatch swatch-curve"></i>Binomial B(n, p)</span>
+          <span class="legend-normal" hidden><i class="swatch swatch-normal"></i>Normal N(np, np(1−p))</span>
+        </div>
+        <div class="hist-wrap" id="histWrap">
+          <canvas id="hist" aria-label="Histogram of landing bins with theoretical binomial curve" role="img"></canvas>
+        </div>
+    </section>
+
+    <!-- ============ Statistics ============ -->
+    <aside class="panel stats" aria-label="Live statistics">
+      <h2 class="panel-title">Live statistics</h2>
+      <div class="stat-hero">
+        <div class="stat-hero-value" id="statDropped">0</div>
+        <div class="stat-hero-label">balls dropped</div>
+        <div class="stat-hero-sub"><span id="statLanded">0</span> landed · <span id="statFlight">0</span> in flight</div>
+      </div>
+
+      <div class="compare">
+        <div class="compare-head"><span></span><span>Observed</span><span>Expected</span></div>
+        <div class="compare-row"><span>Mean bin</span><b id="statMean">—</b><b id="statMeanExp" class="exp">6.00</b></div>
+        <div class="compare-row"><span>Std. deviation</span><b id="statSd">—</b><b id="statSdExp" class="exp">1.73</b></div>
+        <div class="compare-row"><span>Most populated</span><b id="statMode">—</b><b id="statModeExp" class="exp">6</b></div>
+      </div>
+
+      <div class="fit">
+        <div class="fit-row"><span>χ² goodness of fit</span><b id="statChi">—</b></div>
+        <div class="fit-row"><span>p-value</span><b id="statChiP">—</b></div>
+        <div class="fit-row"><span>Total variation distance</span><b id="statTvd">—</b></div>
+        <p class="fit-note" id="fitNote">Drop at least 30 balls to test how well the data match the binomial model.</p>
+      </div>
+
+      <details class="table-details">
+        <summary>Bin-by-bin comparison</summary>
+        <div class="table-scroll">
+          <table class="bin-table">
+            <thead><tr><th>Bin</th><th>Count</th><th>Observed</th><th>Theory</th></tr></thead>
+            <tbody id="binTable"></tbody>
+          </table>
+        </div>
+      </details>
+
+      <p class="hint">Bin <i>k</i> = number of rightward bounces. Hover a bin on the board or histogram for details.</p>
+    </aside>
+  </main>
+
+  <!-- ============ Explanation ============ -->
+  <section class="learn" aria-labelledby="learnTitle">
+    <h2 id="learnTitle">Why does a bell curve appear?</h2>
+    <div class="learn-grid">
+      <article class="card learn-card">
+        <span class="learn-step">1</span>
+        <h3>Every peg is a coin flip</h3>
+        <p>
+          At each of the <b class="v-rows">12</b> rows a ball bounces right with probability
+          <b class="v-p">p = 0.50</b> or left with probability <b class="v-q">1 − p = 0.50</b>.
+          The bounces are independent, and the bin a ball lands in is simply the
+          <em>number of rightward bounces</em>, <i>k</i>.
+        </p>
+      </article>
+      <article class="card learn-card">
+        <span class="learn-step">2</span>
+        <h3>Counting paths gives the binomial</h3>
+        <p>
+          Every path with exactly <i>k</i> rights has probability
+          <i>p</i><sup>k</sup>(1−<i>p</i>)<sup>n−k</sup>, and there are
+          <i>C</i>(<i>n</i>, <i>k</i>) such paths — Pascal’s triangle hidden in the pegs. So
+        </p>
+        <p class="formula">P(k) = C(n, k) · p<sup>k</sup> · (1 − p)<sup>n − k</sup></p>
+        <p>with mean <i>np</i> and standard deviation √(<i>np</i>(1 − <i>p</i>)). Middle bins are reachable by far more paths than the edges, which is why they fill fastest.</p>
+      </article>
+      <article class="card learn-card">
+        <span class="learn-step">3</span>
+        <h3>More rows → the normal curve</h3>
+        <p>
+          The landing bin is a <em>sum</em> of many small independent ±½ steps. By the
+          de Moivre–Laplace theorem (a special case of the central limit theorem), as rows increase
+          the binomial shape approaches a normal curve N(<i>np</i>, <i>np</i>(1−<i>p</i>)).
+          With <i>p</i> = 50% it is symmetric from the start; skewed choices need more rows before the bell takes shape.
+          Turn on <em>Normal approx.</em> and slide the rows from 5 to 20 to watch the two curves converge.
+        </p>
+      </article>
+      <article class="card learn-card">
+        <span class="learn-step">4</span>
+        <h3>Randomness, then regularity</h3>
+        <p>
+          A single ball is unpredictable — drop one and follow its path. But the
+          <em>law of large numbers</em> makes the histogram hug the theoretical curve ever more closely:
+          relative errors shrink roughly like 1/√N. The χ² test in the statistics panel tells you whether any
+          remaining gap is just chance.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <footer class="footer">
+    Paths are generated by an exact random walk (one independent Bernoulli trial per row), then animated —
+    so the bins follow the binomial distribution precisely.
+  </footer>
+
+  <div class="tooltip" id="tooltip" role="tooltip" hidden></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

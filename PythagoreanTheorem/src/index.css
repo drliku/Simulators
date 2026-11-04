@@ -1,0 +1,136 @@
+/*
+ * Brain (The Brain Maze display face) is bundled from src/assets/fonts.
+ * It is caps-only and lacks symbols such as + = ² √ ≈, which the browser
+ * fills in glyph-by-glyph from Saira Semi Condensed (next in the stack).
+ */
+@font-face {
+  font-family: 'Brain';
+  src:
+    url('./assets/fonts/Brain.woff2') format('woff2'),
+    local('Brain'),
+    local('Brain Regular');
+  /* Single weight: claim the full range so browsers don't fake bold. */
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply font-sans text-slate-800;
+    background-color: #fbf9f8;
+    background-image:
+      radial-gradient(900px 500px at 100% -10%, rgba(243, 115, 103, 0.10), transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, rgba(35, 47, 91, 0.06), transparent 60%);
+    background-attachment: fixed;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-3xl border border-slate-200 bg-white shadow-soft;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 font-display text-[16px] font-bold uppercase tracking-wide transition duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply btn bg-coral text-white shadow-lift hover:bg-coral-600 focus-visible:ring-coral-200;
+  }
+  .section-title {
+    @apply flex items-center gap-3 font-display text-xl font-bold uppercase tracking-wide text-coral;
+  }
+  .section-title::before {
+    content: '';
+    @apply h-[3px] w-6 shrink-0 bg-coral;
+  }
+  .btn-ghost {
+    @apply btn border-2 border-navy bg-white text-navy hover:bg-navy hover:text-white focus-visible:ring-slate-300;
+  }
+}
+
+/* Range slider ------------------------------------------------------------ */
+.range {
+  --fill: 0%;
+  --accent: #3b82f6;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 28px;
+  background: transparent;
+  cursor: pointer;
+}
+.range:focus {
+  outline: none;
+}
+.range::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 2px;
+  background: linear-gradient(to right, var(--accent) var(--fill), #e2e8f0 var(--fill));
+}
+.range::-moz-range-track {
+  height: 8px;
+  border-radius: 2px;
+  background: #e2e8f0;
+}
+.range::-moz-range-progress {
+  height: 8px;
+  border-radius: 2px;
+  background: var(--accent);
+}
+.range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-top: -7px;
+  width: 22px;
+  height: 22px;
+  border-radius: 3px;
+  background: #fff;
+  border: 3px solid var(--accent);
+  box-shadow: 0 2px 6px rgba(35, 47, 91, 0.2);
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+.range::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  background: #fff;
+  border: 3px solid var(--accent);
+  box-shadow: 0 2px 6px rgba(35, 47, 91, 0.2);
+}
+.range:hover::-webkit-slider-thumb,
+.range:focus-visible::-webkit-slider-thumb {
+  transform: scale(1.12);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 18%, transparent), 0 2px 6px rgba(35, 47, 91, 0.2);
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-in {
+  animation: fade-in 320ms ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+  }
+}

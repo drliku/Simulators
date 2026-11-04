@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Simulators | The Brain Maze</title>
+  <meta name="description" content="Interactive science simulations from The Brain Maze, sorted by subject.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Copy of the site's header/footer styles, for previewing only (the live site already has them) -->
+  <link rel="stylesheet" href="css/site-chrome.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ===== Site chrome (matches thebrainmaze.info; drop when templating into the site) ===== -->
+  <div class="utility-bar">
+    <div class="utility-bar__left">
+      <a><span class="full">About Us</span><span class="short">About</span></a>
+      <a><span class="full">Editorial Standards</span><span class="short">Standards</span></a>
+      <a>Contact</a>
+    </div>
+    <div class="utility-bar__right">
+      <a>Impressum</a>
+      <a><span class="full">Privacy Policy</span><span class="short">Privacy</span></a>
+    </div>
+  </div>
+
+  <header class="site--header">
+    <div class="logo">
+      <a><img src="assets/brainmaze-logo.png" alt="The Brain Maze"></a>
+    </div>
+    <div class="navigation">
+      <nav aria-label="Main">
+        <ul>
+          <li class="nav-item"><a>Life</a></li>
+          <li class="nav-item"><a>Astronomy</a></li>
+          <li class="nav-item"><a>Tech</a></li>
+          <li class="nav-item"><a>Nature</a></li>
+          <li class="nav-item"><a>Health</a></li>
+          <li class="nav-item"><a>Mathematics</a></li>
+          <li class="nav-item"><a>History</a></li>
+          <li class="nav-item nav-simulators">
+            <a href="index.html" aria-current="page">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="21.17" y1="8" x2="12" y2="8"/><line x1="3.95" y1="6.06" x2="8.54" y2="14"/><line x1="10.88" y1="21.94" x2="15.46" y2="14"/></svg>
+              Simulators
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="actions"></div>
+  </header>
+
+  <nav class="mobile--nav" aria-label="Categories">
+    <ul>
+      <li><a>Life</a></li>
+      <li><a>Astronomy</a></li>
+      <li><a>Tech</a></li>
+      <li><a>Nature</a></li>
+      <li><a>Health</a></li>
+      <li><a>Mathematics</a></li>
+      <li><a>History</a></li>
+      <li class="nav-simulator-mobile"><a href="index.html">Simulators</a></li>
+    </ul>
+  </nav>
+
+  <div class="clearfix"></div>
+
+  <!-- ===== Simulations directory (this is the part that goes on the Simulators page) ===== -->
+  <div class="sim-directory">
+
+    <section class="hero">
+      <div class="wrap">
+        <div>
+          <p class="eyebrow">Simulators</p>
+          <h1>Explore science by simulation</h1>
+          <p class="subtitle">Hands-on models you can drag, spin and play with. Pick a subject and launch a simulation.</p>
+        </div>
+        <div class="stats" aria-live="polite">
+          <div class="stat">
+            <span class="stat-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="21.17" y1="8" x2="12" y2="8"/><line x1="3.95" y1="6.06" x2="8.54" y2="14"/><line x1="10.88" y1="21.94" x2="15.46" y2="14"/></svg>
+            </span>
+            <span><span class="stat-n" id="simCount">0</span><span class="stat-label">Simulations</span></span>
+          </div>
+          <div class="stat">
+            <span class="stat-icon alt">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+            </span>
+            <span><span class="stat-n" id="subjectCount">6</span><span class="stat-label">Subjects</span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="filters">
+      <div class="wrap">
+        <div class="chips" id="filters" role="tablist" aria-label="Filter by subject"></div>
+        <label class="search">
+          <span class="visually-hidden">Search simulations</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+          <input type="search" id="search" placeholder="Search simulations" autocomplete="off">
+        </label>
+      </div>
+    </div>
+
+    <main class="wrap" id="directory"></main>
+
+    <p class="empty-search wrap" id="noResults" hidden>No simulations match that search.</p>
+
+    <!-- "How to use" window, filled in by app.js -->
+    <dialog class="guide" id="guide" aria-labelledby="guideTitle">
+      <div class="guide-panel">
+        <div class="guide-art" id="guideArt"></div>
+        <button class="guide-close" id="guideClose" type="button" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+        <div class="guide-scroll">
+          <h2 id="guideTitle"></h2>
+          <h3>About</h3>
+          <p id="guideAbout"></p>
+          <h3>How to use</h3>
+          <ol class="guide-steps" id="guideSteps"></ol>
+        </div>
+        <div class="guide-foot">
+          <a class="launch" id="guideLaunch" href="#" target="_blank" rel="noopener">Launch simulation
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+    </dialog>
+  </div>
+
+  <!-- ===== Site footer (matches thebrainmaze.info; drop when templating into the site) ===== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-main">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <a><img src="assets/brainmaze-logo.png" alt="The Brain Maze"></a>
+          </div>
+          <p>Exploring the fascinating world of science, one discovery at a time. From physics to biology, we make complex topics accessible and engaging.</p>
+        </div>
+        <div class="footer-column">
+          <h4>Categories</h4>
+          <ul>
+            <li><a>Astronomy</a></li>
+            <li><a>Health</a></li>
+            <li><a>History</a></li>
+            <li><a>Life</a></li>
+            <li><a>Mathematics</a></li>
+            <li><a>Nature</a></li>
+            <li><a>Tech</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Company</h4>
+          <ul>
+            <li><a>About Us</a></li>
+            <li><a>Editorial Standards</a></li>
+            <li><a>Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Legal</h4>
+          <ul>
+            <li><a>Impressum</a></li>
+            <li><a>Privacy Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>&copy; 2026 The Brain Maze. All rights reserved.</div>
+        <div class="footer-legal">
+          <a>Privacy</a>
+          <a>Impressum</a>
+          <a>Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/simulations.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

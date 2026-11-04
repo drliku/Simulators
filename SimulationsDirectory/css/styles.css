@@ -1,0 +1,541 @@
+/* Simulations directory, styled after thebrainmaze.info.
+   Everything is scoped under .sim-directory so it can sit inside the live
+   site's templates without clashing with its classes (.post, .container…). */
+
+.sim-directory {
+  /* The Brain Maze palette (values taken from the site's stylesheets) */
+  --navy: #304169;
+  --navy-deep: #1e2a47;
+  --coral: #f78677;
+  --coral-hover: #e67566;
+  --blush: #fdf2f0;
+  --mist: #f0f3fa;
+  --muted: #6b7c9e;
+  --faint: #a8a8a8;
+  --white: #ffffff;
+
+  /* One accent per subject, from the site's category card colours */
+  --biology: #56a080;
+  --physics: #d9594e;
+  --astronomy: #4d2b83;
+  --mathematics: #d581ab;
+  --chemistry: #223e81;
+  --geography: #6ba2af;
+
+  --radius: 14px;
+  --shadow: 0 4px 15px rgba(48, 65, 105, 0.1);
+  --shadow-hover: 0 8px 25px rgba(48, 65, 105, 0.15);
+
+  font-family: "Poppins", system-ui, sans-serif;
+  color: var(--navy);
+  background: var(--white);
+}
+.sim-directory *,
+.sim-directory *::before,
+.sim-directory *::after { box-sizing: border-box; }
+
+.sim-directory .wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 30px;
+}
+
+.sim-directory .visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+.sim-directory a:focus-visible,
+.sim-directory button:focus-visible {
+  outline: 3px solid var(--coral);
+  outline-offset: 3px;
+}
+
+/* ---------- Hero (same dark gradient as the site's simulator pages) ---------- */
+.sim-directory .hero {
+  padding: 64px 0 56px;
+  color: var(--white);
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-deep) 100%);
+}
+.sim-directory .hero .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+.sim-directory .eyebrow {
+  margin: 0 0 12px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--coral);
+}
+.sim-directory .hero h1 {
+  margin: 0 0 16px;
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--white);
+}
+.sim-directory .hero .subtitle {
+  margin: 0;
+  max-width: 520px;
+  font-size: 17px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.sim-directory .stats { display: flex; gap: 10px; flex-shrink: 0; }
+.sim-directory .stat {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 18px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+}
+.sim-directory .stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: var(--coral);
+}
+.sim-directory .stat-icon.alt { background: rgba(255, 255, 255, 0.15); }
+.sim-directory .stat-icon svg { width: 22px; height: 22px; }
+.sim-directory .stat-n { display: block; font-size: 22px; font-weight: 700; line-height: 1.2; }
+.sim-directory .stat-label {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ---------- Filter bar ---------- */
+.sim-directory .filters {
+  position: sticky;
+  top: 110px; /* sits just under the site's fixed header */
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid var(--blush);
+  box-shadow: 0 4px 15px rgba(48, 65, 105, 0.06);
+  backdrop-filter: blur(6px);
+}
+.sim-directory .filters .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+.sim-directory .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.sim-directory .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px 8px 16px;
+  font: 600 13px "Poppins", system-ui, sans-serif;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: var(--navy);
+  background: var(--white);
+  border: 2px solid var(--mist);
+  border-radius: 50px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.sim-directory .chip:hover { border-color: var(--coral); color: var(--coral); }
+.sim-directory .chip[aria-selected="true"] {
+  color: var(--white);
+  background: var(--navy);
+  border-color: var(--navy);
+}
+.sim-directory .chip-n {
+  display: grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  font-size: 12px;
+  color: var(--navy);
+  background: var(--mist);
+  border-radius: 50px;
+}
+.sim-directory .chip[aria-selected="true"] .chip-n { color: var(--white); background: var(--coral); }
+
+.sim-directory .search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 16px;
+  background: var(--white);
+  border: 2px solid var(--mist);
+  border-radius: 20px;
+  transition: border-color 0.2s;
+}
+.sim-directory .search:focus-within { border-color: var(--coral); }
+.sim-directory .search svg { width: 18px; height: 18px; flex: none; color: var(--coral); }
+.sim-directory .search input {
+  width: 200px;
+  font: 400 14px "Poppins", system-ui, sans-serif;
+  color: var(--navy);
+  background: transparent;
+  border: 0;
+  outline: none;
+}
+.sim-directory .search input::placeholder { color: #999; }
+
+/* ---------- Subject sections ---------- */
+.sim-directory main.wrap { padding-top: 48px; }
+
+.sim-directory .subject { --accent: var(--navy); margin-bottom: 56px; }
+.sim-directory .subject[hidden] { display: none; }
+.sim-directory .subject-biology     { --accent: var(--biology); }
+.sim-directory .subject-physics     { --accent: var(--physics); }
+.sim-directory .subject-astronomy   { --accent: var(--astronomy); }
+.sim-directory .subject-mathematics { --accent: var(--mathematics); }
+.sim-directory .subject-chemistry   { --accent: var(--chemistry); }
+.sim-directory .subject-geography   { --accent: var(--geography); }
+
+.sim-directory .subject-head {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--mist);
+}
+.sim-directory .subject-head::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 64px;
+  height: 2px;
+  background: var(--accent);
+}
+.sim-directory .subject-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  color: var(--white);
+  background: var(--accent);
+  border-radius: 10px;
+}
+.sim-directory .subject-icon .cat-icon { width: 24px; height: 24px; }
+.sim-directory .subject-text { flex: 1; min-width: 0; }
+.sim-directory .subject-head h2 { margin: 0; font-size: 24px; font-weight: 700; line-height: 1.25; }
+.sim-directory .subject-head p { margin: 2px 0 0; font-size: 14px; color: var(--muted); }
+.sim-directory .count {
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--faint);
+  white-space: nowrap;
+}
+
+.sim-directory .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+/* ---------- Simulation cards (the site's article card) ---------- */
+.sim-directory .sim { display: flex; }
+.sim-directory .sim[hidden] { display: none; }
+.sim-directory .sim-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.sim-directory .sim-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); }
+
+.sim-directory .thumb,
+.sim-directory .guide-art {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(135deg, var(--navy) 0%, var(--coral) 100%);
+}
+.sim-directory .thumb svg,
+.sim-directory .guide-art svg { display: block; width: 100%; height: 100%; }
+.sim-directory .thumb img,
+.sim-directory .guide-art img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.sim-directory .thumb-fallback { display: grid; place-items: center; height: 100%; color: var(--white); }
+.sim-directory .thumb-fallback .cat-icon { width: 56px; height: 56px; }
+.sim-directory .badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--white);
+  background: var(--accent);
+  border-radius: 8px;
+}
+
+.sim-directory .sim-body { display: flex; flex-direction: column; flex: 1; gap: 10px; padding: 20px; }
+.sim-directory .sim h3 { margin: 0; font-size: 18px; font-weight: 700; line-height: 1.35; }
+.sim-directory .sim h3 a { color: inherit; text-decoration: none; transition: color 0.2s; }
+.sim-directory .sim h3 a:hover,
+.sim-directory .sim-card:has(.thumb:hover) h3 a { color: var(--coral); }
+.sim-directory .sim-body > p { margin: 0; font-size: 14px; line-height: 1.6; color: var(--muted); }
+.sim-directory .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.sim-directory .tags li {
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--navy);
+  background: var(--mist);
+  border-radius: 50px;
+}
+
+.sim-directory .sim-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 8px;
+}
+.sim-directory .sim-body > p.also { font-size: 12px; font-weight: 600; color: var(--faint); }
+
+/* Pill buttons: navy "Launch" (coral on hover) and outlined "How to use" */
+.sim-directory .launch,
+.sim-directory .guide-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  font: 700 12px "Poppins", system-ui, sans-serif;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 50px;
+  cursor: pointer;
+}
+.sim-directory .launch {
+  margin-left: auto;
+  color: var(--white);
+  background: var(--navy);
+  border: 2px solid var(--navy);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+.sim-directory .launch:hover { background: var(--coral); border-color: var(--coral); }
+.sim-directory .launch svg { width: 16px; height: 16px; transition: transform 0.2s; }
+.sim-directory .launch:hover svg { transform: translateX(3px); }
+.sim-directory .guide-btn {
+  padding-left: 14px;
+  color: var(--navy);
+  background: var(--white);
+  border: 2px solid var(--mist);
+  transition: border-color 0.2s, color 0.2s;
+}
+.sim-directory .guide-btn:hover { color: var(--coral); border-color: var(--coral); }
+.sim-directory .guide-btn svg { width: 16px; height: 16px; }
+
+/* ---------- "How to use" window ---------- */
+.sim-directory .guide {
+  width: min(560px, calc(100% - 32px));
+  max-height: calc(100% - 48px);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius);
+  color: var(--navy);
+  background: var(--white);
+  box-shadow: 0 24px 60px rgba(30, 42, 71, 0.35);
+  overflow: hidden;
+}
+.sim-directory .guide[open] { display: flex; }
+.sim-directory .guide::backdrop { background: rgba(30, 42, 71, 0.6); }
+.sim-directory .guide-panel { position: relative; display: flex; flex-direction: column; width: 100%; min-height: 0; }
+.sim-directory .guide-art { flex: none; aspect-ratio: auto; height: 170px; }
+.sim-directory .guide-art svg { height: 170px; }
+.sim-directory .guide-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  color: var(--navy);
+  background: rgba(255, 255, 255, 0.92);
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.sim-directory .guide-close:hover { color: var(--white); background: var(--coral); }
+.sim-directory .guide-close svg { width: 18px; height: 18px; }
+.sim-directory .guide-scroll { flex: 1; min-height: 0; overflow-y: auto; padding: 22px 26px 8px; }
+.sim-directory .guide h2 { margin: 0 0 4px; font-size: 24px; font-weight: 700; line-height: 1.25; }
+.sim-directory .guide h3 {
+  margin: 18px 0 8px;
+  padding-bottom: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--coral);
+  border-bottom: 2px solid var(--mist);
+}
+.sim-directory .guide p { margin: 0; font-size: 15px; line-height: 1.65; color: var(--muted); }
+.sim-directory .guide-steps { margin: 0; padding: 0; list-style: none; counter-reset: step; }
+.sim-directory .guide-steps li {
+  position: relative;
+  padding: 6px 0 6px 38px;
+  font-size: 14.5px;
+  line-height: 1.6;
+  counter-increment: step;
+}
+.sim-directory .guide-steps li::before {
+  content: counter(step);
+  position: absolute;
+  top: 6px;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--white);
+  background: var(--accent);
+  border-radius: 50%;
+}
+.sim-directory .guide-steps b { font-weight: 600; color: var(--navy); }
+.sim-directory .guide kbd {
+  display: inline-block;
+  min-width: 22px;
+  padding: 0 6px;
+  font: 600 12px/20px "Poppins", system-ui, sans-serif;
+  text-align: center;
+  color: var(--navy);
+  background: var(--mist);
+  border-radius: 5px;
+  box-shadow: inset 0 -2px 0 rgba(48, 65, 105, 0.15);
+}
+.sim-directory .guide-foot { flex: none; display: flex; padding: 14px 26px 22px; }
+.sim-directory .guide-foot .launch { margin-left: 0; }
+
+/* ---------- Empty subjects (the site's dashed placeholder) ---------- */
+.sim-directory .coming-soon {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  background: var(--blush);
+  border: 2px dashed var(--coral);
+  border-radius: 8px;
+}
+.sim-directory .coming-soon .cat-icon { width: 32px; height: 32px; flex: none; color: var(--accent); }
+.sim-directory .coming-soon strong { display: block; font-size: 16px; font-weight: 700; }
+.sim-directory .coming-soon span { font-size: 14px; color: var(--muted); }
+
+.sim-directory .empty-search { padding: 24px 0 48px; font-size: 16px; text-align: center; color: var(--muted); }
+.sim-directory .empty-search[hidden] { display: none; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1100px) {
+  .sim-directory .hero .wrap { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 960px) {
+  .sim-directory .filters { position: static; }
+}
+@media (max-width: 768px) {
+  .sim-directory .wrap { padding: 0 16px; }
+  .sim-directory .hero { padding: 44px 0 40px; }
+  .sim-directory .hero h1 { font-size: 30px; }
+  .sim-directory .hero .subtitle { font-size: 16px; }
+  .sim-directory .stats { width: 100%; }
+  .sim-directory .stat { flex: 1; padding: 12px; }
+  .sim-directory .chips { flex-wrap: nowrap; overflow-x: auto; width: 100%; padding-bottom: 4px; }
+  .sim-directory .chip { flex: none; }
+  .sim-directory .search { width: 100%; }
+  .sim-directory .search input { width: 100%; }
+  .sim-directory main.wrap { padding-top: 32px; }
+  .sim-directory .grid { grid-template-columns: 1fr; }
+  .sim-directory .subject-head { flex-wrap: wrap; }
+  .sim-directory .subject-head h2 { font-size: 20px; }
+}
+@media (max-width: 480px) {
+  .sim-directory .hero h1 { font-size: 26px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sim-directory .sim-card,
+  .sim-directory .launch,
+  .sim-directory .launch svg { transition: none; }
+  .sim-directory .sim-card:hover { transform: none; }
+}
+
+/* ---------- Hover previews (10 s gameplay clip over the cover) ---------- */
+.sim-directory .thumb { overflow: hidden; }
+.sim-directory .thumb video.preview {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: var(--navy-deep);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.sim-directory .previewing .thumb video.preview { opacity: 1; }
+.sim-directory .preview-tag {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px 4px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--white);
+  background: rgba(30, 42, 71, 0.75);
+  border-radius: 50px;
+  transition: opacity 0.3s ease;
+}
+.sim-directory .preview-tag svg { width: 12px; height: 12px; }
+.sim-directory .previewing .preview-tag { opacity: 0; }
+/* Thin coral bar that fills over the clip's 10 seconds */
+.sim-directory .preview-bar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 100%;
+  background: var(--coral);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.sim-directory .previewing .preview-bar { animation: preview-fill 10s linear infinite; }
+@keyframes preview-fill { to { transform: scaleX(1); } }
+@media (prefers-reduced-motion: reduce) {
+  .sim-directory .preview-tag, .sim-directory .preview-bar { display: none; }
+}

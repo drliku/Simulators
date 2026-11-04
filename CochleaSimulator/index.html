@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cochlea Simulator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <canvas id="view"></canvas>
+    <div id="labels"></div>
+    <div id="tooltip" hidden></div>
+
+    <header class="title">
+      <a class="brand" href="https://thebrainmaze.com/" target="_top"><img src="/assets/brainmaze-logo.png" alt="The Brain Maze" /></a>
+      <span class="eyebrow">Biology simulator</span>
+      <h1>Cochlea Simulator</h1>
+      <p>How your inner ear turns sound into pitch</p>
+    </header>
+
+    <details class="panel explain">
+      <summary>How it works</summary>
+      <ol>
+        <li><b>Sound arrives.</b> The eardrum and middle-ear bones push the fluid inside this snail-shaped tube.</li>
+        <li><b>The membrane sorts pitch by place.</b> The basilar membrane is stiff and narrow at the <span class="hi">base</span> and wide and floppy at the <span class="lo">apex</span>. High notes peak near the entrance and low notes deep in the spiral.</li>
+        <li><b>Hair cells bend.</b> Where the membrane moves, the tiny hair bundles (stereocilia) on top of the hair cells tip over. That opens ion channels and fires the auditory nerve.</li>
+        <li><b>Your brain reads the map.</b> <i>Which</i> cells fire tells you the pitch. <i>How strongly</i> they fire tells you the loudness.</li>
+      </ol>
+      <p class="note">Play an instrument, drop in an MP3, paste a YouTube link or use the mic, and watch where the cochlea responds. A real ear has about 15,000 hair cells (pick up to that many under Cells). Movements are hugely exaggerated so you can see them; real bundles move only nanometres.</p>
+    </details>
+
+    <section id="ytPanel" class="panel yt-panel yt-only" hidden>
+      <div class="yt-head">
+        <span>YouTube</span>
+        <button id="ytClose" class="x" aria-label="Close the YouTube player">×</button>
+      </div>
+      <form class="yt-form" data-yt-form>
+        <input id="ytUrlPanel" type="text" inputmode="url" placeholder="Paste a YouTube link" aria-label="YouTube link" autocomplete="off" />
+        <button type="submit">Play</button>
+      </form>
+      <div id="ytMount" class="yt-video"></div>
+      <div class="yt-foot">
+        <span id="ytStatus" class="yt-status">Paste a link to start</span>
+        <button id="ytConnect" hidden>Connect sound</button>
+      </div>
+    </section>
+
+    <section class="panel gram">
+      <div class="gram-head">
+        <span>What the ear hears</span>
+        <span class="gram-axis"><span class="hi">high</span> → <span class="lo">low</span></span>
+      </div>
+      <canvas id="gram" width="360"></canvas>
+    </section>
+
+    <section id="pianoPanel" class="panel piano">
+      <div class="piano-head">
+        <label class="ph-hear" title="Play an instrument and watch where the cochlea responds">
+          <span>Instrument</span>
+          <select id="instrument" aria-label="Instrument"></select>
+        </label>
+        <span id="pianoNotes" class="ph-notes idle" aria-live="polite">Choose an instrument to play it.</span>
+      </div>
+    </section>
+
+    <footer class="panel dock">
+      <button id="playBtn" class="icon" aria-label="Play" disabled>
+        <svg viewBox="0 0 24 24" class="i-play"><path d="M8 5v14l11-7z" /></svg>
+        <svg viewBox="0 0 24 24" class="i-pause"><path d="M7 5h4v14H7zM13 5h4v14h-4z" /></svg>
+      </button>
+      <div class="track">
+        <div id="trackName" class="track-name">No audio loaded</div>
+        <div class="seek-row">
+          <span id="tCur">0:00</span>
+          <input id="seek" type="range" min="0" max="1000" value="0" disabled aria-label="Seek" />
+          <span id="tDur">0:00</span>
+        </div>
+      </div>
+      <label class="vol" title="Volume">
+        <svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z" /></svg>
+        <input id="volume" type="range" min="0" max="1" step="0.01" value="0.9" aria-label="Volume" />
+      </label>
+      <label class="cells" title="Colour theme for the hair cells, sparks and membrane">
+        <span>Theme</span>
+        <span id="themeSwatch" class="swatch" aria-hidden="true"></span>
+        <select id="theme" aria-label="Colour theme"></select>
+      </label>
+      <label class="cells" title="Number of hair cells. Lower it if the fps drops.">
+        <span>Cells</span>
+        <select id="cellCount" aria-label="Number of hair cells"></select>
+        <span id="fps" class="fps">60 fps</span>
+      </label>
+      <div class="toggles">
+        <label><input id="tLabels" type="checkbox" checked /> Labels</label>
+        <label><input id="tOrbit" type="checkbox" checked /> Orbit</label>      </div>
+      <button data-action="open">Open file</button>
+      <button data-action="demo">Demo</button>
+      <button data-action="youtube" class="yt-only">YouTube</button>
+      <button id="micBtn" data-action="mic">Mic</button>
+      <button id="tabBtn" data-action="tab" title="Listen to another tab, e.g. a YouTube video">Tab</button>
+    </footer>
+
+    <div id="drop" hidden><div>Drop audio to listen</div></div>
+    <div id="loading"><div class="spinner"></div><span>Building the cochlea…</span></div>
+    <input id="fileInput" type="file" accept="audio/*,.mp3,.wav,.ogg,.m4a,.flac" hidden />
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

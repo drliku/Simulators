@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  /* Brain by Vladimir Nikolic, The Brain Maze typeface. One weight; lowercase draws as capitals. */
+  font-family: 'Brain';
+  src: url('./assets/Brain.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+:root { color-scheme: dark; }
+html, body, #root { height: 100%; }
+body { margin: 0; background: #0e1110; color: #e9ede8; -webkit-font-smoothing: antialiased; }
+
+@layer components {
+  .panel { @apply rounded-xl border border-white/[0.07] bg-char-850/90; }
+  .h-title { @apply font-display text-[16px] uppercase tracking-[0.08em] text-forest-soft; }
+  .btn { @apply inline-flex h-8 items-center justify-center gap-1.5 rounded-md border border-white/10 bg-white/[0.04] px-2.5 text-[12.5px] font-medium text-ink transition hover:bg-white/[0.1] active:translate-y-px disabled:opacity-40; }
+  .btn-primary { @apply border-transparent bg-forest text-char-950 hover:bg-forest-soft; }
+  .chip { @apply h-7 rounded-md border border-white/10 px-2 text-[12px] text-ink-muted transition hover:text-ink; }
+  .chip[aria-pressed='true'] { @apply border-forest/60 bg-forest/20 text-forest-soft; }
+  .tab { @apply flex-1 rounded-md px-2 py-1.5 text-[12px] font-medium text-ink-muted transition hover:text-ink; }
+  .tab[aria-selected='true'] { @apply bg-white/[0.08] text-ink; }
+  .label { @apply text-[12px] text-ink-muted; }
+}
+
+:focus-visible { outline: 2px solid #8fd19a; outline-offset: 2px; }
+
+input[type='range'] { -webkit-appearance: none; appearance: none; width: 100%; height: 20px; background: transparent; cursor: pointer; --pct: 50%; }
+input[type='range']::-webkit-slider-runnable-track { height: 4px; border-radius: 99px; background: linear-gradient(90deg, #4f9a5b var(--pct), rgba(255,255,255,0.12) var(--pct)); }
+input[type='range']::-moz-range-track { height: 4px; border-radius: 99px; background: rgba(255,255,255,0.12); }
+input[type='range']::-moz-range-progress { height: 4px; border-radius: 99px; background: #4f9a5b; }
+input[type='range']::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; margin-top: -5px; border-radius: 50%; background: #e9ede8; border: 3px solid #4f9a5b; }
+input[type='range']::-moz-range-thumb { width: 10px; height: 10px; border-radius: 50%; background: #e9ede8; border: 3px solid #4f9a5b; }
+
+.scroll-thin::-webkit-scrollbar { width: 6px; }
+.scroll-thin::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
+
+/* Hunt markers in the 3D view */
+.hunt-label { white-space: nowrap; padding: 2px 8px; border-radius: 6px; font: 600 11px/1.5 'Saira', sans-serif; letter-spacing: 0.06em; color: #1b1205; background: #ffb02e; box-shadow: 0 0 0 2px rgba(0,0,0,0.35), 0 0 16px rgba(255,176,46,0.6); }
+.hunt-label[data-phase='chase'] { color: #fff; background: #ff3b30; box-shadow: 0 0 0 2px rgba(0,0,0,0.35), 0 0 22px rgba(255,59,48,0.9); animation: hunt-throb 0.45s ease-in-out infinite alternate; }
+.hunt-label:empty, .hunt-burst:empty { display: none; }
+.hunt-burst { white-space: nowrap; font: 400 22px/1 'Brain', 'Saira Semi Condensed', sans-serif; letter-spacing: 0.08em; color: #ff4b3a; text-shadow: 0 0 12px rgba(255,59,48,0.9), 0 2px 0 #000; }
+.hunt-burst[data-outcome='escaped'] { color: #6ff09a; text-shadow: 0 0 12px rgba(94,234,138,0.8), 0 2px 0 #000; }
+@keyframes hunt-throb { from { transform: scale(1); } to { transform: scale(1.12); } }
+@keyframes hunt-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(255,59,48,0.55); } 50% { box-shadow: 0 0 0 8px rgba(255,59,48,0); } }
+.hunt-banner-chase { animation: hunt-pulse 0.9s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .hunt-label[data-phase='chase'], .hunt-banner-chase { animation: none; } }

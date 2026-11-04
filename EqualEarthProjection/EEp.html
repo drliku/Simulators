@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Equal Earth Projection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Saira only fills in characters Brain doesn't have (& ( ) - / ×) and is used inside dropdowns -->
+  <link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700;800&family=Saira:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="page">
+
+    <!-- Logo only -->
+    <header class="topbar">
+      <a class="brand" href="#">
+        <img src="assets/brainmaze-logo.png" alt="The Brain Maze">
+      </a>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Interactive world map</p>
+        <h1><span class="title-a">Equal Earth</span> <span class="title-b">projection</span></h1>
+        <p class="subtitle">Put any two places side by side on two maps, then see how much Mercator blows up their size.</p>
+      </div>
+      <aside class="sticker">
+        <div class="sticker-tag">Did you know?</div>
+        <div class="sticker-big">14×</div>
+        <p>Africa is 14 times bigger than Greenland, but on Mercator they look about the same.</p>
+      </aside>
+    </section>
+
+    <!-- Preset comparisons -->
+    <h2 class="presets-title">Want to compare?</h2>
+    <div class="presets" id="presets">
+      <button class="chip" data-a="Africa" data-b="Europe">Africa vs Europe</button>
+      <button class="chip" data-a="Greenland" data-b="Africa">Greenland vs Africa</button>
+      <button class="chip" data-a="Greenland" data-b="Mexico">Greenland vs Mexico</button>
+      <button class="chip" data-a="Russia" data-b="Africa">Russia vs Africa</button>
+      <button class="chip" data-a="Canada" data-b="China">Canada vs China</button>
+      <button class="chip" data-a="Greenland" data-b="Australia">Greenland vs Australia</button>
+      <button class="chip" data-a="United Kingdom" data-b="Japan">UK vs Japan</button>
+      <button class="chip" data-a="Brazil" data-b="United States of America">Brazil vs USA</button>
+    </div>
+
+    <!-- Selection matchup -->
+    <section class="matchup">
+      <div class="side a">
+        <label for="selectA">Selected country or region</label>
+        <select id="selectA"></select>
+      </div>
+
+      <button class="vs" id="swapBtn" title="Swap selections" aria-label="Swap selections">
+        <span>VS</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 4 3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7"/></svg>
+      </button>
+
+      <div class="side b">
+        <label for="selectB">Compare with</label>
+        <select id="selectB"></select>
+      </div>
+    </section>
+
+    <!-- Map options -->
+    <div class="toolbar">
+      <div class="options">
+        <label>Map center
+          <select id="centerSelect">
+            <option value="0">Atlantic</option>
+            <option value="150">Asia-Pacific</option>
+            <option value="-90">Americas</option>
+          </select>
+        </label>
+        <label><input type="checkbox" id="gridToggle" checked> Show grid</label>
+      </div>
+      <div class="seg">
+        <span id="segLabel">Map click sets</span>
+        <div class="seg-btns" role="radiogroup" aria-labelledby="segLabel">
+          <button class="seg-btn a" role="radio" aria-checked="true" data-target="a">Selected</button>
+          <button class="seg-btn b" role="radio" aria-checked="false" data-target="b">Compare</button>
+        </div>
+      </div>
+      <button class="btn" id="resetBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"/></svg>
+        Reset
+      </button>
+    </div>
+    <p class="map-hint">Scroll or pinch to zoom, drag to move around, and click any country to pick it.</p>
+
+    <!-- Map cards -->
+    <section class="maps">
+      <article class="card ee">
+        <div class="card-head">
+          <div>
+            <div class="card-tag">Preserves area</div>
+            <h2>Equal Earth</h2>
+          </div>
+          <div class="stat">
+            <div class="stat-label"><span class="statName"></span> area</div>
+            <div class="ratio">1.00×</div>
+            <div class="stat-sub">true size</div>
+          </div>
+        </div>
+        <div class="map-area loading" id="mapEqualEarth">
+          <div class="map-canvas">Loading map…</div>
+          <div class="zoom-ctrls">
+            <button data-zoom="in" title="Zoom in" aria-label="Zoom in">+</button>
+            <button data-zoom="out" title="Zoom out" aria-label="Zoom out">−</button>
+            <button data-zoom="reset" title="Reset zoom" aria-label="Reset zoom">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"/></svg>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card merc">
+        <div class="card-head">
+          <div>
+            <div class="card-tag">Preserves local angles</div>
+            <h2>Mercator</h2>
+          </div>
+          <div class="stat">
+            <div class="stat-label"><span class="statName"></span> area</div>
+            <div class="ratio" id="mercRatio">—</div>
+            <div class="stat-sub" id="mercRatioB"></div>
+          </div>
+        </div>
+        <div class="map-area loading" id="mapMercator">
+          <div class="map-canvas">Loading map…</div>
+          <div class="zoom-ctrls">
+            <button data-zoom="in" title="Zoom in" aria-label="Zoom in">+</button>
+            <button data-zoom="out" title="Zoom out" aria-label="Zoom out">−</button>
+            <button data-zoom="reset" title="Reset zoom" aria-label="Reset zoom">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"/></svg>
+            </button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+  <script src="js/regions.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* The Brain Maze: coral #F37064 on navy #243056. Photons are yellow; the track frame is periwinkle. */
+@font-face {
+  /* Brain by Vladimir Nikolic, the logo typeface. One weight; lowercase letters are drawn as capitals. */
+  font-family: 'Brain';
+  src: url('./assets/Brain.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+:root { color-scheme: dark; }
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: #0e1530;
+  background-image:
+    radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,0.5) 50%, transparent 51%),
+    radial-gradient(1px 1px at 72% 8%, rgba(255,255,255,0.4) 50%, transparent 51%),
+    radial-gradient(1px 1px at 38% 62%, rgba(255,255,255,0.3) 50%, transparent 51%),
+    radial-gradient(1px 1px at 88% 44%, rgba(255,255,255,0.35) 50%, transparent 51%),
+    radial-gradient(900px 500px at 10% -10%, rgba(159,176,255,0.09), transparent 60%),
+    radial-gradient(800px 500px at 100% 0%, rgba(243,112,100,0.11), transparent 60%),
+    linear-gradient(rgba(170,182,230,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(170,182,230,0.035) 1px, transparent 1px),
+    linear-gradient(180deg, #172042 0%, #0e1530 100%);
+  background-size: 420px 420px, 420px 420px, 420px 420px, 420px 420px, auto, auto, 32px 32px, 32px 32px, auto;
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer components {
+  .glass { @apply rounded-2xl border border-white/[0.08] bg-space-850/75 shadow-glass backdrop-blur-md; }
+  .panel-title { @apply font-display text-[17px] font-normal uppercase tracking-[0.1em] text-coral; }
+  .btn {
+    @apply inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-3.5 text-sm font-medium text-ink transition hover:bg-white/[0.09] active:translate-y-px disabled:cursor-not-allowed disabled:opacity-40;
+  }
+  .chip {
+    @apply h-8 rounded-md border border-white/10 px-2.5 font-mono text-[12px] text-ink-muted transition hover:border-coral/50 hover:text-ink;
+  }
+  .chip[aria-pressed='true'] { @apply border-coral/60 bg-coral/15 text-coral-soft; }
+  .seg { @apply grid auto-cols-fr grid-flow-col gap-1 rounded-lg border border-white/[0.07] bg-black/25 p-1; }
+  .seg > button { @apply h-9 rounded-md px-2 text-[13px] font-medium text-ink-muted transition-colors hover:text-ink; }
+  .seg > button[aria-pressed='true'] { @apply bg-coral/15 text-coral-soft shadow-[inset_0_0_0_1px_rgba(243,112,100,0.45)]; }
+  .term {
+    @apply cursor-help underline decoration-dotted decoration-1 underline-offset-[3px] outline-none focus-visible:rounded focus-visible:ring-2 focus-visible:ring-coral/60;
+    text-decoration-color: rgba(163, 172, 201, 0.6);
+  }
+}
+
+:focus-visible { outline: 2px solid rgba(255, 180, 168, 0.85); outline-offset: 2px; }
+
+input[type='range'] {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 24px; background: transparent; cursor: pointer;
+  --pct: 50%; --fill: #f37064;
+}
+input[type='range']::-webkit-slider-runnable-track {
+  height: 4px; border-radius: 99px;
+  background: linear-gradient(90deg, rgba(224,86,74,0.9), var(--fill) var(--pct), rgba(170,182,230,0.2) var(--pct));
+}
+input[type='range']::-moz-range-track { height: 4px; border-radius: 99px; background: rgba(170,182,230,0.2); }
+input[type='range']::-moz-range-progress { height: 4px; border-radius: 99px; background: var(--fill); }
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 18px; height: 18px; margin-top: -7px; border-radius: 50%;
+  background: #243056; border: 3px solid var(--fill);
+  box-shadow: 0 0 0 5px rgba(243,112,100,0.16), 0 0 14px rgba(243,112,100,0.55);
+}
+input[type='range']::-moz-range-thumb {
+  width: 12px; height: 12px; border-radius: 50%; background: #243056; border: 3px solid var(--fill);
+  box-shadow: 0 0 0 5px rgba(243,112,100,0.16), 0 0 14px rgba(243,112,100,0.55);
+}
+input[type='range'].photon-range { --fill: #ffe066; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
+}
