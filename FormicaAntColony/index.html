@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Formica — Ant Colony Simulator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <canvas id="view"></canvas>
+
+  <!-- Top HUD -->
+  <header id="hud">
+    <div class="hud-pill" id="hud-env">
+      <span class="hud-item" title="Time of day"><i id="hud-sun"></i><b id="hud-time">Day 1 · 08:00</b></span>
+      <span class="hud-sep"></span>
+      <span class="hud-item" title="Weather"><b id="hud-weather">Clear</b></span>
+      <span class="hud-sep"></span>
+      <span class="hud-item" title="Temperature"><b id="hud-temp">22°C</b></span>
+      <span class="hud-sep"></span>
+      <span class="hud-item" title="Total ants / brood"><b id="hud-pop">0</b><small>ants</small></span>
+      <span class="hud-sep"></span>
+      <span class="hud-item muted" title="Frames per second"><b id="hud-fps">60</b><small>fps</small></span>
+    </div>
+    <div class="hud-pill hud-controls">
+      <button class="icon-btn" id="btn-play" title="Pause / play (Space)"></button>
+      <div class="seg small" id="speed-seg"></div>
+      <span class="hud-sep"></span>
+      <button class="icon-btn toggle" id="btn-pher" title="Pheromone view (P)"></button>
+      <button class="icon-btn toggle on" id="btn-zones" title="Chamber overlay (Z)"></button>
+      <button class="icon-btn" id="btn-help" title="Controls (H)"></button>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <aside id="sidebar">
+    <div class="sb-head">
+      <div class="brand">
+        <svg viewBox="0 0 32 32" class="logo"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><ellipse cx="16" cy="22" rx="4.6" ry="5.6" fill="currentColor"/><ellipse cx="16" cy="13.5" rx="2.8" ry="3" fill="currentColor"/><circle cx="16" cy="7.6" r="2.5" fill="currentColor"/><path d="M13.4 12l-5-3M18.6 12l5-3M13.2 14.5l-6 1M18.8 14.5l6 1M13.6 16.5l-4.6 5M18.4 16.5l4.6 5M14.8 5.6l-2.6-3.4M17.2 5.6l2.6-3.4"/></g></svg>
+        <div><h1>Formica</h1><span>Ant colony sandbox</span></div>
+      </div>
+      <button class="icon-btn" id="btn-collapse" title="Collapse sidebar (B)"></button>
+    </div>
+
+    <div class="sb-scroll">
+      <section class="panel">
+        <h2>Tools</h2>
+        <div class="tool-grid" id="tool-grid"></div>
+        <div class="tool-opts" id="tool-opts"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title"><h2>Colonies</h2><button class="link-btn" id="btn-focus">Focus nest</button></div>
+        <div class="colony-list" id="colony-list"></div>
+        <div id="colony-detail">
+          <div class="stat-grid">
+            <div class="stat"><span class="k">Workers</span><b id="st-workers">0</b></div>
+            <div class="stat"><span class="k">Soldiers</span><b id="st-soldiers">0</b></div>
+            <div class="stat"><span class="k">Queens</span><b id="st-queens">0</b></div>
+            <div class="stat"><span class="k">Eggs</span><b id="st-eggs">0</b></div>
+            <div class="stat"><span class="k">Larvae</span><b id="st-larvae">0</b></div>
+            <div class="stat"><span class="k">Pupae</span><b id="st-pupae">0</b></div>
+          </div>
+          <div class="meter-row"><span>Food reserves</span><b id="st-food">0</b></div>
+          <div class="meter"><i id="mt-food"></i></div>
+          <div class="meter-row"><span>Colony health</span><b id="st-health">0%</b></div>
+          <div class="meter"><i id="mt-health"></i></div>
+          <div class="chart-wrap">
+            <canvas id="chart" width="560" height="140"></canvas>
+            <div class="legend"><span><i style="background:var(--accent)"></i>Workers</span><span><i style="background:#ff6b5a"></i>Soldiers</span><span><i style="background:#f3a6c8"></i>Brood</span><span><i style="background:#8fd16a"></i>Food</span></div>
+          </div>
+          <div class="activity" id="activity"></div>
+          <div class="row-ctrl">
+            <label class="switch"><input type="checkbox" id="opt-raid"><span></span>Raid enemies</label>
+          </div>
+          <div class="row-ctrl col">
+            <div class="meter-row"><span>Soldier ratio</span><b id="lbl-ratio">15%</b></div>
+            <input type="range" id="opt-ratio" min="0" max="60" value="15">
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Environment</h2>
+        <div class="row-ctrl col">
+          <div class="meter-row"><span>Time of day</span><label class="switch mini"><input type="checkbox" id="opt-cycle" checked><span></span>Cycle</label></div>
+          <input type="range" id="opt-time" min="0" max="1000" value="340">
+        </div>
+        <div class="row-ctrl col">
+          <div class="meter-row"><span>Weather</span></div>
+          <div class="seg" id="weather-seg"></div>
+        </div>
+        <div class="row-ctrl col">
+          <div class="meter-row"><span>Base temperature</span><b id="lbl-temp">22°C</b></div>
+          <input type="range" id="opt-temp" min="-5" max="45" value="22">
+        </div>
+        <div class="row-ctrl"><label class="switch"><input type="checkbox" id="opt-natural" checked><span></span>Natural events (seeds, insects, wildlife)</label></div>
+        <div class="row-ctrl"><label class="switch"><input type="checkbox" id="opt-autodig" checked><span></span>Ants expand nests on their own</label></div>
+      </section>
+
+      <section class="panel">
+        <h2>World</h2>
+        <div class="row-ctrl col">
+          <div class="meter-row"><span>Population cap</span><b id="lbl-cap">900</b></div>
+          <input type="range" id="opt-cap" min="100" max="1500" step="50" value="900">
+        </div>
+        <div class="btn-row">
+          <button class="btn" id="btn-clear-pher">Clear pheromones</button>
+          <button class="btn danger" id="btn-new">New world</button>
+        </div>
+      </section>
+      <p class="foot">Open sandbox — no goals, no levels. Build, experiment, observe.</p>
+    </div>
+  </aside>
+  <button class="icon-btn floating" id="btn-expand" title="Open sidebar (B)"></button>
+
+  <!-- Inspector -->
+  <div id="inspector" class="card hidden">
+    <div class="insp-head">
+      <span class="dot" id="insp-dot"></span>
+      <div><h3 id="insp-title">Worker ant</h3><span id="insp-sub">Amber Colony</span></div>
+      <button class="icon-btn small" id="insp-close" title="Close (Esc)"></button>
+    </div>
+    <div id="insp-body"></div>
+    <div class="btn-row">
+      <button class="btn" id="insp-follow">Follow</button>
+    </div>
+  </div>
+
+  <div id="toasts"></div>
+
+  <!-- Help -->
+  <div id="help" class="modal hidden">
+    <div class="card modal-card">
+      <div class="insp-head"><div><h3>Controls</h3><span>Everything is optional — it's your ecosystem.</span></div><button class="icon-btn small" id="help-close"></button></div>
+      <div class="help-grid">
+        <div><kbd>Left drag</kbd> Use tool</div>
+        <div><kbd>Right / middle drag</kbd> Pan</div>
+        <div><kbd>Wheel</kbd> Zoom at cursor</div>
+        <div><kbd>WASD / arrows</kbd> Pan</div>
+        <div><kbd>Space</kbd> Pause / play</div>
+        <div><kbd>1–0, X</kbd> Select tool</div>
+        <div><kbd>[ ]</kbd> Brush size</div>
+        <div><kbd>P</kbd> Pheromone view</div>
+        <div><kbd>Z</kbd> Chamber overlay</div>
+        <div><kbd>F</kbd> Follow selected</div>
+        <div><kbd>B</kbd> Toggle sidebar</div>
+        <div><kbd>Esc</kbd> Deselect</div>
+      </div>
+      <div class="help-notes">
+        <p><b>How the colony works.</b> Workers leave the nest, explore the surface, and lay a <span class="g">food trail</span> when carrying food home — other foragers follow it. Food is stored in storage chambers; nurses carry eggs to the nursery and feed larvae, which pupate and hatch into new workers or soldiers. Diggers expand the nest and pile soil into ant hills on the surface.</p>
+        <p><b>Chambers.</b> Paint storage, nursery and queen zones with the Chambers tool. Ants route to them automatically through connected tunnels. Use <i>Dig → Ant excavation</i> to mark tunnels for the ants to dig themselves.</p>
+        <p><b>Danger.</b> Spiders hunt ants, beetles steal food, rain drives foragers underground, and cold slows everything. Rival colonies grow, and raid when they have enough soldiers.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/core.js"></script>
+  <script src="js/entities.js"></script>
+  <script src="js/sim.js"></script>
+  <script src="js/render.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

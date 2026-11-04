@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Semi+Condensed:wght@500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* The Brain Maze display face (from the brand kit) */
+@font-face {
+  font-family: 'Brain';
+  src: url('./assets/Brain.ttf') format('truetype');
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Brand tokens: navy #243056, coral #F37064. The app is a deliberately dark, single-theme instrument. */
+:root {
+  --brand-navy: #243056;
+  --brand-coral: #f37064;
+  --ground: #0b1022;
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--ground);
+  color-scheme: dark;
+  font-family: Barlow, ui-sans-serif, system-ui, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Brand display labels: the Brain face reads best slightly spaced and upright */
+.brand-label {
+  font-family: Brain, 'Barlow Semi Condensed', Barlow, sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand-coral);
+  outline-offset: 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+.scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.2) transparent;
+}
+.scroll-thin::-webkit-scrollbar {
+  width: 8px;
+}
+.scroll-thin::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.2);
+  border-radius: 8px;
+}
+
+/* Range slider */
+.slider {
+  --accent: #f37064;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 16px;
+  background: transparent;
+  cursor: pointer;
+}
+.slider::-webkit-slider-runnable-track {
+  height: 3px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.1);
+}
+.slider::-moz-range-track {
+  height: 3px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.1);
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 13px;
+  height: 13px;
+  margin-top: -5px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid #10172f;
+  box-shadow: 0 0 0 1px var(--accent), 0 0 8px var(--accent);
+  transition: transform 0.1s;
+}
+.slider::-moz-range-thumb {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid #10172f;
+  box-shadow: 0 0 0 1px var(--accent);
+}
+.slider:hover::-webkit-slider-thumb {
+  transform: scale(1.15);
+}
+
+.spectrum-bar {
+  background: linear-gradient(90deg, #6a00a8 0%, #3b28ff 14%, #0080ff 26%, #00e5ff 35%, #00ff40 45%, #b4ff00 55%, #ffd000 64%, #ff7a00 74%, #ff0000 85%, #b00000 100%);
+  opacity: 0.8;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.toast-in {
+  animation: toast-in 0.18s ease-out;
+}

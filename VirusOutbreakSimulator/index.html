@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Virus Outbreak Simulator</title>
+<meta name="description" content="A simplified, educational SEIR virus outbreak sandbox. Not a real-world prediction tool.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="wordmark" aria-label="Virus Outbreak Simulator">
+      <span class="wm-top">Virus Outbreak</span>
+      <span class="wm-bottom"><i class="wm-rule"></i>Simulator</span>
+    </div>
+    <div class="logo-tile">
+    <svg class="logo" viewBox="0 0 32 32" aria-hidden="true">
+      <g stroke="#24305b" stroke-width="2.4" stroke-linecap="round">
+        <line x1="16" y1="2.5" x2="16" y2="7"/><line x1="16" y1="25" x2="16" y2="29.5"/>
+        <line x1="2.5" y1="16" x2="7" y2="16"/><line x1="25" y1="16" x2="29.5" y2="16"/>
+        <line x1="6.5" y1="6.5" x2="9.6" y2="9.6"/><line x1="22.4" y1="22.4" x2="25.5" y2="25.5"/>
+        <line x1="25.5" y1="6.5" x2="22.4" y2="9.6"/><line x1="9.6" y1="22.4" x2="6.5" y2="25.5"/>
+      </g>
+      <circle cx="16" cy="16" r="8.5" fill="none" stroke="#24305b" stroke-width="2.4"/>
+      <circle cx="13.5" cy="14" r="1.8" fill="#24305b"/><circle cx="18.5" cy="18.5" r="1.3" fill="#24305b"/>
+    </svg>
+    </div>
+  </div>
+
+  <div class="edu-chip" title="This simulator uses invented, simplified rules. Its numbers do not describe any real disease or place.">
+    <span class="chip-dot"></span>Simplified educational model — not a real-world prediction tool
+  </div>
+
+  <div class="transport">
+    <button class="btn primary" id="btnPlay" title="Pause / resume (Space)">
+      <svg id="icoPause" viewBox="0 0 16 16"><rect x="3.5" y="2.5" width="3" height="11" rx="1"/><rect x="9.5" y="2.5" width="3" height="11" rx="1"/></svg>
+      <svg id="icoPlay" viewBox="0 0 16 16" hidden><path d="M4 2.6v10.8a.8.8 0 0 0 1.2.7l8.6-5.4a.8.8 0 0 0 0-1.4L5.2 1.9A.8.8 0 0 0 4 2.6z"/></svg>
+      <span id="playLabel">Pause</span>
+    </button>
+    <div class="seg" id="speedSeg" role="group" aria-label="Simulation speed"></div>
+    <button class="btn" id="btnReset" title="Reset simulation (R)">
+      <svg viewBox="0 0 16 16"><path d="M8 2.5a5.5 5.5 0 1 1-5.2 3.7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M2.2 2.2v4h4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Reset
+    </button>
+  </div>
+
+  <div class="clock">
+    <div class="clock-day" id="clockDay">Day 0</div>
+    <div class="clock-time"><span id="clockIcon">☀</span> <span id="clockTime">Mon 06:00</span></div>
+  </div>
+  <button class="btn ghost" id="btnAbout">About the model</button>
+</header>
+
+<main class="layout">
+  <!-- ============ Controls ============ -->
+  <aside class="panel left" id="controls" aria-label="Simulation controls"></aside>
+
+  <!-- ============ City ============ -->
+  <section class="center">
+    <div class="stage" id="stage">
+      <div class="canvas-wrap" id="canvasWrap">
+        <canvas id="world" aria-label="Top-down city simulation"></canvas>
+        <div class="watermark">Simplified educational model · not a prediction tool</div>
+        <div class="tooltip" id="tip" hidden></div>
+        <div class="summary" id="summary" hidden></div>
+      </div>
+    </div>
+    <div class="legend">
+      <span class="lg"><i style="--c:var(--s)"></i>Healthy (susceptible)</span>
+      <span class="lg"><i style="--c:var(--e)"></i>Exposed (incubating)</span>
+      <span class="lg"><i class="glow" style="--c:var(--i)"></i>Infectious</span>
+      <span class="lg"><i style="--c:var(--r)"></i>Recovered (immune)</span>
+      <span class="lg"><i class="ring" style="--c:var(--s)"></i>Vaccinated</span>
+      <span class="lg"><i class="cross"></i>Deceased</span>
+      <span class="lg-hint">Click a person to inspect · <kbd>Space</kbd> pause · <kbd>R</kbd> reset · <kbd>1</kbd>–<kbd>6</kbd> speed</span>
+    </div>
+  </section>
+
+  <!-- ============ Stats ============ -->
+  <aside class="panel right" aria-label="Statistics">
+    <section class="card">
+      <div class="card-head"><h2>Population</h2><span class="muted" id="popTotal">—</span></div>
+      <div class="compartments">
+        <div class="comp" style="--c:var(--s)"><span class="comp-label">Susceptible</span><b id="nS">0</b><span class="comp-pct" id="pS">0%</span><div class="comp-bar"><i id="bS"></i></div></div>
+        <div class="comp" style="--c:var(--e)"><span class="comp-label">Exposed</span><b id="nE">0</b><span class="comp-pct" id="pE">0%</span><div class="comp-bar"><i id="bE"></i></div></div>
+        <div class="comp" style="--c:var(--i)"><span class="comp-label">Infectious</span><b id="nI">0</b><span class="comp-pct" id="pI">0%</span><div class="comp-bar"><i id="bI"></i></div></div>
+        <div class="comp" style="--c:var(--r)"><span class="comp-label">Recovered</span><b id="nR">0</b><span class="comp-pct" id="pR">0%</span><div class="comp-bar"><i id="bR"></i></div></div>
+        <div class="comp" style="--c:var(--d)"><span class="comp-label">Deceased</span><b id="nD">0</b><span class="comp-pct" id="pD">0%</span><div class="comp-bar"><i id="bD"></i></div></div>
+      </div>
+      <div class="kpis">
+        <div class="kpi" title="Average number of people infected by each person whose infection ended in the last 7 days. Lags behind the present."><span>R<sub>t</sub> (est.)</span><b id="kRt">—</b></div>
+        <div class="kpi"><span>Peak infectious</span><b id="kPeak">—</b></div>
+        <div class="kpi"><span>Ever infected</span><b id="kCum">—</b></div>
+        <div class="kpi"><span>Vaccinated</span><b id="kVax">—</b></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-head"><h2>Epidemic curve</h2><span class="muted">share of population</span></div>
+      <canvas class="chart" id="epiChart" height="170"></canvas>
+      <div class="chart-key">
+        <span><i style="--c:var(--i)"></i>I</span><span><i style="--c:var(--e)"></i>E</span><span><i style="--c:var(--r)"></i>R</span><span><i style="--c:var(--d)"></i>D</span><span><i style="--c:var(--s)"></i>S</span>
+        <span class="mk">Markers: <b>M</b> masks <b>V</b> vaccines <b>Q</b> quarantine <b>L</b> lockdown</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-head"><h2>Hospital capacity</h2><span class="muted" id="hospText">0 / 10 beds</span></div>
+      <div class="hosp-bar"><i id="hospFill"></i><span id="hospOver"></span></div>
+      <canvas class="chart" id="hospChart" height="96"></canvas>
+      <p class="fine">Shaded area = people needing a bed. Dashed line = beds. Red = untreated overflow, which raises the chance of death in this model.</p>
+    </section>
+
+    <section class="card" id="inspectorCard">
+      <div class="card-head"><h2>Inspector</h2><button class="icon-btn" id="insClose" title="Deselect (Esc)" hidden>✕</button></div>
+      <div id="insEmpty" class="ins-empty">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        Click any person in the city to see their status, routine and who infected them.
+      </div>
+      <div id="insBody" hidden>
+        <div class="ins-top">
+          <span class="ins-dot" id="insDot"></span>
+          <div><b id="insTitle">Person</b><div class="muted" id="insSub"></div></div>
+          <span class="badge" id="insBadge"></span>
+        </div>
+        <div class="ins-state" id="insState"></div>
+        <div class="progress" id="insProgWrap"><i id="insProg"></i></div>
+        <dl class="ins-grid">
+          <dt>Location</dt><dd id="insLoc"></dd>
+          <dt>Routine</dt><dd id="insJob"></dd>
+          <dt>Household</dt><dd id="insHouse"></dd>
+          <dt>Mask</dt><dd id="insMask"></dd>
+          <dt>Vaccine</dt><dd id="insVax"></dd>
+          <dt>Infected by</dt><dd id="insBy"></dd>
+          <dt>Has infected</dt><dd id="insCaused"></dd>
+        </dl>
+        <div class="ins-actions">
+          <button class="btn small" id="insInfect">Infect</button>
+          <button class="btn small" id="insVaccinate">Vaccinate</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-head"><h2>Where infections happen</h2><span class="muted" id="setTotal">0</span></div>
+      <div class="stack" id="setBar"></div>
+      <div class="stack-key" id="setKey"></div>
+    </section>
+
+    <section class="card">
+      <div class="card-head"><h2>Event log</h2></div>
+      <ul class="log" id="log"></ul>
+    </section>
+  </aside>
+</main>
+
+<!-- ============ About ============ -->
+<div class="modal" id="about" hidden>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
+    <button class="icon-btn modal-x" id="aboutClose" title="Close">✕</button>
+    <h2 id="aboutTitle">About this model</h2>
+    <div class="warn-box"><b>This is a simplified educational model, not a real-world prediction tool.</b> Its rules and numbers are invented to show general ideas about how outbreaks spread. They do not describe any real disease, city or population. Don't use it for health, policy or personal decisions.</div>
+
+    <h3>SEIR in one minute</h3>
+    <ul class="seir">
+      <li><i style="--c:var(--s)"></i><b>S, Susceptible</b>: never infected, can catch the virus.</li>
+      <li><i style="--c:var(--e)"></i><b>E, Exposed</b>: infected but still incubating; can't spread it yet.</li>
+      <li><i style="--c:var(--i)"></i><b>I, Infectious</b>: can infect others. Some never show symptoms. Others develop symptoms about a day in, and a share of those become severe and need a hospital bed.</li>
+      <li><i style="--c:var(--r)"></i><b>R, Recovered</b>: immune for the rest of the run (no waning immunity here).</li>
+      <li><i style="--c:var(--d)"></i><b>D, Deceased</b>: only severe cases can die. The risk is much higher when no hospital bed is free.</li>
+    </ul>
+
+    <h3>How the city works</h3>
+    <p>Each dot is one person with a home, a household and a daily routine. Children go to school, most adults go to work, and anyone may visit shops or parks. Weekends are free time. The virus spreads when an infectious person spends time within a short distance of a susceptible one. The <b>transmission probability</b> is the chance of infection for each hour of that close contact. Each person's incubation and infectious periods vary randomly around the averages you set.</p>
+
+    <h3>What the interventions do (in this model)</h3>
+    <ul>
+      <li><b>Masks</b> cut a wearer's chance of spreading the virus by 50% and of catching it by 30%. Adoption sets how many people wear one.</li>
+      <li><b>Vaccination</b> protects susceptible people by the efficacy you set. The campaign vaccinates a share of the population every day.</li>
+      <li><b>Quarantine</b> moves people with symptoms to an isolation center about half a day after their symptoms start. People with no symptoms are never caught.</li>
+      <li><b>Lockdown</b> keeps people who comply at home. Essential workers keep working, and short grocery trips still happen.</li>
+    </ul>
+
+    <h3>Major simplifications</h3>
+    <p>The model ignores real mixing patterns, ages of contacts, reinfection, testing, behaviour changing over time, travel and seasonality. It also uses a small population. Outcomes are random, so the same settings can produce very different outbreaks. Run the same scenario several times to see the range.</p>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

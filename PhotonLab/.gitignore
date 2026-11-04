@@ -1,0 +1,7 @@
+node_modules/
+dist/
+dist-share/
+dist-artifact/
+*.log
+*.tsbuildinfo
+.claude/
