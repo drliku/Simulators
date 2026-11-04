@@ -1,14 +1,19 @@
 # Simulators
 
-The Brain Maze science simulators, one folder per project.
+The Brain Maze science simulators. Each folder holds exactly one simulator and runs on its own; see its README for how to run it.
 
-| Folder | What's in it | Came from |
+| Folder | Simulator | Came from |
 |---|---|---|
+| `AtomBuilder/` | Atom Builder | `drliku/PythagoreanTheorem` (`atom-builder/`) |
+| `BallDropSimulator/` | Galton Board | `drliku/BallDropSimulator` |
 | `CochleaSimulator/` | Cochlea Simulator | `drliku/simulator` |
-| `BallDropSimulator/` | Galton Board, plus Forest Ecosystem (`ecosystem/`), Einstein's Mirror (`mirror/`), Time Dilation Lab (`relativity/`), Unit Circle Waves (`trig-waves/`) | `drliku/BallDropSimulator` |
-| `PythagoreanTheorem/` | Pythagorean Lab, plus Atom Builder (`atom-builder/`) and pH Lab (`ph-simulator/`) | `drliku/PythagoreanTheorem` |
-| `WaterCycle/` | Water Cycle Simulator, plus Earth Sandbox (`earth-sandbox/`) | `drliku/WaterCycle` |
-| `EqualEarthProjection/` | Equal Earth Projection map (the "Size It Up" game moved to the Games repo) | `drliku/EqualEarthProjection1` |
+| `EarthSandbox/` | Earth Sandbox | `drliku/WaterCycle` (`earth-sandbox/`) |
+| `EinsteinsMirror/` | Einstein's Mirror | `drliku/BallDropSimulator` (`mirror/`) |
+| `EqualEarthProjection/` | Equal Earth Projection | `drliku/EqualEarthProjection1` |
+| `ForestEcosystemLab/` | Forest Ecosystem Lab | `drliku/BallDropSimulator` (`ecosystem/`) |
+| `PHLab/` | pH Lab | `drliku/PythagoreanTheorem` (`ph-simulator/`) |
+| `PythagoreanTheorem/` | Pythagorean Lab | `drliku/PythagoreanTheorem` |
 | `SimulationsDirectory/` | The Simulators directory page | `drliku/SimulationsDirectionary` |
-
-Each folder works on its own; see its README for how to run it.
+| `TimeDilationLab/` | Time Dilation Lab | `drliku/BallDropSimulator` (`relativity/`) |
+| `UnitCircleWaves/` | Unit Circle Waves | `drliku/BallDropSimulator` (`trig-waves/`) |
+| `WaterCycle/` | Water Cycle Simulator | `drliku/WaterCycle` |
