@@ -404,14 +404,14 @@ const UI = {
     const g = cv.getContext('2d'), w = cv.width, h = cv.height;
     g.clearRect(0, 0, w, h);
     if (!c || c.history.length < 2) {
-      g.fillStyle = 'rgba(167,151,138,0.6)'; g.font = '22px Inter, sans-serif'; g.textAlign = 'center';
+      g.fillStyle = 'rgba(107,124,158,0.7)'; g.font = '22px Poppins, sans-serif'; g.textAlign = 'center';
       g.fillText('Collecting data…', w / 2, h / 2 + 7);
       return;
     }
     const hist = c.history, n = hist.length;
     let maxP = 10, maxF = 20;
     for (const r of hist) { maxP = Math.max(maxP, r[0], r[1], r[2]); maxF = Math.max(maxF, r[3]); }
-    g.strokeStyle = 'rgba(255,230,200,0.06)'; g.lineWidth = 1;
+    g.strokeStyle = 'rgba(48,65,105,0.08)'; g.lineWidth = 1;
     for (let i = 1; i < 4; i++) { g.beginPath(); g.moveTo(0, h * i / 4); g.lineTo(w, h * i / 4); g.stroke(); }
     const series = [[0, '#e9a53e', maxP], [1, '#ff6b5a', maxP], [2, '#f3a6c8', maxP], [3, '#8fd16a', maxF]];
     for (const [idx, col, mx] of series) {

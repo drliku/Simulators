@@ -7,14 +7,14 @@
 <link rel="icon" href="assets/brainmaze-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --panel:rgba(255,255,255,.84);--line:rgba(40,50,90,.12);--ink:#232f5c;--muted:#6b7194;
   --accent:#232f5c;--accent2:#f37265;--coral:#f37265;--navy:#232f5c;--ok:#20c997;--bad:#ff4d6d;--shadow:0 10px 30px rgba(35,41,70,.16);--r:14px;
 }
 *{box-sizing:border-box}
-html,body{margin:0;height:100%;overflow:hidden;font-family:Outfit,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:#cfe9ff;user-select:none;-webkit-user-select:none}
+html,body{margin:0;height:100%;overflow:hidden;font-family:Poppins,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:#cfe9ff;user-select:none;-webkit-user-select:none}
 #app{position:fixed;inset:0}
 #app canvas{display:block;touch-action:none;outline:none}
 .panel{background:var(--panel);backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);border:1px solid rgba(255,255,255,.75);box-shadow:var(--shadow);border-radius:var(--r)}
@@ -26,9 +26,9 @@ html,body{margin:0;height:100%;overflow:hidden;font-family:Outfit,system-ui,-app
 @font-face{font-family:Brain;src:url(assets/Brain.ttf) format("truetype");font-display:swap}
 .brand{padding:6px 14px 6px 10px;display:flex;align-items:center;gap:10px;white-space:nowrap}
 .brand img{height:30px;display:block}
-.brand .title{font-family:Brain,Outfit,sans-serif;font-size:19px;letter-spacing:.04em;color:var(--coral);line-height:1;padding-left:10px;border-left:1.5px solid var(--line)}
+.brand .title{font-family:Brain,Poppins,sans-serif;font-size:19px;letter-spacing:.04em;color:var(--coral);line-height:1;padding-left:10px;border-left:1.5px solid var(--line)}
 .brand .title span{color:var(--navy)}
-.brand small{font-family:Outfit,system-ui,sans-serif;font-weight:500;color:var(--muted);font-size:13px;max-width:160px;overflow:hidden;text-overflow:ellipsis}
+.brand small{font-family:Poppins,system-ui,sans-serif;font-weight:500;color:var(--muted);font-size:13px;max-width:160px;overflow:hidden;text-overflow:ellipsis}
 .logo{width:26px;height:26px;border-radius:50%;background:conic-gradient(from 30deg,#ff6b9a,#ffd43b,#38d9a9,#4dabf7,#9775fa,#ff6b9a);box-shadow:inset -4px -5px 8px rgba(0,0,0,.22),inset 3px 3px 6px rgba(255,255,255,.75)}
 .bar{display:flex;align-items:center;gap:4px;padding:5px}
 .spacer{flex:1}
@@ -37,7 +37,7 @@ button.b:hover{background:rgba(243,114,101,.1)}
 button.b:active{transform:scale(.96)}
 button.b.on{background:var(--accent);color:#fff}
 button.b.icon{padding:0}
-button.primary{background:linear-gradient(135deg,#f37265,#e5574a)!important;color:#fff!important;box-shadow:0 4px 14px rgba(243,114,101,.4);padding:0 16px;font-family:Brain,Outfit,sans-serif;font-weight:400;letter-spacing:.04em;font-size:15px}
+button.primary{background:linear-gradient(135deg,#f37265,#e5574a)!important;color:#fff!important;box-shadow:0 4px 14px rgba(243,114,101,.4);padding:0 16px;font-family:Brain,Poppins,sans-serif;font-weight:400;letter-spacing:.04em;font-size:15px}
 button.primary:hover{filter:brightness(1.06)}
 svg.i{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
 .sep{width:1px;height:22px;background:var(--line);margin:0 4px}
@@ -55,7 +55,7 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
 /* palette */
 #palette{position:fixed;left:12px;top:var(--top,72px);bottom:12px;width:208px;overflow:auto;padding:8px 10px 10px;z-index:5}
 #palette::-webkit-scrollbar{width:6px}#palette::-webkit-scrollbar-thumb{background:rgba(0,0,0,.12);border-radius:6px}
-.cat h4{margin:10px 4px 6px;font-family:Brain,Outfit,sans-serif;font-weight:400;font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--coral)}
+.cat h4{margin:10px 4px 6px;font-family:Brain,Poppins,sans-serif;font-weight:400;font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--coral)}
 .cards{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .card{background:#fff;border:1.5px solid transparent;border-radius:12px;padding:3px 3px 6px;text-align:center;cursor:grab;transition:transform .15s,border-color .15s,box-shadow .15s;touch-action:none;box-shadow:0 1px 3px rgba(35,41,70,.08)}
 .card img{width:100%;aspect-ratio:1;display:block;pointer-events:none;border-radius:9px;background:linear-gradient(180deg,#f5f7ff,#fff)}
@@ -66,8 +66,8 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
 
 /* race panel */
 #racePanel{position:fixed;right:12px;top:var(--top,72px);width:252px;padding:14px 12px 10px;max-height:calc(100% - var(--top,72px) - 24px);display:flex;flex-direction:column;z-index:5}
-.timer{font-family:Brain,Outfit,sans-serif;font-weight:400;color:var(--navy);font-size:40px;font-variant-numeric:tabular-nums;letter-spacing:-.02em;line-height:1;padding:0 4px}
-.timer small{font-family:Outfit,sans-serif;font-size:16px;color:var(--muted);font-weight:600}
+.timer{font-family:Brain,Poppins,sans-serif;font-weight:400;color:var(--navy);font-size:40px;font-variant-numeric:tabular-nums;letter-spacing:-.02em;line-height:1;padding:0 4px}
+.timer small{font-family:Poppins,sans-serif;font-size:16px;color:var(--muted);font-weight:600}
 #raceStatus{font-size:13px;color:var(--muted);padding:4px 4px 8px;border-bottom:1px solid var(--line)}
 #board{list-style:none;margin:6px 0 0;padding:0;overflow:auto}
 #board li{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:10px;cursor:pointer;font-size:14px;transition:background .15s}
@@ -97,7 +97,7 @@ li.p1 .pos{color:#e0a800}li.p2 .pos{color:#8d99ae}li.p3 .pos{color:#cd7f32}
 
 /* overlays */
 #countdown{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:20}
-#countdown span{font-family:Brain,Outfit,sans-serif;font-weight:400;font-size:190px;color:var(--coral);text-shadow:0 10px 50px rgba(35,47,92,.35);-webkit-text-stroke:4px #fff;paint-order:stroke fill}
+#countdown span{font-family:Brain,Poppins,sans-serif;font-weight:400;font-size:190px;color:var(--coral);text-shadow:0 10px 50px rgba(35,47,92,.35);-webkit-text-stroke:4px #fff;paint-order:stroke fill}
 .pop{animation:pop .95s cubic-bezier(.2,.9,.3,1.2) forwards}
 @keyframes pop{0%{transform:scale(.3);opacity:0}25%{transform:scale(1.08);opacity:1}70%{opacity:1}100%{transform:scale(1);opacity:0}}
 #toast{position:fixed;top:calc(var(--top,72px) + 6px);left:50%;transform:translateX(-50%);display:flex;flex-direction:column;gap:6px;align-items:center;z-index:30;pointer-events:none}
@@ -107,7 +107,7 @@ li.p1 .pos{color:#e0a800}li.p2 .pos{color:#8d99ae}li.p3 .pos{color:#cd7f32}
 #stats{position:fixed;right:14px;bottom:12px;font-size:11.5px;color:rgba(35,41,70,.55);z-index:4;font-variant-numeric:tabular-nums}
 #modal{position:fixed;inset:0;background:rgba(30,30,70,.28);display:flex;align-items:center;justify-content:center;z-index:50;backdrop-filter:blur(3px)}
 .mcard{width:min(480px,92vw);padding:20px 22px;max-height:84vh;max-height:84dvh;overflow:auto;background:#fff;border-radius:18px;box-shadow:0 30px 80px rgba(35,41,70,.3);animation:tin .2s ease-out}
-.mcard h2{margin:0 0 12px;font-family:Brain,Outfit,sans-serif;font-weight:400;letter-spacing:.03em;font-size:26px;color:var(--navy)}
+.mcard h2{margin:0 0 12px;font-family:Brain,Poppins,sans-serif;font-weight:400;letter-spacing:.03em;font-size:26px;color:var(--navy)}
 .mcard p{color:var(--muted);font-size:14px;line-height:1.5;margin:6px 0}
 .mcard input[type=text]{width:100%;font:inherit;font-size:15px;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;outline:none}
 .mcard input[type=text]:focus{border-color:var(--accent)}
@@ -118,7 +118,7 @@ li.p1 .pos{color:#e0a800}li.p2 .pos{color:#8d99ae}li.p3 .pos{color:#cd7f32}
 .list .it .nm{font-size:15px}
 .list .it .meta{font-size:12px;color:var(--muted)}
 .keys{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px;margin-top:6px}
-kbd{display:inline-block;background:#f1f2f8;border:1px solid #dfe1ee;border-bottom-width:2px;border-radius:6px;padding:1px 7px;font:600 12.5px Outfit,system-ui,sans-serif;color:var(--ink)}
+kbd{display:inline-block;background:#f1f2f8;border:1px solid #dfe1ee;border-bottom-width:2px;border-radius:6px;padding:1px 7px;font:600 12.5px Poppins,system-ui,sans-serif;color:var(--ink)}
 .podium{display:flex;align-items:flex-end;justify-content:center;gap:10px;margin:14px 0 6px}
 .podium div{width:110px;border-radius:12px 12px 4px 4px;text-align:center;padding:10px 6px;color:#fff;font-weight:700}
 .podium .dot{width:34px;height:34px;margin:0 auto 6px}
@@ -131,6 +131,43 @@ body.drop #app canvas{cursor:crosshair}
 body.placing #app canvas{cursor:copy}
 @media (max-width:1100px){#racePanel{width:210px}#palette{width:180px}#ctxbar{max-width:calc(100% - 420px)}.speed input{width:70px}}
 
+/* ===== The Brain Maze site skin ===== */
+:root{--navy:#304169;--navy-deep:#1e2a47;--coral:#f78677;--coral-hover:#e67566;--mist:#f0f3fa;--line:#e3e8f2;--ink:#304169;--muted:#6b7c9e;--accent:#304169;--accent2:#f78677;--panel:rgba(255,255,255,.97);--shadow:0 4px 15px rgba(48,65,105,.12);--r:14px}
+html,body{font-family:Poppins,system-ui,-apple-system,"Segoe UI",sans-serif}
+.panel{border:0;backdrop-filter:none;-webkit-backdrop-filter:none}
+.brand .title,.brand small,.timer small{font-family:Poppins,system-ui,sans-serif}
+.brand .title{font-weight:700;font-size:16px;letter-spacing:0;color:var(--navy)}
+.brand .title span{color:var(--coral)}
+button.b{border-radius:50px;font-size:13px;font-weight:600}
+button.b:hover{background:var(--mist);color:var(--coral)}
+button.b.on{background:var(--navy);color:#fff}
+button.b.on:hover{background:var(--navy);color:#fff}
+button.primary{background:var(--coral)!important;box-shadow:none;font-family:Poppins,system-ui,sans-serif;font-weight:600;font-size:13px;letter-spacing:.3px;text-transform:uppercase;padding:0 18px}
+button.primary:hover{background:var(--coral-hover)!important;filter:none}
+:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+.seg{background:var(--mist);border-radius:50px}
+input[type=range]{height:6px;border-radius:3px;background:var(--line)}
+input[type=range]::-webkit-slider-thumb{width:18px;height:18px;background:var(--coral);border:3px solid #fff;box-shadow:0 2px 6px rgba(48,65,105,.3)}
+input[type=range]::-moz-range-thumb{width:12px;height:12px;background:var(--coral);border:3px solid #fff;box-shadow:0 2px 6px rgba(48,65,105,.3)}
+.cat h4{font-family:Poppins,system-ui,sans-serif;font-weight:600;font-size:12px;letter-spacing:.5px;padding-bottom:6px;border-bottom:2px solid var(--line);position:relative}
+.cat h4::after{content:"";position:absolute;left:0;bottom:-2px;width:32px;height:2px;background:var(--coral)}
+.card{border:2px solid var(--mist);box-shadow:none}
+.card:hover{border-color:var(--coral);box-shadow:0 6px 16px rgba(48,65,105,.12)}
+.card.active{border-color:var(--coral);background:#fdf2f0}
+.timer{font-family:Poppins,system-ui,sans-serif;font-weight:700;font-size:36px}
+#board li:hover{background:var(--mist)}
+#board li.follow{background:#fdf2f0}
+#countdown span{font-family:Poppins,system-ui,sans-serif;font-weight:700}
+#toast div{background:rgba(48,65,105,.95)}
+.mcard{border-radius:14px;box-shadow:0 24px 60px rgba(30,42,71,.35)}
+.mcard h2{font-family:Poppins,system-ui,sans-serif;font-weight:700;letter-spacing:0;font-size:24px}
+.mcard input[type=text]{border:2px solid var(--mist)}
+.mcard input[type=text]:focus{border-color:var(--coral)}
+.mrow button.b{background:var(--mist)}
+.mrow button.b.primary{background:var(--coral)!important}
+#modal{background:rgba(30,42,71,.55)}
+kbd{background:var(--mist);border-color:var(--line);color:var(--navy)}
+#loading{color:var(--navy)}
 /* ---------- Phones (portrait up to 760px wide, landscape up to 520px tall) ---------- */
 @media (max-width:760px),(max-height:520px) and (max-width:1023px){
   #topbar{top:calc(6px + env(safe-area-inset-top));left:calc(6px + env(safe-area-inset-left));right:calc(6px + env(safe-area-inset-right));flex-wrap:nowrap;gap:6px;overflow-x:auto;overflow-y:hidden;pointer-events:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:2px}
@@ -200,7 +237,7 @@ body.placing #app canvas{cursor:copy}
 <div id="app"></div>
 
 <header id="topbar">
-  <div class="brand panel"><img src="assets/brainmaze-logo.png" alt="The Brain Maze"><div class="title">MARBLE <span>RACE</span></div><small id="trackName"></small></div>
+  <div class="brand panel"><a href="https://thebrainmaze.com/" target="_top" style="display:block"><img src="assets/brainmaze-logo.png" alt="The Brain Maze"></a><div class="title">Marble <span>Race</span></div><small id="trackName"></small></div>
   <div class="bar panel">
     <button class="b primary" id="btnRace" title="Start a race (Space)"></button>
     <button class="b icon" id="btnPause" title="Pause / resume (P)"></button>
@@ -370,7 +407,7 @@ function bannerTex(text, c1, c2, check) {
     const gr = g.createLinearGradient(0, 0, w, 0); gr.addColorStop(0, c1); gr.addColorStop(1, c2);
     g.fillStyle = gr; g.fillRect(0, 0, w, h);
     if (check) for (let i = 0; i < 32; i++) for (let j = 0; j < 2; j++) { g.fillStyle = (i + j) % 2 ? '#222' : '#fff'; g.fillRect(i * 16, j * 12 + (j ? h - 24 : 0) - (j ? 12 : 0), 16, 12); }
-    g.fillStyle = '#fff'; g.font = '76px Brain, Outfit, system-ui, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+    g.fillStyle = '#fff'; g.font = '76px Brain, Poppins, system-ui, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
     g.shadowColor = 'rgba(0,0,0,.25)'; g.shadowBlur = 8; g.fillText(text, w / 2, h / 2 + 4);
   }, false);
 }
@@ -498,8 +535,8 @@ function matFor(role, color) {
     case 'gold': m = std({ color: '#ffc53d', roughness: 0.25, metalness: 0.75 }); break;
     case 'dark': m = std({ color: '#3b3f5c', roughness: 0.4 }); break;
     case 'gate': m = std({ map: TEX.gate, roughness: 0.4 }); break;
-    case 'startBanner': m = std({ map: bannerTex('START', '#f37265', '#e5574a'), roughness: 0.5 }); break;
-    case 'finishBanner': m = std({ map: bannerTex('FINISH', '#232f5c', '#34447e', true), roughness: 0.5 }); break;
+    case 'startBanner': m = std({ map: bannerTex('START', '#f78677', '#e67566'), roughness: 0.5 }); break;
+    case 'finishBanner': m = std({ map: bannerTex('FINISH', '#304169', '#1e2a47', true), roughness: 0.5 }); break;
     case 'checker': m = std({ map: TEX.checker, roughness: 0.5, side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 }); break;
     default: m = std({ color: '#ffffff' });
   }
@@ -1442,7 +1479,7 @@ const ndc = new THREE.Vector2();
 const touchUI = matchMedia('(pointer: coarse)').matches;
 const tapWord = touchUI ? 'Tap' : 'Click';
 const ptr = { x: innerWidth / 2, y: innerHeight / 2, over: false, down: false, bx: 0, by: 0, btn: 0, moved: false, pendingMove: null, alt: false };
-const selBox = new THREE.Box3Helper(new THREE.Box3(), new THREE.Color('#f37265')); selBox.visible = false; scene.add(selBox);
+const selBox = new THREE.Box3Helper(new THREE.Box3(), new THREE.Color('#f78677')); selBox.visible = false; scene.add(selBox);
 const tileMat = new THREE.MeshBasicMaterial({ color: '#3b4f99', transparent: true, opacity: 0.22, depthWrite: false });
 const tiles = [0, 1, 2, 3].map(() => { const m = new THREE.Mesh(new THREE.PlaneGeometry(CELL * 0.96, CELL * 0.96), tileMat); m.rotation.x = -Math.PI / 2; m.visible = false; scene.add(m); return m; });
 const guideGeo = new THREE.BufferGeometry().setAttribute('position', new THREE.BufferAttribute(new Float32Array(6), 3));

@@ -579,7 +579,7 @@ function drawCity(g) {
   g.stroke(); g.setLineDash([]);
 
   const label = (text, x, y, color) => {
-    g.font = '11px Brain, Barlow, "Segoe UI", system-ui, sans-serif';
+    g.font = '11px Poppins, "Segoe UI", system-ui, sans-serif';
     g.fillStyle = color; g.fillText(text, x, y);
   };
 
@@ -621,7 +621,7 @@ function drawCity(g) {
     g.strokeStyle = 'rgba(255,255,255,0.06)'; g.lineWidth = 1; g.stroke();
     g.fillStyle = 'rgba(255,255,255,0.035)';
     for (let yy = w.y + 16; yy < w.y + w.h - 4; yy += 7) for (let xx = w.x + 5; xx < w.x + w.w - 4; xx += 7) g.fillRect(xx, yy, 3, 3);
-    g.font = '9px Brain, Barlow, "Segoe UI", system-ui, sans-serif'; g.fillStyle = tint; g.fillText(name, w.x + 5, w.y + 10);
+    g.font = '9px Poppins, "Segoe UI", system-ui, sans-serif'; g.fillStyle = tint; g.fillText(name, w.x + 5, w.y + 10);
   }
 }
 
@@ -665,7 +665,7 @@ function render(now) {
     ctx.fillStyle = 'rgba(255,255,255,0.12)';
     ctx.fillRect(s.x - 5, s.y - 3.5, 3, 7);
   }
-  ctx.font = '11px Brain, Barlow, "Segoe UI", system-ui, sans-serif';
+  ctx.font = '11px Poppins, "Segoe UI", system-ui, sans-serif';
   ctx.fillStyle = sim.hospitalized >= P.beds && P.beds > 0 ? '#ff8b96' : 'rgba(200,210,230,0.6)';
   ctx.textAlign = 'right';
   ctx.fillText(`${sim.hospitalized}/${P.beds}`, hb.x + hb.w - 8, hb.y + 14);
@@ -753,7 +753,7 @@ function render(now) {
     const rr = 8 + pulse * 3;
     ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.arc(s.x, s.y, rr, 0, TAU); ctx.stroke();
-    ctx.font = '600 10px Barlow, "Segoe UI", system-ui, sans-serif';
+    ctx.font = '600 10px Poppins, "Segoe UI", system-ui, sans-serif';
     ctx.fillStyle = '#ffffff'; ctx.textAlign = 'center';
     ctx.fillText('#' + s.id, s.x, s.y - rr - 4);
     ctx.textAlign = 'left';
@@ -800,8 +800,8 @@ function sampleAt(day) {
 }
 
 function drawAxes(g, L, T, pw, ph, maxDay, step, yLabels) {
-  g.font = '10px Barlow, "Segoe UI", system-ui, sans-serif';
-  g.strokeStyle = 'rgba(255,255,255,0.06)'; g.lineWidth = 1; g.fillStyle = '#7a84ab';
+  g.font = '10px Poppins, "Segoe UI", system-ui, sans-serif';
+  g.strokeStyle = 'rgba(48,65,105,0.08)'; g.lineWidth = 1; g.fillStyle = '#6b7c9e';
   g.textAlign = 'right';
   for (const [f, text] of yLabels) {
     const y = Math.round(T + (1 - f) * ph) + 0.5;
@@ -814,11 +814,11 @@ function drawAxes(g, L, T, pw, ph, maxDay, step, yLabels) {
 }
 
 function drawTooltip(g, x, y, lines, w, h) {
-  g.font = '11px Barlow, "Segoe UI", system-ui, sans-serif';
+  g.font = '11px Poppins, "Segoe UI", system-ui, sans-serif';
   const bw = Math.max(...lines.map(l => g.measureText(l[0]).width)) + 22, bh = lines.length * 15 + 8;
   let bx = x + 10; if (bx + bw > w - 2) bx = x - bw - 10;
   const by = clamp(y, 2, h - bh - 2);
-  g.fillStyle = 'rgba(17,24,50,0.96)'; g.strokeStyle = '#3a4778';
+  g.fillStyle = 'rgba(48,65,105,0.96)'; g.strokeStyle = '#304169';
   roundRect(g, bx, by, bw, bh, 6); g.fill(); g.stroke();
   lines.forEach(([text, color], i) => {
     if (color) { g.fillStyle = color; g.fillRect(bx + 8, by + 9 + i * 15, 7, 7); }
@@ -869,21 +869,21 @@ function drawEpiChart() {
     const bucket = Math.round(x / 14); const off = (slots[bucket] = (slots[bucket] || 0) + 1) - 1;
     const tx = x + off * 13 - 5.5, ty = 2;
     roundRect(g, tx, ty, 11, 12, 3);
-    if (m.on) { g.fillStyle = info.color; g.fill(); g.fillStyle = '#141c3a'; }
-    else { g.fillStyle = '#141c3a'; g.fill(); g.strokeStyle = info.color; g.stroke(); g.fillStyle = info.color; }
-    g.font = '700 8.5px Barlow, "Segoe UI", system-ui, sans-serif'; g.textAlign = 'center';
+    if (m.on) { g.fillStyle = info.color; g.fill(); g.fillStyle = '#ffffff'; }
+    else { g.fillStyle = '#ffffff'; g.fill(); g.strokeStyle = info.color; g.stroke(); g.fillStyle = info.color; }
+    g.font = '700 8.5px Poppins, "Segoe UI", system-ui, sans-serif'; g.textAlign = 'center';
     g.fillText(info.letter, tx + 5.5, ty + 9); g.textAlign = 'left';
   }
 
   // "now" line
   const nx = X(sim.t);
-  g.strokeStyle = 'rgba(255,255,255,0.25)'; g.beginPath(); g.moveTo(nx, T); g.lineTo(nx, T + ph); g.stroke();
+  g.strokeStyle = 'rgba(48,65,105,0.3)'; g.beginPath(); g.moveTo(nx, T); g.lineTo(nx, T + ph); g.stroke();
 
   if (hoverDay !== null) {
     const s = sampleAt(hoverDay);
     if (s) {
       const x = X(s.t);
-      g.strokeStyle = 'rgba(255,255,255,0.6)'; g.beginPath(); g.moveTo(x, T); g.lineTo(x, T + ph); g.stroke();
+      g.strokeStyle = 'rgba(48,65,105,0.5)'; g.beginPath(); g.moveTo(x, T); g.lineTo(x, T + ph); g.stroke();
       if (epi.hoverX !== null) drawTooltip(g, x, T, [
         [`Day ${s.t.toFixed(1)}`],
         [`Infectious ${s.I} (${fmtPct(s.I / N)})`, COLORS.I],
@@ -925,7 +925,7 @@ function drawHospChart() {
     pts.forEach((p, i) => (i ? g.lineTo(X(p.t), Y(p.demand)) : g.moveTo(X(p.t), Y(p.demand))));
     g.stroke();
     // capacity step line
-    g.strokeStyle = '#eef0f8'; g.setLineDash([4, 3]); g.lineWidth = 1.2; g.beginPath();
+    g.strokeStyle = '#304169'; g.setLineDash([4, 3]); g.lineWidth = 1.2; g.beginPath();
     pts.forEach((p, i) => {
       if (!i) g.moveTo(X(p.t), Y(p.beds));
       else { g.lineTo(X(p.t), Y(pts[i - 1].beds)); g.lineTo(X(p.t), Y(p.beds)); }
@@ -933,13 +933,13 @@ function drawHospChart() {
     g.lineTo(X(sim.t), Y(P.beds));
     g.stroke(); g.setLineDash([]);
   }
-  g.font = '600 10px Barlow, "Segoe UI", system-ui, sans-serif'; g.fillStyle = '#eef0f8';
+  g.font = '600 10px Poppins, "Segoe UI", system-ui, sans-serif'; g.fillStyle = '#304169';
   g.fillText(`${P.beds} beds`, Math.min(X(sim.t) + 4, L + pw - 40), Y(P.beds) - 4);
   if (hoverDay !== null) {
     const s = sampleAt(hoverDay);
     if (s) {
       const x = X(s.t);
-      g.strokeStyle = 'rgba(255,255,255,0.6)'; g.lineWidth = 1; g.beginPath(); g.moveTo(x, T); g.lineTo(x, T + ph); g.stroke();
+      g.strokeStyle = 'rgba(48,65,105,0.5)'; g.lineWidth = 1; g.beginPath(); g.moveTo(x, T); g.lineTo(x, T + ph); g.stroke();
       if (hosp.hoverX !== null) drawTooltip(g, x, T, [
         [`Day ${s.t.toFixed(1)}`],
         [`Need a bed ${s.demand}`, '#f5b942'],
@@ -1353,7 +1353,7 @@ const ro = new ResizeObserver(() => { fit(); epi.resize(); hosp.resize(); drawEp
 ro.observe($('stage')); ro.observe(epi.c); ro.observe(hosp.c);
 fit(); epi.resize(); hosp.resize();
 // the map labels are drawn once into the background, so redraw it when the brand font arrives
-if (document.fonts) document.fonts.load('11px Brain').then(fit, () => {});
+if (document.fonts) document.fonts.load('11px Poppins').then(fit, () => {});
 reset();
 window.outbreakSim = { sim, P, step, reset }; // handy for poking at the model from the console
 requestAnimationFrame(loop);
