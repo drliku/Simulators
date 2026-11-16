@@ -36,6 +36,7 @@
 body {
   margin: 0;
   min-height: 100vh;
+  min-height: 100dvh;
   font-family: var(--body);
   /* Brain has a single weight; don't fake-bold it */
   font-synthesis: none;
@@ -392,6 +393,20 @@ select:focus-visible, button:focus-visible, a:focus-visible, input:focus-visible
   .seg { justify-content: space-between; }
   .card h2 { font-size: 30px; }
   .ratio { font-size: 40px; }
+}
+
+/* Touch screens: finger-sized controls, no 16px-or-less form text (iOS zooms in on it) */
+@media (pointer: coarse) {
+  .options select { min-height: 40px; font-size: 16px; }
+  .options input[type="checkbox"] { width: 24px; height: 24px; }
+  .options label { min-height: 40px; }
+  .seg-btn { min-height: 40px; padding: 6px 14px; }
+  .zoom-ctrls button { width: 42px; height: 42px; }
+  .zoom-ctrls svg { width: 18px; height: 18px; }
+}
+/* No hover on touch: stop the VS button staying rotated after a tap */
+@media (hover: none) {
+  .vs:hover { transform: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
