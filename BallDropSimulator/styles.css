@@ -38,6 +38,7 @@ html { -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
   min-height: 100vh;
+  min-height: 100dvh;
   font-family: var(--sans);
   font-size: 14px;
   line-height: 1.5;
@@ -427,6 +428,33 @@ input[type="range"]::-moz-range-thumb {
   .brand-mark { width: 34px; height: 34px; }
   .brand h1 { font-size: 18px; }
   .tagline { display: none; }
+}
+/* Phones & tablets: comfortable touch targets, safe-area insets */
+@media (max-width: 900px) {
+  .topbar { padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
+  .layout { padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
+  .footer { padding-bottom: max(28px, env(safe-area-inset-bottom)); }
+  .btn { height: 44px; }
+  .segmented button { height: 40px; }
+  .segmented-sm button { height: 36px; }
+  input[type="range"] { height: 36px; }
+  .toggle { min-height: 40px; }
+  .table-details summary { min-height: 40px; }
+  .field-scale, .board-legend, .hist-legend, .path-steps i { font-size: 12px; }
+}
+/* Landscape phones: controls in a scrollable left column, board fills the screen height */
+@media (max-width: 1023px) and (orientation: landscape) and (max-height: 540px) {
+  .topbar { padding-top: 8px; padding-bottom: 4px; }
+  .tagline, .kbd-hints { display: none; }
+  .layout {
+    grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
+    grid-template-areas: "controls stage" "controls hist" "stats stats";
+    gap: 12px;
+  }
+  .controls { position: sticky; top: 8px; max-height: calc(100dvh - 16px); overflow-y: auto; overscroll-behavior: contain; gap: 14px; padding: 14px; }
+  .controls > * { flex-shrink: 0; }
+  .board-wrap { height: calc(100dvh - 16px); min-height: 300px; }
+  .board-legend { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }

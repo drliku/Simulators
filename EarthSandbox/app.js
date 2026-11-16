@@ -1398,8 +1398,10 @@
   }
 
   // tools
+  // Touch screens have no hover or scroll wheel: word the hints for fingers.
+  const TOUCH_ONLY = window.matchMedia('(hover: none)').matches
   const TOOL_HINTS = {
-    pan: 'Drag to move the map. Scroll to zoom.',
+    pan: TOUCH_ONLY ? 'Drag to move the map. Pinch to zoom. Tap to inspect a spot.' : 'Drag to move the map. Scroll to zoom.',
     raise: 'Drag to raise land. Push the sea floor up to make islands.',
     lower: 'Drag to dig valleys and basins. Dig below sea level to let the ocean in.',
     water: 'Drag to pour water. It runs downhill and pools in low ground.',
@@ -1590,13 +1592,15 @@
   }
 
   // inspector
+  const INSPECT_PROMPT = TOUCH_ONLY ? 'Tap the map to inspect' : 'Hover over the map'
+  $('inspBiome').textContent = INSPECT_PROMPT
   function updateInspector() {
     if (!pointer.inside) return
     const [wx, wy] = toWorld(pointer.x, pointer.y)
     const x = Math.floor(wx)
     const y = Math.floor(wy)
     if (x < 0 || y < 0 || x >= W || y >= H) {
-      $('inspBiome').textContent = 'Hover over the map'
+      $('inspBiome').textContent = INSPECT_PROMPT
       return
     }
     const i = y * W + x
