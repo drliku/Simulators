@@ -14,8 +14,8 @@
   const $ = (id) => document.getElementById(id);
   const fmtInt = (n) => n.toLocaleString('en-US');
   const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
-  const FONT_DISPLAY = '"Brain", "Saira Semi Condensed", "Arial Narrow", sans-serif';
-  const FONT_BODY = '"Saira", system-ui, sans-serif';
+  const FONT_DISPLAY = '"Poppins", system-ui, sans-serif';
+  const FONT_BODY = '"Poppins", system-ui, sans-serif';
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // ------------------------------------------------------------------ Math
@@ -239,7 +239,7 @@
   function buildSprites() {
     const r = geo.ballR;
     sprites = [
-      makeSprite('#ffd6cd', 'rgba(243,112,100,A)', r),
+      makeSprite('#ffd6cd', 'rgba(247,134,119,A)', r),
       makeSprite('#ffbcae', 'rgba(232,88,78,A)', r),
       makeSprite('#ffc9b2', 'rgba(247,138,104,A)', r),
       makeSprite('#ffe0da', 'rgba(255,130,120,A)', r),
@@ -263,7 +263,7 @@
     const dot = (cx, cy) => {
       const gr = x.createRadialGradient(cx - r * 0.3, cy - r * 0.3, 0, cx, cy, r);
       gr.addColorStop(0, 'rgba(255,240,235,0.5)');
-      gr.addColorStop(1, 'rgba(243,112,100,0.05)');
+      gr.addColorStop(1, 'rgba(247,134,119,0.05)');
       x.fillStyle = gr;
       x.beginPath(); x.arc(cx, cy, r, 0, Math.PI * 2); x.fill();
     };
@@ -286,8 +286,8 @@
 
     // Background + subtle grid
     const bg = x.createRadialGradient(w / 2, h * 0.35, 0, w / 2, h * 0.35, Math.max(w, h) * 0.8);
-    bg.addColorStop(0, '#202c56');
-    bg.addColorStop(1, '#111831');
+    bg.addColorStop(0, '#3a4d7a');
+    bg.addColorStop(1, '#1e2a47');
     x.fillStyle = bg;
     x.fillRect(0, 0, w, h);
     x.strokeStyle = 'rgba(170,182,230,0.06)';
@@ -300,7 +300,7 @@
 
     // Triangle guides (the reachable region of the walk)
     const half = geo.dx * 0.5;
-    x.strokeStyle = 'rgba(243,112,100,0.16)';
+    x.strokeStyle = 'rgba(247,134,119,0.16)';
     x.lineWidth = 1;
     x.setLineDash([3, 5]);
     x.beginPath();
@@ -321,10 +321,10 @@
     x.moveTo(geo.cx + fw, fTop);
     x.lineTo(geo.cx + neck, geo.dispY - 6);
     x.lineTo(geo.cx + neck, geo.dispY);
-    x.strokeStyle = 'rgba(243,112,100,0.85)';
+    x.strokeStyle = 'rgba(247,134,119,0.85)';
     x.lineWidth = 2;
     x.lineCap = 'round';
-    x.shadowColor = 'rgba(243,112,100,0.45)';
+    x.shadowColor = 'rgba(247,134,119,0.45)';
     x.shadowBlur = 8;
     x.stroke();
     x.shadowBlur = 0;
@@ -366,7 +366,7 @@
     // Bin labels (thinned out when crowded)
     const every = geo.dx < 18 ? 4 : geo.dx < 26 ? 2 : 1;
     x.fillStyle = 'rgba(163,172,201,0.8)';
-    x.font = `400 ${geo.dx < 26 ? 11 : 13}px ${FONT_DISPLAY}`;
+    x.font = `500 ${geo.dx < 26 ? 11 : 12}px ${FONT_DISPLAY}`;
     x.textAlign = 'center';
     x.textBaseline = 'top';
     if (geo.binBottom + 13 < h) {
@@ -580,7 +580,7 @@
       ctx.closePath();
       const hg = ctx.createLinearGradient(0, yLevel, 0, yNeck);
       hg.addColorStop(0, 'rgba(255,160,146,0.45)');
-      hg.addColorStop(1, 'rgba(243,112,100,0.75)');
+      hg.addColorStop(1, 'rgba(247,134,119,0.75)');
       ctx.fillStyle = hg;
       ctx.fill();
     }
@@ -621,7 +621,7 @@
         ctx.fillRect(binX(k) - dx, top - dx, dx * 2, dx * 2);
       }
       if (state.hoverBin === k) {
-        ctx.strokeStyle = 'rgba(243,112,100,0.95)';
+        ctx.strokeStyle = 'rgba(247,134,119,0.95)';
         ctx.lineWidth = 1.5;
         ctx.strokeRect(left - 0.5, geo.binTop, inner + 1, geo.binH);
       }
@@ -738,7 +738,7 @@
 
     // Grid + y axis
     const step = niceStep(maxV, 4);
-    ctx.font = `400 12px ${FONT_DISPLAY}`;
+    ctx.font = `500 11px ${FONT_DISPLAY}`;
     ctx.textAlign = 'right';
     ctx.textBaseline = 'middle';
     for (let v = 0; v <= maxV + 1e-12; v += step) {
@@ -755,8 +755,8 @@
     const bwAll = histBinRect(0).w;
     const gap = Math.min(4, bwAll * 0.18);
     const barGrad = ctx.createLinearGradient(0, plotT, 0, plotB);
-    barGrad.addColorStop(0, '#ff9a8d');
-    barGrad.addColorStop(1, '#d4524a');
+    barGrad.addColorStop(0, '#ffa497');
+    barGrad.addColorStop(1, '#e67566');
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
     const labelEvery = bwAll < 14 ? 4 : bwAll < 22 ? 2 : 1;
@@ -766,7 +766,7 @@
       const y = yOf(v);
       const hovered = state.hoverBin === k;
       if (hovered) {
-        ctx.fillStyle = 'rgba(243,112,100,0.1)';
+        ctx.fillStyle = 'rgba(247,134,119,0.1)';
         ctx.fillRect(x, plotT, bw, plotH);
       }
       if (v > 0) {

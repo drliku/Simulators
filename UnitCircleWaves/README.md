@@ -1,7 +1,7 @@
 # Unit Circle Waves
 
-An interactive sine and cosine simulator in The Brain Maze style: coral sine, periwinkle cosine on navy,
-with the Brain typeface for headings and labels (math symbols stay in STIX Two so θ, ω and φ keep their case). A point rotates around the unit circle, and dotted
+An interactive sine and cosine simulator in The Brain Maze site style: white cards, navy text, coral sine, periwinkle cosine,
+set in Poppins (math symbols stay in STIX Two so θ, ω and φ keep their case). A point rotates around the unit circle, and dotted
 projection lines carry its height (sin θ) and horizontal position (cos θ) onto a live wave graph.
 The graph uses the same vertical scale as the circle, so the projections line up exactly.
 

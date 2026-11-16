@@ -4,9 +4,9 @@ An interactive, browser-based Galton board. Balls fall from a dispenser, bounce 
 rows of pegs, and pile up in bins. Over many drops the pile becomes a binomial distribution,
 and in the symmetric case it looks more and more like a normal distribution.
 
-Styled for **The Brain Maze**: coral `#F37064` on navy `#243056`, the brain mark from the logo, and the
-logo's own typeface, *Brain* by Vladimir Nikolic (`fonts/Brain.woff2`), for headings, labels and big numbers.
-Body text uses Saira. Characters that Brain lacks, such as `%`, `/` and `—`, fall back to Saira Semi Condensed.
+Styled like **The Brain Maze** site (thebrainmaze.com): Poppins, a navy gradient header with the Brain Maze logo
+(linking back to the site), white rounded cards, pill buttons and coral `#F78677` accents. The board and histogram
+stay on navy panels.
 
 **Run it:** open `index.html` in any modern browser. There is no build step and nothing to install.
 
@@ -44,7 +44,7 @@ confined to the peg triangle, no ball can escape the board.
 | File | Purpose |
 | --- | --- |
 | `index.html` | Page structure, controls, statistics panel, explanation |
-| `styles.css` | Brain Maze theme (coral on navy) and responsive layout |
-| `fonts/Brain.woff2` | Brain typeface (from the logo), converted to WOFF2 |
-| `assets/brain-mark.png` | Brain mark cropped from the logo |
+| `styles.css` | Brain Maze site skin and responsive layout |
+| `assets/brainmaze-logo.png` | The Brain Maze logo (header link) |
+| `assets/brain-mark.png` | Brain mark cropped from the logo (favicon) |
 | `app.js` | Random walk, animation, rendering, statistics, interaction |

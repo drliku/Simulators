@@ -17,15 +17,15 @@
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const COLORS = {
-    sin: '#f37064', sinRGB: '243,112,100',
+    sin: '#f78677', sinRGB: '247,134,119',
     cos: '#9fb0ff', cosRGB: '159,176,255',
     text: '#f6efea', muted: '#a3acc9', faint: '#6f7aa0',
     grid: 'rgba(170,182,230,0.07)', axis: 'rgba(170,182,230,0.38)',
   };
-  const FONT_MONO = '"IBM Plex Mono", ui-monospace, monospace';
+  const FONT_MONO = '"Poppins", system-ui, sans-serif';
   const FONT_MATH = '"STIX Two Text", "Cambria Math", "Times New Roman", serif';
-  const FONT_SANS = '"Saira", system-ui, sans-serif';
-  const FONT_DISPLAY = '"Brain", "Saira Semi Condensed", "Arial Narrow", sans-serif';
+  const FONT_SANS = '"Poppins", system-ui, sans-serif';
+  const FONT_DISPLAY = '"Poppins", system-ui, sans-serif';
 
   // ------------------------------------------------------------------ State
 
@@ -197,7 +197,7 @@
   function render() {
     const { W, H, U, cx, cy } = G;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.fillStyle = '#141c38';
+    ctx.fillStyle = '#1e2a47';
     ctx.fillRect(0, 0, W, H);
 
     const th = S.theta;
@@ -464,7 +464,7 @@
   function ring(x, y, r, color) {
     ctx.beginPath(); ctx.arc(x, y, r, 0, TAU);
     ctx.lineWidth = 1.5; ctx.strokeStyle = color; ctx.stroke();
-    dot(x, y, r - 1.5, '#141c38');
+    dot(x, y, r - 1.5, '#1e2a47');
   }
 
   // Bracket between a cosine peak and the next sine peak: a quarter period.

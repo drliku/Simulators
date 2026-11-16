@@ -5,32 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Brain Maze Unit Circle</title>
   <meta name="description" content="Watch a point rotating around the unit circle draw sine and cosine waves, and explore amplitude, frequency and phase." />
-  <meta name="theme-color" content="#121a33" />
+  <meta name="theme-color" content="#304169" />
   <link rel="icon" href="assets/brain-mark.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Saira:wght@400;500;600&family=Saira+Semi+Condensed:wght@400&family=STIX+Two+Text:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=STIX+Two+Text:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">
-      <div class="wordmark" aria-label="The Brain Maze">
-        <span class="wordmark-text" aria-hidden="true"><span>The Brain</span><span>Maze</span></span>
-        <img class="brand-mark" src="assets/brain-mark.png" alt="" width="42" height="42" />
-      </div>
-      <span class="brand-divider" aria-hidden="true"></span>
-      <div>
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a class="site-logo" href="https://thebrainmaze.com/" target="_top"><img src="assets/brainmaze-logo.png" alt="The Brain Maze" width="118" height="36" /></a>
+      <a class="site-link" href="https://thebrainmaze.com/" target="_top">Back to The Brain Maze</a>
+    </div>
+  </header>
+
+  <section class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <p class="eyebrow">Mathematics simulator</p>
         <h1>Unit Circle Waves</h1>
         <p class="tagline">How circular motion draws sine and cosine</p>
       </div>
+      <div class="kbd-hints" aria-hidden="true">
+        <span><kbd>Space</kbd> play / pause</span>
+        <span><kbd>←</kbd><kbd>→</kbd> nudge 1°</span>
+        <span><kbd>Shift</kbd>+<kbd>←</kbd><kbd>→</kbd> 15°</span>
+      </div>
     </div>
-    <div class="kbd-hints" aria-hidden="true">
-      <span><kbd>Space</kbd> play / pause</span>
-      <span><kbd>←</kbd><kbd>→</kbd> nudge 1°</span>
-      <span><kbd>Shift</kbd>+<kbd>←</kbd><kbd>→</kbd> 15°</span>
-    </div>
-  </header>
+  </section>
 
   <main class="layout">
     <!-- ============ Stage ============ -->

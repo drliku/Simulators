@@ -5,30 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Brain Maze Galton Board</title>
   <meta name="description" content="An interactive Galton board that shows how random left/right bounces build a binomial — and eventually normal — distribution." />
-  <meta name="theme-color" content="#121a33" />
+  <meta name="theme-color" content="#304169" />
   <link rel="icon" href="assets/brain-mark.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Saira:wght@400;500;600&family=Saira+Semi+Condensed:wght@400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header class="topbar">
-    <div class="brand">
-      <div class="wordmark" aria-label="The Brain Maze">
-        <span class="wordmark-text" aria-hidden="true"><span>The Brain</span><span>Maze</span></span>
-        <img class="brand-mark" src="assets/brain-mark.png" alt="" width="42" height="42" />
+    <div class="topbar-in">
+      <div class="brand">
+        <a class="site-logo" href="https://thebrainmaze.com/" target="_top"><img src="assets/brainmaze-logo.png" alt="The Brain Maze" /></a>
+        <div>
+          <p class="eyebrow">Mathematics simulator</p>
+          <h1>Galton Board</h1>
+          <p class="tagline">How randomness builds a predictable pattern</p>
+        </div>
       </div>
-      <span class="brand-divider" aria-hidden="true"></span>
-      <div>
-        <h1>Galton Board</h1>
-        <p class="tagline">How randomness builds a predictable pattern</p>
+      <div class="kbd-hints" aria-hidden="true">
+        <span><kbd>Space</kbd> drop / pause</span>
+        <span><kbd>S</kbd> single ball</span>
+        <span><kbd>R</kbd> reset</span>
       </div>
-    </div>
-    <div class="kbd-hints" aria-hidden="true">
-      <span><kbd>Space</kbd> drop / pause</span>
-      <span><kbd>S</kbd> single ball</span>
-      <span><kbd>R</kbd> reset</span>
     </div>
   </header>
 
