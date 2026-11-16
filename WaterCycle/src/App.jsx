@@ -40,7 +40,10 @@ export default function App() {
               <span className="rule" />
               <span>Simulator</span>
             </div>
-            <p>By The Brain Maze · drag to orbit, scroll to zoom</p>
+            <p>
+              By The Brain Maze · drag to orbit, <span className="only-mouse">scroll</span>
+              <span className="only-touch">pinch</span> to zoom
+            </p>
           </div>
           <img className="mark" src={brainMark} alt="The Brain Maze logo" width="64" height="64" />
         </header>

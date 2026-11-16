@@ -333,6 +333,7 @@ function setupInstrumentKeyboard() {
 }
 
 // The bar under the instrument: what you just played and where the cochlea hears it
+const touchOnly = matchMedia('(hover: none) and (pointer: coarse)').matches;
 let notesShownAt = 0;
 function updateNotes(now) {
   if (now - notesShownAt < 120) return;
@@ -344,7 +345,9 @@ function updateNotes(now) {
     text = `${midiName(lastPlayed.m)}  ·  ${formatHz(f)}  ·  ${regionName(f)}`;
     idle = false;
   } else if (inst) {
-    text = `Click the ${inst.name.toLowerCase()} or play with your keyboard: Z–M and Q–P rows, [ ] change octave (now C${3 + octave})`;
+    text = touchOnly
+      ? `Tap or slide along the ${inst.name.toLowerCase()} to play it`
+      : `Click the ${inst.name.toLowerCase()} or play with your keyboard: Z–M and Q–P rows, [ ] change octave (now C${3 + octave})`;
   } else {
     text = 'Choose an instrument to play it and watch where the cochlea responds.';
   }
@@ -418,10 +421,17 @@ function setupHover() {
   const v = new THREE.Vector3();
   const tip = $('tooltip');
   let pending = null;
+  let hideTimer = 0;
   canvas.addEventListener('pointermove', (e) => {
-    pending = e;
+    if (e.pointerType !== 'touch') pending = e; // a dragging finger is orbiting, not inspecting
   });
-  canvas.addEventListener('pointerleave', () => { tip.hidden = true; pending = null; });
+  // touch has no hover: a tap shows the nearest hair cell for a few seconds
+  canvas.addEventListener('pointerdown', (e) => {
+    if (e.pointerType !== 'mouse') pending = e;
+  });
+  canvas.addEventListener('pointerleave', (e) => {
+    if (e.pointerType === 'mouse') { tip.hidden = true; pending = null; }
+  });
   const check = () => {
     if (pending) {
       const e = pending;
@@ -440,9 +450,14 @@ function setupHover() {
       if (best >= 0) {
         const c = cells[best], f = c.f;
         tip.innerHTML = `${c.inner ? 'Inner' : 'Outer'} hair cell <b>#${best + 1}</b> · ${formatHz(f)} (${noteName(f)})<br>${regionName(f)} · activity ${Math.round(model.vv[c.ch] * 100)}%`;
-        tip.style.left = `${e.clientX}px`;
-        tip.style.top = `${e.clientY}px`;
+        const touch = e.pointerType !== 'mouse';
+        tip.classList.toggle('touch', touch);
         tip.hidden = false;
+        // keep it on screen (and above the finger on touch)
+        tip.style.left = `${Math.max(8, Math.min(e.clientX, innerWidth - tip.offsetWidth - (touch ? 8 : 22)))}px`;
+        tip.style.top = `${e.clientY}px`;
+        clearTimeout(hideTimer);
+        if (touch) hideTimer = setTimeout(() => { tip.hidden = true; }, 2500);
       } else tip.hidden = true;
     }
     requestAnimationFrame(check);
@@ -580,6 +595,23 @@ $('ytClose').addEventListener('click', () => {
 if (import.meta.env.VITE_SHARED) {
   document.querySelectorAll('[data-action="demo"], [data-action="mic"], [data-action="tab"], .tab-hint, .yt-only').forEach((b) => b.remove());
 }
+
+// Phones and tablets can't share another tab's sound
+if (!navigator.mediaDevices?.getDisplayMedia || matchMedia('(hover: none) and (pointer: coarse)').matches) $('tabBtn')?.remove();
+
+// Small screens fold the theme / cells / toggles away behind a settings button
+$('moreBtn').addEventListener('click', () => {
+  const open = document.querySelector('.dock').classList.toggle('more-open');
+  $('moreBtn').setAttribute('aria-expanded', String(open));
+  $('moreBtn').classList.toggle('active', open);
+});
+
+// Mobile browsers only start audio from a user gesture: wake the AudioContext on the first touch/click.
+// On iOS, the "playback" session also keeps sound on when the silent switch is set.
+try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch {}
+const unlockAudio = () => { audio.context().resume().catch(() => {}); };
+addEventListener('pointerdown', unlockAudio, { capture: true, once: true });
+addEventListener('keydown', unlockAudio, { capture: true, once: true });
 
 document.querySelectorAll('[data-action]').forEach((b) => b.addEventListener('click', () => action(b.dataset.action)));
 fileInput.addEventListener('change', () => { loadFile(fileInput.files[0]); fileInput.value = ''; });

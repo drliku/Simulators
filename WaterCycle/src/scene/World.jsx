@@ -1,4 +1,5 @@
-import { Canvas } from '@react-three/fiber'
+import { useLayoutEffect } from 'react'
+import { Canvas, useThree } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import * as THREE from 'three'
 import Terrain from './Terrain.jsx'
@@ -10,14 +11,30 @@ import { Precipitation, Evaporation, Runoff } from './Particles.jsx'
 import Labels from './Labels.jsx'
 import SimulationDriver from './SimulationDriver.jsx'
 
+const CAMERA_START = [38, 29, 40]
+
+// On a narrow (portrait phone) view, start the camera a little further back so the whole
+// diorama fits across the width. Runs once, so it never fights the user's own zoom.
+function FitNarrowView() {
+  const camera = useThree((s) => s.camera)
+  const size = useThree((s) => s.size)
+  useLayoutEffect(() => {
+    const aspect = size.width / Math.max(1, size.height)
+    const k = Math.min(1.5, Math.max(1, 1.1 / aspect))
+    if (k > 1) camera.position.set(...CAMERA_START).multiplyScalar(k)
+  }, [])
+  return null
+}
+
 export default function World() {
   return (
     <Canvas
       shadows
       dpr={[1, 2]}
-      camera={{ position: [38, 29, 40], fov: 42, near: 0.5, far: 500 }}
+      camera={{ position: CAMERA_START, fov: 42, near: 0.5, far: 500 }}
       gl={{ antialias: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.05 }}
     >
+      <FitNarrowView />
       <SimulationDriver />
       <Sky />
       <Terrain />
