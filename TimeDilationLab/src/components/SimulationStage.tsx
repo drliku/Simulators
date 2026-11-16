@@ -53,7 +53,7 @@ function DigitalClock({
     <div className={`rounded-xl border ${c.border} ${c.glow} bg-space-950/75 px-4 py-3 backdrop-blur-md`}>
       <div className="flex items-baseline justify-between gap-3">
         <span className={`font-display text-[16px] font-normal uppercase tracking-[0.12em] ${c.label}`}>{label}</span>
-        <span className="truncate text-[11px] text-ink-faint">{sub}</span>
+        <span className="truncate text-[12px] lg:text-[11px] text-ink-faint">{sub}</span>
       </div>
       <div className={`clock-value mt-1 font-display text-[36px] leading-none sm:text-[46px] ${c.text}`}>
         {[...value].map((ch, i) => (
@@ -61,7 +61,7 @@ function DigitalClock({
         ))}
         <span className="ml-2 font-sans text-sm font-normal text-ink-muted">{unit}</span>
       </div>
-      <div className="mt-1.5 font-mono text-[11.5px] tabular-nums text-ink-muted">{secondary}</div>
+      <div className="mt-1.5 font-mono text-[12px] lg:text-[11.5px] tabular-nums text-ink-muted">{secondary}</div>
     </div>
   );
 }
@@ -305,7 +305,7 @@ function StageHeader() {
   return (
     <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-white/[0.06] px-4 py-3">
       <div className="flex items-center gap-3">
-        <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/30 px-2.5 py-1 font-mono text-[11px] text-ink">
+        <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/30 px-2.5 py-1 font-mono text-[12px] lg:text-[11px] text-ink">
           <span className={`h-1.5 w-1.5 rounded-full ${statusColor} ${e.running ? 'animate-pulse' : ''}`} />
           {status}
         </span>
@@ -320,7 +320,7 @@ function StageHeader() {
         <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/10">
           <div className="h-full rounded-full bg-gradient-to-r from-earth-deep via-earth to-ship" style={{ width: `${(d.progress * 100).toFixed(2)}%` }} />
         </div>
-        <span className="font-mono text-[11px] tabular-nums text-ink-muted">{(d.progress * 100).toFixed(1)}%</span>
+        <span className="font-mono text-[12px] lg:text-[11px] tabular-nums text-ink-muted">{(d.progress * 100).toFixed(1)}%</span>
       </div>
     </div>
   );

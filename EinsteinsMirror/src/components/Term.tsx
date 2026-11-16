@@ -6,6 +6,8 @@ export function Term({ children, tip }: { children: ReactNode; tip: ReactNode })
   const [open, setOpen] = useState(false);
   const [pos, setPos] = useState<{ left: number; top: number; above: boolean; width: number } | null>(null);
   const ref = useRef<HTMLSpanElement>(null);
+  // Pointer type of the press in progress: a touch tap fires focus and click together, so focus must not pre-open.
+  const pressRef = useRef<string | null>(null);
   const id = useId();
 
   useLayoutEffect(() => {
@@ -31,11 +33,12 @@ export function Term({ children, tip }: { children: ReactNode; tip: ReactNode })
       className="term"
       tabIndex={0}
       aria-describedby={open ? id : undefined}
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
-      onFocus={() => setOpen(true)}
+      onPointerEnter={(e) => { if (e.pointerType === 'mouse') setOpen(true); }}
+      onPointerLeave={(e) => { if (e.pointerType === 'mouse') setOpen(false); }}
+      onPointerDown={(e) => { pressRef.current = e.pointerType; }}
+      onFocus={() => { if (pressRef.current !== 'touch' && pressRef.current !== 'pen') setOpen(true); }}
       onBlur={() => setOpen(false)}
-      onClick={(e) => { e.stopPropagation(); setOpen((o) => !o); }}
+      onClick={(e) => { e.stopPropagation(); pressRef.current = null; setOpen((o) => !o); }}
       onKeyDown={(e) => { if (e.key === 'Escape') setOpen(false); }}
     >
       {children}

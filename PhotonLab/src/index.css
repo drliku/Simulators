@@ -23,6 +23,7 @@ html,
 body,
 #root {
   height: 100%;
+  height: 100dvh;
   margin: 0;
   overflow: hidden;
   background: var(--ground);
@@ -104,6 +105,41 @@ body,
 }
 .slider:hover::-webkit-slider-thumb {
   transform: scale(1.15);
+}
+
+/* ── Phones and tablets ──
+   Touch screens get finger-sized targets and 16px form fields (smaller fields make iOS zoom the page on focus).
+   Below lg, where panels are overlays, the densest 10–11.5px labels are raised to 12px. Desktop is unchanged. */
+@media (pointer: coarse) {
+  .tap {
+    min-height: 38px;
+    min-width: 38px;
+  }
+  input:not([type='range']):not([type='color']),
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+  .slider {
+    height: 32px;
+  }
+  .slider::-webkit-slider-thumb {
+    width: 20px;
+    height: 20px;
+    margin-top: -8.5px;
+  }
+  .slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+  }
+}
+@media (max-width: 1023px) {
+  .text-\[10px\],
+  .text-\[10\.5px\],
+  .text-\[11px\],
+  .text-\[11\.5px\] {
+    font-size: 12px;
+  }
 }
 
 .spectrum-bar {

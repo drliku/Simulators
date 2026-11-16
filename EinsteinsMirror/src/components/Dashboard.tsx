@@ -13,7 +13,7 @@ function Row({ label, value, sub, tone }: { label: ReactNode; value: ReactNode; 
       <dt className="text-[13px] text-ink-muted">{label}</dt>
       <dd className="m-0 text-right">
         <div className={`font-mono text-[14.5px] font-medium tabular-nums ${color}`}>{value}</div>
-        {sub && <div className="font-mono text-[11px] text-ink-faint">{sub}</div>}
+        {sub && <div className="font-mono text-[12px] text-ink-faint lg:text-[11px]">{sub}</div>}
       </dd>
     </div>
   );

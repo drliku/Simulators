@@ -42,6 +42,9 @@ export function CanvasView() {
   const hover = useRef<string | null>(null);
   const drag = useRef<Drag | null>(null);
   const space = useRef(false);
+  // Active touch points, for two-finger pinch-zoom and pan.
+  const touches = useRef(new Map<number, [number, number]>());
+  const pinch = useRef<{ dist: number; mx: number; my: number } | null>(null);
 
   const compiledAll = () => useStore.getState().objects.map(compileObject);
 
@@ -247,6 +250,20 @@ export function CanvasView() {
     const [sx, sy] = local(e);
     const [wx, wy] = screenToWorld(s.view, w, h, sx, sy);
     canvas.setPointerCapture(e.pointerId);
+    const touch = e.pointerType !== 'mouse';
+    if (touch) {
+      touches.current.set(e.pointerId, [sx, sy]);
+      if (touches.current.size >= 2) {
+        // Second finger down: whatever the first finger started becomes a pinch.
+        const [[ax, ay], [bx, by]] = [...touches.current.values()];
+        pinch.current = { dist: Math.hypot(bx - ax, by - ay) || 1, mx: (ax + bx) / 2, my: (ay + by) / 2 };
+        drag.current = null;
+        return;
+      }
+    }
+    // Fingers are less precise than a mouse pointer, so touch gets larger pick radii.
+    const handleR = touch ? 22 : 10;
+    const hitR = touch ? 14 : 7;
     if (e.button === 1 || e.button === 2 || space.current) {
       drag.current = { type: 'pan', sx, sy, cx: s.view.cx, cy: s.view.cy };
       canvas.style.cursor = 'grabbing';
@@ -258,13 +275,13 @@ export function CanvasView() {
     if (sel) {
       for (const hd of getHandles(sel, s.view.zoom)) {
         const [hx, hy] = worldToScreen(s.view, w, h, hd.x, hd.y);
-        if (Math.hypot(hx - sx, hy - sy) <= 10) {
+        if (Math.hypot(hx - sx, hy - sy) <= handleR) {
           drag.current = { type: 'handle', id: sel.obj.id, handle: hd.id, started: false };
           return;
         }
       }
     }
-    const hit = hitTest(compiled, wx, wy, 7 / s.view.zoom);
+    const hit = hitTest(compiled, wx, wy, hitR / s.view.zoom);
     if (hit) {
       const o = s.objects.find((x) => x.id === hit)!;
       s.select(hit);
@@ -283,6 +300,19 @@ export function CanvasView() {
     const { w, h } = size.current;
     const [sx, sy] = local(e);
     const [wx, wy] = screenToWorld(s.view, w, h, sx, sy);
+    if (touches.current.has(e.pointerId)) touches.current.set(e.pointerId, [sx, sy]);
+    const p = pinch.current;
+    if (p) {
+      if (touches.current.size < 2) return;
+      const [[ax, ay], [bx, by]] = [...touches.current.values()];
+      const dist = Math.hypot(bx - ax, by - ay) || 1;
+      const mx = (ax + bx) / 2;
+      const my = (ay + by) / 2;
+      const v = zoomAt(s.view, w, h, p.mx, p.my, dist / p.dist);
+      s.setView({ ...v, cx: v.cx - (mx - p.mx) / v.zoom, cy: v.cy + (my - p.my) / v.zoom });
+      pinch.current = { dist, mx, my };
+      return;
+    }
     useTraceStore.setState({ cursor: { x: wx, y: wy } });
     const d = drag.current;
     const snapOn = s.ui.snap && !e.altKey;
@@ -340,6 +370,8 @@ export function CanvasView() {
   const onPointerUp = (e: React.PointerEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current!;
     if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
+    touches.current.delete(e.pointerId);
+    if (touches.current.size < 2) pinch.current = null;
     drag.current = null;
     canvas.style.cursor = space.current ? 'grab' : 'default';
   };

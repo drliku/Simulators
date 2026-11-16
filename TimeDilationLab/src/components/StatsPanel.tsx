@@ -14,7 +14,7 @@ function Row({ label, value, tone, sub }: { label: ReactNode; value: ReactNode; 
       <dt className="text-[13px] text-ink-muted">{label}</dt>
       <dd className="m-0 text-right">
         <div className={`font-mono text-[15px] font-medium tabular-nums ${color}`}>{value}</div>
-        {sub && <div className="font-mono text-[11px] tabular-nums text-ink-faint">{sub}</div>}
+        {sub && <div className="font-mono text-[12px] lg:text-[11px] tabular-nums text-ink-faint">{sub}</div>}
       </dd>
     </div>
   );
@@ -49,7 +49,7 @@ export function StatsPanel() {
             <Row label={<>Earth clock, simultaneous <i>in Earth frame</i></>} value={fmt(d.earthTime)} tone="earth" sub="γ τ" />
             <Row label={<Term tip={TIPS.simultaneity}>Simultaneity gap</Term>} value={formatAdaptiveDuration(d.simultaneityGap, 4)} sub="γ β² τ" />
           </dl>
-          <p className="mt-2 text-[11.5px] leading-relaxed text-ink-muted">
+          <p className="mt-2 text-[12px] lg:text-[11.5px] leading-relaxed text-ink-muted">
             Both statements are true: each frame finds the other's clock slow. They compare the ship's event with two different
             Earth events, because the frames disagree about which Earth event happens "now".
           </p>

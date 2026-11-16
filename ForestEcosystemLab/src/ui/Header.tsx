@@ -63,7 +63,7 @@ export function ViewToolbar() {
   const ctl = useUi();
   return (
     <div className="pointer-events-none absolute inset-x-2 top-2 flex flex-wrap justify-between gap-2">
-      <div className="pointer-events-auto flex flex-wrap items-center gap-1 rounded-lg bg-char-950/75 p-1 backdrop-blur" role="group" aria-label="Camera">
+      <div className="scroll-thin pointer-events-auto flex flex-wrap items-center gap-1 rounded-lg bg-char-950/75 p-1 backdrop-blur max-sm:max-w-full max-sm:flex-nowrap max-sm:overflow-x-auto max-sm:[&>*]:shrink-0" role="group" aria-label="Camera">
         {CAMERAS.map((c) => (
           <button key={c.id} type="button" className="chip" aria-pressed={ctl.cameraMode === c.id}
             disabled={c.id === 'follow' && ctl.selectedId === -1}
@@ -72,7 +72,7 @@ export function ViewToolbar() {
         ))}
         <button type="button" className="chip" onClick={() => ctl.resetCamera()}>Reset view</button>
       </div>
-      <div className="pointer-events-auto flex flex-wrap items-center gap-1 rounded-lg bg-char-950/75 p-1 backdrop-blur">
+      <div className="scroll-thin pointer-events-auto flex flex-wrap items-center gap-1 rounded-lg bg-char-950/75 p-1 backdrop-blur max-sm:max-w-full max-sm:flex-nowrap max-sm:overflow-x-auto max-sm:[&>*]:shrink-0">
         <label className="flex items-center gap-1.5 px-1 text-[12px] text-ink-muted">
           Heatmap
           <select className="h-7 rounded-md border border-white/10 bg-char-900 px-1 text-[12px] text-ink" value={ctl.heat ?? ''}

@@ -92,7 +92,7 @@ export function Timeline() {
           aria-label="Position in the round trip"
           aria-valuetext={`track time ${ns(e.t)}`}
         />
-        <div className="pointer-events-none absolute inset-x-[9px] top-[18px] h-2">
+        <div className="timeline-marks pointer-events-none absolute inset-x-[9px] top-[18px] h-2">
           {events.map((ev) => (
             <span key={ev.label} className="absolute h-2 w-px bg-photon/70" style={{ left: pct(ev.t) }} />
           ))}

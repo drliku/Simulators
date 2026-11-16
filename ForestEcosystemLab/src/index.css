@@ -12,6 +12,7 @@
 
 :root { color-scheme: dark; }
 html, body, #root { height: 100%; }
+#root { height: 100dvh; }
 body { margin: 0; background: #0e1110; color: #e9ede8; -webkit-font-smoothing: antialiased; }
 
 @layer components {
@@ -21,7 +22,7 @@ body { margin: 0; background: #0e1110; color: #e9ede8; -webkit-font-smoothing: a
   .btn-primary { @apply border-transparent bg-forest text-char-950 hover:bg-forest-soft; }
   .chip { @apply h-7 rounded-md border border-white/10 px-2 text-[12px] text-ink-muted transition hover:text-ink; }
   .chip[aria-pressed='true'] { @apply border-forest/60 bg-forest/20 text-forest-soft; }
-  .tab { @apply flex-1 rounded-md px-2 py-1.5 text-[12px] font-medium text-ink-muted transition hover:text-ink; }
+  .tab { @apply flex-1 rounded-md px-2 py-1.5 text-[12px] font-medium text-ink-muted transition hover:text-ink max-lg:whitespace-nowrap; }
   .tab[aria-selected='true'] { @apply bg-white/[0.08] text-ink; }
   .label { @apply text-[12px] text-ink-muted; }
 }
@@ -34,6 +35,19 @@ input[type='range']::-moz-range-track { height: 4px; border-radius: 99px; backgr
 input[type='range']::-moz-range-progress { height: 4px; border-radius: 99px; background: #4f9a5b; }
 input[type='range']::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; margin-top: -5px; border-radius: 50%; background: #e9ede8; border: 3px solid #4f9a5b; }
 input[type='range']::-moz-range-thumb { width: 10px; height: 10px; border-radius: 50%; background: #e9ede8; border: 3px solid #4f9a5b; }
+
+/* Touch screens: finger-sized targets, a taller slider hit area, and 16px selects (smaller ones make iOS zoom on focus). */
+@media (pointer: coarse) {
+  .chip, select { min-height: 36px; min-width: 36px; }
+  .btn, .tab { min-height: 40px; }
+  input[type='range'] { height: 32px; }
+  input[type='range']::-webkit-slider-thumb { width: 20px; height: 20px; margin-top: -8px; }
+  select, input:not([type='range']):not([type='checkbox']):not([type='radio']), textarea { font-size: 16px !important; }
+}
+/* Phones and tablets: lift the smallest labels to 12px. Desktop (lg and up) is unchanged. */
+@media (max-width: 1023px) {
+  .text-\[10px\], .text-\[10\.5px\], .text-\[11px\], .text-\[11\.5px\] { font-size: 12px; }
+}
 
 .scroll-thin::-webkit-scrollbar { width: 6px; }
 .scroll-thin::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }

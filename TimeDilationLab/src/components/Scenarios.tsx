@@ -13,7 +13,7 @@ function Card({ tag, title, tone, children, action, live }: {
   return (
     <article className={`glass relative flex flex-col gap-3 p-5 before:absolute before:inset-x-5 before:top-0 before:h-px before:bg-gradient-to-r ${ring} before:to-transparent`}>
       <div className="flex items-center gap-2">
-        <span className="rounded-md border border-white/10 bg-black/30 px-2 py-0.5 font-mono text-[11px] text-ink-muted">{tag}</span>
+        <span className="rounded-md border border-white/10 bg-black/30 px-2 py-0.5 font-mono text-[12px] lg:text-[11px] text-ink-muted">{tag}</span>
         <h3 className="font-display text-[21px] font-normal uppercase tracking-[0.04em] text-ink">{title}</h3>
       </div>
       <div className="flex flex-col gap-2 text-[13px] leading-relaxed text-ink-muted">{children}</div>

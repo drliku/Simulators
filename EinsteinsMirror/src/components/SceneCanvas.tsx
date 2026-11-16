@@ -32,7 +32,10 @@ export function SceneCanvas() {
     if (p.track) renderTrackView(ctx, p.track, { trip, t: e.t, L0: e.L0, blink: e.blinking });
   });
 
-  const height = view === 'both' ? 'h-[580px] sm:h-[760px]' : 'h-[320px] sm:h-[460px]';
+  // Short landscape phones get a shorter stage so more of it fits on screen.
+  const height = view === 'both'
+    ? 'h-[580px] sm:h-[760px] [@media(max-height:500px)]:h-[540px]'
+    : 'h-[320px] sm:h-[460px] [@media(max-height:500px)]:h-[300px]';
   return (
     <canvas
       ref={ref}

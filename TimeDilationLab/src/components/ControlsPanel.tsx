@@ -25,7 +25,7 @@ export function ControlsPanel() {
     <section className="glass flex flex-col gap-5 p-5" aria-label="Experiment controls">
       <div className="flex items-center justify-between">
         <h2 className="panel-title">Controls</h2>
-        <span className="font-mono text-[11px] text-ink-faint">Space · R</span>
+        <span className="font-mono text-[11px] text-ink-faint [@media(hover:none)]:hidden">Space · R</span>
       </div>
 
       <div className="grid grid-cols-[1fr_auto] gap-2">
@@ -76,7 +76,7 @@ export function ControlsPanel() {
               type="button"
               onClick={() => engine.setBeta(p / 100)}
               aria-pressed={Math.abs(beta * 100 - p) < 1e-9}
-              className="h-7 rounded-md border border-white/10 px-2 font-mono text-[11.5px] text-ink-muted transition hover:border-ship/50 hover:text-ink aria-pressed:border-ship/60 aria-pressed:bg-ship/15 aria-pressed:text-ship-soft"
+              className="h-7 rounded-md border [@media(pointer:coarse)]:h-10 border-white/10 px-2 font-mono text-[12px] lg:text-[11.5px] text-ink-muted transition hover:border-ship/50 hover:text-ink aria-pressed:border-ship/60 aria-pressed:bg-ship/15 aria-pressed:text-ship-soft"
             >
               {p}%
             </button>
@@ -84,15 +84,15 @@ export function ControlsPanel() {
         </div>
         <div className="mt-1 grid grid-cols-2 gap-2">
           <div className="rounded-lg border border-white/[0.07] bg-black/25 px-3 py-2">
-            <div className="text-[11px] text-ink-faint"><Term tip={TIPS.gamma}>Lorentz factor γ</Term></div>
+            <div className="text-[12px] lg:text-[11px] text-ink-faint"><Term tip={TIPS.gamma}>Lorentz factor γ</Term></div>
             <div className="font-mono text-[17px] font-semibold tabular-nums text-ink">{formatGamma(beta)}</div>
           </div>
           <div className="rounded-lg border border-white/[0.07] bg-black/25 px-3 py-2">
-            <div className="text-[11px] text-ink-faint">Speed</div>
-            <div className="font-mono text-[15px] tabular-nums text-ink">{withThousands(speedKmPerSecond(beta), beta < 0.001 ? 6 : 0)} <span className="text-[11px] text-ink-muted">km/s</span></div>
+            <div className="text-[12px] lg:text-[11px] text-ink-faint">Speed</div>
+            <div className="font-mono text-[15px] tabular-nums text-ink">{withThousands(speedKmPerSecond(beta), beta < 0.001 ? 6 : 0)} <span className="text-[12px] lg:text-[11px] text-ink-muted">km/s</span></div>
           </div>
         </div>
-        <p className="text-[11.5px] leading-snug text-ink-faint">
+        <p className="text-[12px] lg:text-[11.5px] leading-snug text-ink-faint">
           Changing velocity restarts the experiment, so the ship moves at one constant velocity and stays an inertial observer.
         </p>
       </div>
@@ -107,7 +107,7 @@ export function ControlsPanel() {
             </button>
           ))}
         </div>
-        <p className="text-[11.5px] text-ink-faint">
+        <p className="text-[12px] lg:text-[11.5px] text-ink-faint">
           1× = one {frame === 'earth' ? 'Earth-frame' : 'ship-frame'} day per real second. Playback rate only; it has nothing to do with the ship's velocity.
         </p>
       </div>
@@ -122,13 +122,13 @@ export function ControlsPanel() {
               type="button"
               aria-pressed={Math.abs(durationYears - d.years) < 1e-12}
               onClick={() => engine.setDurationYears(d.years)}
-              className="h-8 rounded-md font-mono text-[12px] text-ink-muted transition-colors hover:text-ink aria-pressed:bg-white/10 aria-pressed:text-ink"
+              className="h-8 rounded-md font-mono [@media(pointer:coarse)]:h-10 text-[12px] text-ink-muted transition-colors hover:text-ink aria-pressed:bg-white/10 aria-pressed:text-ink"
             >
               {d.label}
             </button>
           ))}
         </div>
-        <p className="text-[11.5px] text-ink-faint">The run stops automatically when Earth's frame reaches this time.</p>
+        <p className="text-[12px] lg:text-[11.5px] text-ink-faint">The run stops automatically when Earth's frame reaches this time.</p>
       </div>
 
       {/* Reference frame */}

@@ -64,18 +64,18 @@ export function StatusBar() {
   const st = result?.stats;
   return (
     <footer className="flex h-7 shrink-0 items-center gap-4 overflow-hidden whitespace-nowrap border-t border-white/[0.07] bg-ink-900/80 px-3 font-mono text-[10.5px] text-slate-500">
-      <span className="w-40">{cursor ? `x ${cursor.x.toFixed(1)}  y ${cursor.y.toFixed(1)} mm` : 'x —  y —'}</span>
+      <span className="w-40 max-sm:w-auto">{cursor ? `x ${cursor.x.toFixed(1)}  y ${cursor.y.toFixed(1)} mm` : 'x —  y —'}</span>
       <span>{count} objects</span>
       {st && (
         <>
           <span>{st.primaryRays} rays</span>
-          <span className={st.limitReached ? 'text-amber-400' : ''}>
+          <span className={`hidden sm:inline ${st.limitReached ? 'text-amber-400' : ''}`}>
             {st.segments} segments{st.limitReached ? ' (budget hit)' : ''}
           </span>
-          <span>trace {result!.timeMs.toFixed(1)} ms</span>
+          <span className="hidden sm:inline">trace {result!.timeMs.toFixed(1)} ms</span>
         </>
       )}
-      <span>render {renderMs.toFixed(1)} ms</span>
+      <span className="hidden sm:inline">render {renderMs.toFixed(1)} ms</span>
       <span className={fps && fps < 45 ? 'text-amber-400' : 'text-emerald-400/80'}>{fps} fps</span>
       <span className="ml-auto hidden text-slate-600 lg:inline">Drag empty space to pan · wheel to zoom · Del delete · Ctrl+D duplicate · R rotate</span>
     </footer>

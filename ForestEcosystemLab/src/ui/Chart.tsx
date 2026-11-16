@@ -25,6 +25,7 @@ export function Chart() {
   const [extra, setExtra] = useState<FaunaId[]>([]);
   const [range, setRange] = useState(0);
   const [hover, setHover] = useState<number | null>(null); // x in CSS px
+  const touchTimer = useRef<number | undefined>(undefined);
   const [tip, setTip] = useState<{ x: number; day: number; vals: { label: string; color: string; v: string }[] } | null>(null);
 
   // When the graph is paused it shows a frozen copy (the simulation keeps running).
@@ -162,15 +163,19 @@ export function Chart() {
       <div className="relative min-h-0 flex-1">
         <canvas
           ref={canvas}
-          className="absolute inset-0 h-full w-full"
-          onMouseMove={(e) => setHover(e.clientX - e.currentTarget.getBoundingClientRect().left)}
-          onMouseLeave={() => setHover(null)}
+          className="absolute inset-0 h-full w-full touch-pan-y"
+          // Pointer events so a tap or horizontal drag reads values on touch screens too; vertical swipes still scroll the page.
+          onPointerMove={(e) => (e.pointerType === 'mouse' || e.buttons) && setHover(e.clientX - e.currentTarget.getBoundingClientRect().left)}
+          onPointerDown={(e) => { clearTimeout(touchTimer.current); setHover(e.clientX - e.currentTarget.getBoundingClientRect().left); }}
+          onPointerUp={(e) => { if (e.pointerType !== 'mouse') touchTimer.current = window.setTimeout(() => setHover(null), 2500); }}
+          onPointerLeave={(e) => e.pointerType === 'mouse' && setHover(null)}
+          onPointerCancel={() => setHover(null)}
           role="img"
           aria-label={`Graph of wolves, deer and vegetation. Currently ${ctl.sim.count('wolf')} wolves, ${ctl.sim.count('deer')} deer.`}
         />
         {tip && (
           <div className="pointer-events-none absolute top-2 rounded-md border border-white/10 bg-char-950/95 px-2 py-1 text-[11px] shadow-lg"
-            style={{ left: tip.x + 10, transform: tip.x > 400 ? 'translateX(calc(-100% - 20px))' : undefined }}>
+            style={{ left: tip.x + 10, transform: tip.x > Math.min(400, (canvas.current?.clientWidth ?? 800) / 2) ? 'translateX(calc(-100% - 20px))' : undefined }}>
             <div className="font-mono text-ink-muted">day {tip.day.toFixed(1)}</div>
             {tip.vals.map((v) => <div key={v.label} className="flex justify-between gap-3"><span style={{ color: v.color }}>{v.label}</span><span className="font-mono text-ink">{v.v}</span></div>)}
           </div>
