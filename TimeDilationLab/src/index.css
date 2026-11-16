@@ -2,9 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-/* The Brain Maze: coral #F37064 on navy #243056. Ship = brand coral, Earth = periwinkle. */
+/* The Brain Maze site look (thebrainmaze.com): Poppins, white cards, navy text, coral accents, pill controls.
+   The clock stage, light clock and graph canvases keep their dark space look because they are part of the
+   simulation. Ship = brand coral, Earth = periwinkle. */
 @font-face {
-  /* Brain by Vladimir Nikolic, the logo typeface. One weight; lowercase letters are drawn as capitals. */
+  /* Brain by Vladimir Nikolic, the logo typeface. Only the light-clock canvas titles still use it. */
   font-family: 'Brain';
   src: url('./assets/Brain.woff2') format('woff2');
   font-weight: 400;
@@ -12,95 +14,85 @@
 }
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
   --earth: #9fb0ff;
-  --ship: #f37064;
+  --ship: #f78677;
 }
-
 html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
   min-height: 100vh;
   min-height: 100dvh;
-  background-color: #0e1530;
-  background-image:
-    radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,0.55) 50%, transparent 51%),
-    radial-gradient(1px 1px at 72% 8%, rgba(255,255,255,0.45) 50%, transparent 51%),
-    radial-gradient(1px 1px at 38% 62%, rgba(255,255,255,0.35) 50%, transparent 51%),
-    radial-gradient(1px 1px at 88% 44%, rgba(255,255,255,0.4) 50%, transparent 51%),
-    radial-gradient(1.5px 1.5px at 56% 84%, rgba(186,230,253,0.5) 50%, transparent 51%),
-    radial-gradient(1px 1px at 22% 92%, rgba(255,255,255,0.3) 50%, transparent 51%),
-    radial-gradient(900px 500px at 15% -10%, rgba(159,176,255,0.10), transparent 60%),
-    radial-gradient(800px 500px at 100% 10%, rgba(243,112,100,0.07), transparent 60%),
-    linear-gradient(rgba(148,163,196,0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(148,163,196,0.035) 1px, transparent 1px),
-    linear-gradient(180deg, #172042 0%, #0e1530 100%);
-  background-size: 420px 420px, 420px 420px, 420px 420px, 420px 420px, 420px 420px, 420px 420px, auto, auto, 32px 32px, 32px 32px, auto;
-  background-attachment: fixed;
+  background: #f0f3fa;
+  color: #304169;
+  font-family: 'Poppins', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
 @layer components {
-  .glass {
-    @apply rounded-2xl border border-white/[0.08] bg-space-850/70 shadow-glass backdrop-blur-md;
+  /* Brand bar above the app: logo left, link right, like the site header. */
+  .bm-topbar {
+    @apply sticky top-0 z-[60] flex h-[52px] items-center justify-between gap-4 bg-white px-4 sm:h-16 sm:px-6;
+    box-shadow: 0 2px 10px rgba(48, 65, 105, 0.08);
   }
+  .bm-topbar img { @apply block h-[30px] w-auto sm:h-[38px]; }
+  .bm-tag { @apply text-[13px] font-semibold uppercase leading-none tracking-[0.5px] text-ship-soft no-underline transition-colors hover:text-coral-hover; }
+
+  .glass { @apply rounded-[14px] bg-white shadow-card; }
   .panel-title {
-    @apply font-display text-[17px] font-normal uppercase tracking-[0.1em] text-ship;
+    @apply relative border-b-2 border-line pb-2 text-[13px] font-semibold uppercase tracking-[0.5px] text-ship-soft;
   }
-  /* Brain digits are proportional; fixed cells stop running clocks from jittering. */
-  .digit { display: inline-block; width: 0.47em; text-align: center; }
-  .seg {
-    @apply grid auto-cols-fr grid-flow-col gap-1 rounded-lg border border-white/[0.07] bg-black/30 p-1;
-  }
-  .seg > button {
-    @apply h-8 rounded-md px-2 font-mono text-[12.5px] text-ink-muted transition-colors hover:text-ink;
-  }
-  .seg > button[aria-pressed='true'] {
-    @apply bg-white/10 text-ink shadow-[inset_0_0_0_1px_rgba(255,255,255,0.14)];
-  }
+  .panel-title::after { content: ''; @apply absolute -bottom-0.5 left-0 h-0.5 w-12 bg-coral; }
+
+  /* Buttons: pills like the site. */
   .btn {
-    @apply inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-4 text-sm font-medium text-ink transition hover:bg-white/[0.09] active:translate-y-px disabled:cursor-not-allowed disabled:opacity-40;
+    @apply inline-flex h-10 items-center justify-center gap-2 rounded-full border-2 border-mist bg-white px-3.5 text-[13px] font-semibold text-ink transition-colors duration-200 hover:border-coral hover:text-ship-soft active:translate-y-px disabled:cursor-not-allowed disabled:opacity-40;
   }
+  .btn[aria-pressed='true'] { @apply border-navy bg-navy text-white; }
+  .btn-primary {
+    @apply border-coral bg-coral uppercase tracking-[0.3px] text-white hover:border-coral-hover hover:bg-coral-hover hover:text-white;
+  }
+  .btn-primary[aria-pressed='true'] { @apply border-coral bg-coral text-white hover:border-coral-hover hover:bg-coral-hover; }
+  .chip {
+    @apply h-7 rounded-full border-2 border-mist bg-white px-2 text-[12px] font-semibold text-ink transition-colors duration-200 hover:border-coral hover:text-ship-soft [@media(pointer:coarse)]:h-10;
+  }
+  .chip[aria-pressed='true'] { @apply border-navy bg-navy text-white; }
+  /* Fixed digit cells stop the running clocks from jittering. */
+  .digit { display: inline-block; width: 0.64em; text-align: center; }
+  .seg { @apply grid auto-cols-fr grid-flow-col gap-1 rounded-full bg-mist p-1; }
+  .seg > button { @apply h-8 rounded-full px-2 text-[12.5px] font-semibold text-ink transition-colors hover:text-ship-soft; }
+  .seg > button[aria-pressed='true'] { @apply bg-navy text-white; }
   .term {
-    @apply cursor-help underline decoration-dotted decoration-1 underline-offset-[3px] outline-none focus-visible:rounded focus-visible:ring-2 focus-visible:ring-earth/60;
-    text-decoration-color: rgba(148, 163, 196, 0.6);
+    @apply cursor-help underline decoration-dotted decoration-1 underline-offset-[3px] outline-none focus-visible:rounded focus-visible:ring-2 focus-visible:ring-coral/60;
+    text-decoration-color: rgba(48, 65, 105, 0.45);
   }
 }
 
-:focus-visible { outline: 2px solid rgba(103, 232, 249, 0.8); outline-offset: 2px; }
+.font-mono { font-variant-numeric: tabular-nums; }
+:focus-visible { outline: 3px solid #f78677; outline-offset: 2px; }
 
-/* Range sliders: thin track, glowing amber thumb (the ship's velocity). */
+/* Range sliders: 6px light track with a coral fill, coral thumb with a white ring. */
 input[type='range'] {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 100%;
-  height: 24px;
-  background: transparent;
-  cursor: pointer;
-  --pct: 50%;
-  --fill: #f37064;
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 24px; background: transparent; cursor: pointer;
+  --pct: 50%; --fill: #f78677;
 }
 input[type='range']::-webkit-slider-runnable-track {
-  height: 4px;
-  border-radius: 99px;
-  background: linear-gradient(90deg, rgba(240,98,86,0.9), var(--fill) var(--pct), rgba(148,163,196,0.18) var(--pct));
+  height: 6px; border-radius: 3px;
+  background: linear-gradient(90deg, var(--fill) var(--pct), #e3e8f2 var(--pct));
 }
-input[type='range']::-moz-range-track { height: 4px; border-radius: 99px; background: rgba(148,163,196,0.18); }
-input[type='range']::-moz-range-progress { height: 4px; border-radius: 99px; background: var(--fill); }
+input[type='range']::-moz-range-track { height: 6px; border-radius: 3px; background: #e3e8f2; }
+input[type='range']::-moz-range-progress { height: 6px; border-radius: 3px; background: var(--fill); }
 input[type='range']::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 18px; height: 18px; margin-top: -7px; border-radius: 50%;
-  background: #243056; border: 3px solid var(--fill);
-  box-shadow: 0 0 0 5px rgba(243,112,100,0.16), 0 0 16px rgba(243,112,100,0.6);
+  -webkit-appearance: none; width: 18px; height: 18px; margin-top: -6px; border-radius: 50%;
+  background: var(--fill); border: 3px solid #fff; box-shadow: 0 2px 6px rgba(48, 65, 105, 0.3);
 }
 input[type='range']::-moz-range-thumb {
   width: 12px; height: 12px; border-radius: 50%;
-  background: #243056; border: 3px solid var(--fill);
-  box-shadow: 0 0 0 5px rgba(243,112,100,0.16), 0 0 16px rgba(243,112,100,0.6);
+  background: var(--fill); border: 3px solid #fff; box-shadow: 0 2px 6px rgba(48, 65, 105, 0.3);
 }
-input[type='range'].earth-range { --fill: #9fb0ff; }
-input[type='range'].earth-range::-webkit-slider-thumb { background: #243056; box-shadow: 0 0 0 5px rgba(159,176,255,0.16), 0 0 16px rgba(159,176,255,0.6); }
+input[type='range'].earth-range { --fill: #6f86f0; }
 
 /* Touch screens: roomier tap targets and a taller slider hit area. */
 @media (pointer: coarse) {

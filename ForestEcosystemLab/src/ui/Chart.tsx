@@ -72,23 +72,23 @@ export function Chart() {
     const YR = (v: number) => pad.t + ph - (v / 100) * ph;
 
     // Grid and axes
-    g.font = '10px "JetBrains Mono", monospace';
+    g.font = '10px Poppins, sans-serif';
     g.lineWidth = 1;
     for (let k = 0; k <= 4; k++) {
       const y = pad.t + (ph * k) / 4;
-      g.strokeStyle = 'rgba(255,255,255,0.06)';
+      g.strokeStyle = 'rgba(48,65,105,0.08)';
       g.beginPath(); g.moveTo(pad.l, y); g.lineTo(pad.l + pw, y); g.stroke();
-      g.fillStyle = '#a3b0a6'; g.textAlign = 'right';
+      g.fillStyle = '#6b7c9e'; g.textAlign = 'right';
       g.fillText(String(Math.round(maxL * (1 - k / 4))), pad.l - 5, y + 3);
       g.fillStyle = '#58b368'; g.textAlign = 'left';
       g.fillText(`${Math.round(100 * (1 - k / 4))}%`, pad.l + pw + 5, y + 3);
     }
     const span = d1 - d0;
     const step = span > 400 ? 100 : span > 150 ? 50 : span > 60 ? 20 : span > 25 ? 10 : 5;
-    g.fillStyle = '#6f7d73'; g.textAlign = 'center';
+    g.fillStyle = '#8d9ab5'; g.textAlign = 'center';
     for (let d = Math.ceil(d0 / step) * step; d <= d1; d += step) {
       const x = X(d);
-      g.strokeStyle = 'rgba(255,255,255,0.04)';
+      g.strokeStyle = 'rgba(48,65,105,0.05)';
       g.beginPath(); g.moveTo(x, pad.t); g.lineTo(x, pad.t + ph); g.stroke();
       g.fillText(`d${d}`, x, H - 6);
     }
@@ -117,7 +117,7 @@ export function Chart() {
       let bi = i0;
       for (let i = i0; i < n; i++) if (Math.abs(data.day[i] - day) < Math.abs(data.day[bi] - day)) bi = i;
       const x = X(data.day[bi]);
-      g.strokeStyle = 'rgba(255,255,255,0.35)'; g.lineWidth = 1;
+      g.strokeStyle = 'rgba(48,65,105,0.35)'; g.lineWidth = 1;
       g.beginPath(); g.moveTo(x, pad.t); g.lineTo(x, pad.t + ph); g.stroke();
       for (const s of SERIES) if (show[s.key]) {
         const v = data[s.key][bi];
@@ -136,20 +136,20 @@ export function Chart() {
 
   return (
     <section className="panel flex min-h-0 min-w-0 flex-col" aria-label="Population graph">
-      <div className="scroll-thin flex items-center gap-1.5 overflow-x-auto whitespace-nowrap border-b border-white/[0.06] px-3 py-1.5 [&>*]:shrink-0">
-        <h2 className="h-title mr-2 text-[14px]">Populations over time</h2>
+      <div className="scroll-thin flex items-center gap-1.5 overflow-x-auto whitespace-nowrap border-b border-line px-3 py-1.5 [&>*]:shrink-0">
+        <h2 className="h-title mr-2">Populations over time</h2>
         {SERIES.map((s) => (
           <button key={s.key} type="button" className="chip flex items-center gap-1.5" aria-pressed={show[s.key]} onClick={() => setShow({ ...show, [s.key]: !show[s.key] })}>
             <i className="inline-block h-2 w-2 rounded-full" style={{ background: s.color, opacity: show[s.key] ? 1 : 0.3 }} />{s.label}
           </button>
         ))}
-        <span className="mx-1 h-4 w-px bg-white/10" />
+        <span className="mx-1 h-4 w-px bg-line" />
         {RANGES.map((r) => <button key={r.label} type="button" className="chip" aria-pressed={range === r.days} onClick={() => setRange(r.days)}>{r.label}</button>)}
-        <span className="mx-1 h-4 w-px bg-white/10" />
+        <span className="mx-1 h-4 w-px bg-line" />
         <button type="button" className="chip" aria-pressed={ctl.chartPaused} onClick={() => ctl.setChartPaused(!ctl.chartPaused)}>{ctl.chartPaused ? 'Resume graph' : 'Pause graph'}</button>
         <button type="button" className="chip" onClick={() => ctl.resetHistory()}>Clear history</button>
       </div>
-      <div className="scroll-thin flex items-center gap-1 overflow-x-auto whitespace-nowrap border-b border-white/[0.06] px-3 py-1 [&>*]:shrink-0" aria-label="Show other species on the graph">
+      <div className="scroll-thin flex items-center gap-1 overflow-x-auto whitespace-nowrap border-b border-line px-3 py-1 [&>*]:shrink-0" aria-label="Show other species on the graph">
         <span className="mr-1 text-[11px] text-ink-faint">Also plot:</span>
         {FAUNA_IDS.map((id) => {
           const on = extra.includes(id);
@@ -174,7 +174,7 @@ export function Chart() {
           aria-label={`Graph of wolves, deer and vegetation. Currently ${ctl.sim.count('wolf')} wolves, ${ctl.sim.count('deer')} deer.`}
         />
         {tip && (
-          <div className="pointer-events-none absolute top-2 rounded-md border border-white/10 bg-char-950/95 px-2 py-1 text-[11px] shadow-lg"
+          <div className="pointer-events-none absolute top-2 float-card rounded-md border border-line px-2 py-1 text-[11px]"
             style={{ left: tip.x + 10, transform: tip.x > Math.min(400, (canvas.current?.clientWidth ?? 800) / 2) ? 'translateX(calc(-100% - 20px))' : undefined }}>
             <div className="font-mono text-ink-muted">day {tip.day.toFixed(1)}</div>
             {tip.vals.map((v) => <div key={v.label} className="flex justify-between gap-3"><span style={{ color: v.color }}>{v.label}</span><span className="font-mono text-ink">{v.v}</span></div>)}

@@ -4,10 +4,10 @@ import { PRESETS } from '../sim/engine';
 
 function Card({ n, title, children, action, extra }: { n: number; title: string; children: ReactNode; action: ReactNode; extra?: ReactNode }) {
   return (
-    <article className="glass relative flex flex-col gap-3 p-5 before:absolute before:inset-x-5 before:top-0 before:h-px before:bg-gradient-to-r before:from-coral/70 before:to-transparent">
+    <article className="glass relative flex flex-col gap-3 p-5 before:absolute before:inset-x-5 before:top-0 before:h-px before:bg-gradient-to-r before:from-coral before:to-transparent">
       <div className="flex items-center gap-3">
-        <span className="grid h-8 w-8 place-items-center rounded-md bg-coral font-display text-[18px] text-space-700">{n}</span>
-        <h3 className="font-display text-[21px] font-normal uppercase tracking-[0.04em] text-ink">{title}</h3>
+        <span className="grid h-8 w-8 place-items-center rounded-md bg-coral font-display text-[16px] font-bold text-white">{n}</span>
+        <h3 className="font-display text-[18px] font-bold text-ink">{title}</h3>
       </div>
       <div className="flex flex-col gap-2 text-[13px] leading-relaxed text-ink-muted">{children}</div>
       {extra}
@@ -31,7 +31,7 @@ export function Experiments({ onRun }: { onRun: () => void }) {
 
   return (
     <section aria-labelledby="expTitle" className="flex flex-col gap-4">
-      <h2 id="expTitle" className="font-display text-[30px] font-normal uppercase tracking-[0.04em] text-coral">Experiments</h2>
+      <h2 id="expTitle" className="font-display text-[26px] font-bold text-ink">Experiments</h2>
       <div className="grid gap-4 lg:grid-cols-3">
         <Card
           n={1}
@@ -45,7 +45,7 @@ export function Experiments({ onRun }: { onRun: () => void }) {
                 return (
                   <span
                     key={p.pct}
-                    className={`rounded-md border px-2 py-0.5 font-mono text-[12px] lg:text-[11.5px] ${now ? 'border-coral/70 bg-coral/15 text-coral-soft' : done ? 'border-emerald-400/40 text-emerald-300' : 'border-white/10 text-ink-faint'}`}
+                    className={`rounded-md border px-2 py-0.5 font-mono text-[12px] lg:text-[11.5px] ${now ? 'border-coral bg-coral/15 text-coral-soft' : done ? 'border-emerald-500/50 text-[#1f9d6b]' : 'border-line text-ink-faint'}`}
                   >
                     {done ? '✓ ' : ''}{p.pct}%
                   </span>

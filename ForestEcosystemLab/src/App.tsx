@@ -30,11 +30,11 @@ export default function App() {
 
   return (
     <ControllerContext.Provider value={controller}>
-      <div className="flex min-h-full flex-col lg:h-full lg:min-h-[680px] gap-2 bg-char-950 p-2 font-sans text-ink max-lg:pb-[max(0.5rem,env(safe-area-inset-bottom))] max-lg:pl-[max(0.5rem,env(safe-area-inset-left))] max-lg:pr-[max(0.5rem,env(safe-area-inset-right))]">
+      <div className="flex min-h-full flex-col lg:h-full lg:min-h-[680px] gap-2 bg-mist p-2 font-sans text-ink max-lg:pb-[max(0.5rem,env(safe-area-inset-bottom))] max-lg:pl-[max(0.5rem,env(safe-area-inset-left))] max-lg:pr-[max(0.5rem,env(safe-area-inset-right))]">
         <Header />
         <div className="grid min-h-0 flex-1 grid-cols-1 gap-2 lg:grid-cols-[300px_minmax(0,1fr)_320px] lg:grid-rows-[minmax(0,1fr)_230px]">
           <div className="order-2 h-[420px] lg:order-none lg:row-span-2 lg:h-auto lg:min-h-0 [&>aside]:h-full"><LeftPanel /></div>
-          <main className="relative order-1 h-[60vh] min-h-[320px] overflow-hidden rounded-xl border border-white/[0.07] lg:order-none lg:h-auto" aria-label="3D forest view">
+          <main className="relative order-1 h-[60vh] min-h-[320px] overflow-hidden rounded-[14px] lg:order-none lg:h-auto" aria-label="3D forest view">
             <Scene controller={controller} />
             <ViewToolbar />
             <HuntToasts />

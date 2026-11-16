@@ -20,7 +20,7 @@ function Trend({ now, before }: { now: number; before: number }) {
 
 function Stat({ label, value, sub, color, trend }: { label: string; value: ReactNode; sub?: ReactNode; color?: string; trend?: ReactNode }) {
   return (
-    <div className="rounded-lg border border-white/[0.07] bg-black/20 px-3 py-2">
+    <div className="rounded-lg border border-line bg-[#f7f9fc] px-3 py-2">
       <div className="flex items-center justify-between gap-2 text-[11.5px] text-ink-muted"><span>{label}</span>{trend}</div>
       <div className="font-mono text-[19px] font-medium leading-tight" style={{ color }}>{value}</div>
       {sub && <div className="font-mono text-[11px] text-ink-faint">{sub}</div>}
@@ -49,7 +49,7 @@ function Stats() {
         <Stat label="Avg energy" value={`${sim.averageEnergy('deer').toFixed(0)} / ${sim.averageEnergy('wolf').toFixed(0)}`} sub="deer / wolves (of 100)" />
       </div>
       <Wildlife />
-      <div className="rounded-lg border border-white/[0.07] p-3 text-[12px]">
+      <div className="rounded-lg border border-line p-3 text-[12px]">
         <div className="mb-1 font-medium text-ink">Deer deaths by cause</div>
         <div className="grid grid-cols-2 gap-x-3 font-mono text-ink-muted">
           <span>predation {dc.predation}</span><span>starvation {dc.starvation}</span>
@@ -62,7 +62,7 @@ function Stats() {
           <span>other natural {c.deaths.wolf.natural}</span><span>removed {c.removed.wolf}</span>
         </div>
       </div>
-      <div className="rounded-lg border border-white/[0.07] p-3">
+      <div className="rounded-lg border border-line p-3">
         <div className="mb-1.5 text-[12px] font-medium text-ink">Field notes</div>
         <ul className="m-0 flex list-none flex-col gap-1 p-0 text-[12px] text-ink-muted">
           {sim.events.slice(-9).reverse().map((e, i) => (
@@ -70,7 +70,7 @@ function Stats() {
           ))}
         </ul>
       </div>
-      {ctl.throughput < 0.8 && <p className="text-[12px] text-amber-300">This device can't keep up with the chosen speed; the simulation is running slower than requested (the rules are unchanged).</p>}
+      {ctl.throughput < 0.8 && <p className="text-[12px] text-[#b7860f]">This device can't keep up with the chosen speed; the simulation is running slower than requested (the rules are unchanged).</p>}
     </div>
   );
 }
@@ -82,7 +82,7 @@ function Wildlife() {
   const counts = Object.fromEntries(SPECIES_IDS.map((id) => [id, 0])) as Record<SpeciesId, number>;
   for (const a of sim.animals) if (a.alive) counts[a.species]++;
   return (
-    <div className="rounded-lg border border-white/[0.07] p-3">
+    <div className="rounded-lg border border-line p-3">
       <div className="mb-1.5 flex items-baseline justify-between text-[12px]"><span className="font-medium text-ink">Wildlife</span><span className="text-ink-faint">born / died</span></div>
       <div className="grid grid-cols-1 gap-y-0.5">
         {FAUNA_IDS.map((id) => (
@@ -108,7 +108,7 @@ const STATE_TEXT: Record<string, string> = {
 };
 
 function bar(v: number, color: string) {
-  return <div className="h-1.5 w-full overflow-hidden rounded bg-white/10"><div className="h-full rounded" style={{ width: `${Math.max(0, Math.min(100, v))}%`, background: color }} /></div>;
+  return <div className="h-1.5 w-full overflow-hidden rounded bg-line"><div className="h-full rounded" style={{ width: `${Math.max(0, Math.min(100, v))}%`, background: color }} /></div>;
 }
 
 function reproStatus(a: Animal) {
@@ -142,15 +142,15 @@ function Inspector() {
   const eats = [...(S.plants ? ['plants'] : []), ...S.prey.map((p) => `${speciesName(p.id, 2)}${p.juvenileOnly ? ' (young)' : ''}`), ...(S.meat?.scavenges ? ['carrion'] : [])];
   const huntedBy = predatorsOf(a.species).map((p) => `${speciesName(p.id, 2)}${p.juvenileOnly ? ' (young only)' : ''}`);
   const stateText = a.state === 'follow' && a.species === 'raven' && isAdult(a) ? 'Shadowing the wolves' : STATE_TEXT[a.state] ?? a.state;
-  const row = (k: string, v: ReactNode) => <div className="flex justify-between gap-3 border-t border-white/[0.06] py-1.5 text-[12.5px]"><span className="text-ink-muted">{k}</span><span className="text-right font-mono text-ink">{v}</span></div>;
+  const row = (k: string, v: ReactNode) => <div className="flex justify-between gap-3 border-t border-line py-1.5 text-[12.5px]"><span className="text-ink-muted">{k}</span><span className="text-right font-mono text-ink">{v}</span></div>;
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center justify-between">
         <div>
-          <div className="font-display text-[20px] uppercase tracking-[0.04em]" style={{ color: S.color }}>{S.name} #{a.id}</div>
+          <div className="font-display text-[20px] font-bold" style={{ color: S.color }}>{S.name} #{a.id}</div>
           <div className="text-[12px] text-ink-muted">{a.sex === 'F' ? 'Female' : 'Male'} · generation {a.generation}{pack ? ` · pack ${pack.id}${pack.leaderId === a.id ? ' (leader)' : ''}${pack.breederId === a.id ? ' (breeder)' : ''}` : ''}</div>
         </div>
-        <span className="rounded-md border border-forest/40 bg-forest/10 px-2 py-1 text-right text-[12px] text-forest-soft">{stateText}</span>
+        <span className="rounded-md border border-coral bg-blush px-2 py-1 text-right text-[12px] text-forest-soft">{stateText}</span>
       </div>
       <p className="m-0 text-[12px] leading-snug text-ink-muted">{S.blurb}</p>
       <div className="flex flex-col gap-1.5 text-[12px]">
@@ -222,8 +222,8 @@ function WebDiagram() {
       })}
       {[{ p: plants, label: 'PLANTS', color: '#58b368' }, { p: carrion, label: 'CARRION', color: '#a8705e' }].map((b) => (
         <g key={b.label}>
-          <rect x={b.p.x - 38} y={b.p.y - 12} width={76} height={24} rx={6} fill="#1a1f1c" stroke={b.color} />
-          <text x={b.p.x} y={b.p.y + 4} textAnchor="middle" fill={b.color} fontSize={11} fontFamily="Brain, 'Saira Semi Condensed', sans-serif" letterSpacing={1}>{b.label}</text>
+          <rect x={b.p.x - 38} y={b.p.y - 12} width={76} height={24} rx={6} fill="#ffffff" stroke={b.color} />
+          <text x={b.p.x} y={b.p.y + 4} textAnchor="middle" fill={b.color} fontSize={11} fontFamily="Poppins, sans-serif" fontWeight={600} letterSpacing={1}>{b.label}</text>
         </g>
       ))}
       {SPECIES_IDS.map((id) => {
@@ -231,9 +231,9 @@ function WebDiagram() {
         return (
           <g key={id} opacity={counts[id] ? 1 : 0.4}>
             <title>{`${S.name}: ${counts[id]} alive. ${S.blurb}`}</title>
-            <circle cx={p.x} cy={p.y} r={r} fill="#141816" stroke={S.color} strokeWidth={2} />
-            <text x={p.x} y={p.y + 3.5} textAnchor="middle" fill="#e9ede8" fontSize={9.5} fontFamily="'JetBrains Mono', monospace">{counts[id]}</text>
-            <text x={p.x} y={p.y + r + 10} textAnchor="middle" fill="#c9d1cb" fontSize={8.5} fontFamily="'Saira', sans-serif">{speciesName(id, 2)}</text>
+            <circle cx={p.x} cy={p.y} r={r} fill="#ffffff" stroke={S.color} strokeWidth={2} />
+            <text x={p.x} y={p.y + 3.5} textAnchor="middle" fill="#304169" fontSize={9.5} fontFamily="Poppins, sans-serif">{counts[id]}</text>
+            <text x={p.x} y={p.y + r + 10} textAnchor="middle" fill="#6b7c9e" fontSize={8.5} fontFamily="Poppins, sans-serif">{speciesName(id, 2)}</text>
           </g>
         );
       })}
@@ -255,9 +255,9 @@ function FoodWeb() {
   const sunlight = sim.season * (1 - sim.params.drought * 0.7);
   const node = (x: number, y: number, label: string, value: string, color: string) => (
     <g>
-      <rect x={x - 62} y={y - 22} width={124} height={44} rx={10} fill="#1a1f1c" stroke={color} strokeWidth={1.5} />
-      <text x={x} y={y - 4} textAnchor="middle" fill={color} fontSize={13} fontFamily="Brain, 'Saira Semi Condensed', sans-serif" letterSpacing={1}>{label.toUpperCase()}</text>
-      <text x={x} y={y + 13} textAnchor="middle" fill="#a3b0a6" fontSize={10.5} fontFamily="'JetBrains Mono', monospace">{value}</text>
+      <rect x={x - 62} y={y - 22} width={124} height={44} rx={10} fill="#ffffff" stroke={color} strokeWidth={1.5} />
+      <text x={x} y={y - 4} textAnchor="middle" fill={color} fontSize={13} fontFamily="Poppins, sans-serif" fontWeight={600} letterSpacing={1}>{label.toUpperCase()}</text>
+      <text x={x} y={y + 13} textAnchor="middle" fill="#6b7c9e" fontSize={10.5} fontFamily="Poppins, sans-serif">{value}</text>
     </g>
   );
   const arrow = (x1: number, y1: number, x2: number, y2: number, width: number, color: string) => (
@@ -265,12 +265,12 @@ function FoodWeb() {
   );
   return (
     <div className="flex flex-col gap-3">
-      <h3 className="h-title text-[14px]">Who eats whom</h3>
+      <h3 className="h-title">Who eats whom</h3>
       <WebDiagram />
       <p className="m-0 text-[12px] leading-snug text-ink-muted">Circles grow with population; solid links have recorded kills (thicker = more), dashed ones are diet links not yet seen in this run. Hover for details.</p>
-      <h3 className="h-title mt-1 text-[14px]">Energy: plants → deer → wolves</h3>
+      <h3 className="h-title mt-1">Energy: plants → deer → wolves</h3>
       <svg viewBox="0 0 320 400" className="w-full" role="img" aria-label="Food web with measured energy flows">
-        <defs><marker id="arrow" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="6" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#a3b0a6" /></marker></defs>
+        <defs><marker id="arrow" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="6" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#6b7c9e" /></marker></defs>
         {arrow(160, 62, 160, 108, 6, '#f2c14e')}
         {arrow(160, 152, 160, 198, w(f.deerGained), '#58b368')}
         {arrow(160, 242, 160, 288, w(f.wolfGained), '#4c8eda')}
@@ -281,12 +281,12 @@ function FoodWeb() {
         {node(160, 130, 'Vegetation', `${npp.toFixed(0)} E/day grown`, '#58b368')}
         {node(160, 220, 'Deer', `${f.deerGained.toFixed(0)} E/day eaten`, '#4c8eda')}
         {node(160, 310, 'Wolves', `${f.wolfGained.toFixed(0)} E/day eaten`, '#e5534b')}
-        <text x={300} y={118} fill="#a3b0a6" fontSize={9.5} textAnchor="end">not eaten</text>
-        <text x={300} y={208} fill="#a3b0a6" fontSize={9.5} textAnchor="end">respired</text>
-        <text x={300} y={298} fill="#a3b0a6" fontSize={9.5} textAnchor="end">respired</text>
-        <text x={16} y={180} fill="#8fd19a" fontSize={11}>{effPlantToDeer.toFixed(1)}%</text>
-        <text x={16} y={270} fill="#8fd19a" fontSize={11}>{effDeerToWolf.toFixed(1)}%</text>
-        <text x={16} y={384} fill="#6f7d73" fontSize={10}>% = energy passed to the next level (5-day average)</text>
+        <text x={300} y={118} fill="#6b7c9e" fontSize={9.5} textAnchor="end">not eaten</text>
+        <text x={300} y={208} fill="#6b7c9e" fontSize={9.5} textAnchor="end">respired</text>
+        <text x={300} y={298} fill="#6b7c9e" fontSize={9.5} textAnchor="end">respired</text>
+        <text x={16} y={180} fill="#3f8a4c" fontSize={11}>{effPlantToDeer.toFixed(1)}%</text>
+        <text x={16} y={270} fill="#3f8a4c" fontSize={11}>{effDeerToWolf.toFixed(1)}%</text>
+        <text x={16} y={384} fill="#8d9ab5" fontSize={10}>% = energy passed to the next level (5-day average)</text>
       </svg>
       <div className="grid grid-cols-1 gap-y-0.5 font-mono text-[11.5px] text-ink-muted">
         <span>deer respiration {f.deerSpent.toFixed(0)} E/d</span><span>wolf respiration {f.wolfSpent.toFixed(0)} E/d</span>
@@ -337,8 +337,8 @@ function Model() {
     const xs = h.data.deer, ys = h.data.wolves;
     const mx = Math.max(10, ...xs) * 1.1, my = Math.max(5, ...ys) * 1.2;
     const X = (v: number) => 34 + (v / mx) * (W - 44), Y = (v: number) => H - 24 - (v / my) * (H - 34);
-    g.strokeStyle = 'rgba(255,255,255,0.15)'; g.beginPath(); g.moveTo(34, 8); g.lineTo(34, H - 24); g.lineTo(W - 8, H - 24); g.stroke();
-    g.fillStyle = '#a3b0a6'; g.font = '10px Saira'; g.fillText('deer →', W - 48, H - 8); g.save(); g.translate(12, 60); g.rotate(-Math.PI / 2); g.fillText('wolves →', 0, 0); g.restore();
+    g.strokeStyle = 'rgba(48,65,105,0.2)'; g.beginPath(); g.moveTo(34, 8); g.lineTo(34, H - 24); g.lineTo(W - 8, H - 24); g.stroke();
+    g.fillStyle = '#6b7c9e'; g.font = '10px Poppins'; g.fillText('deer →', W - 48, H - 8); g.save(); g.translate(12, 60); g.rotate(-Math.PI / 2); g.fillText('wolves →', 0, 0); g.restore();
     g.fillText(String(Math.round(mx)), W - 30, H - 26); g.fillText(String(Math.round(my)), 4, 14);
     // Trajectory, fading from old to new
     for (let i = 1; i < xs.length; i++) {
@@ -365,15 +365,15 @@ function Model() {
 
   return (
     <div className="flex flex-col gap-3 text-[12.5px] leading-relaxed text-ink-muted">
-      <div className="rounded-lg border border-white/[0.07] bg-black/20 p-3 font-mono text-[12.5px] text-ink">
+      <div className="rounded-lg border border-line bg-[#f7f9fc] p-3 font-mono text-[12.5px] text-ink">
         <div>dN/dt = αN − βNP</div><div>dP/dt = δNP − γP</div>
       </div>
       <p>Coefficients estimated from the last {WINDOW_DAYS} days of this run (N = deer, P = wolves, per day):</p>
       <div className="grid grid-cols-2 gap-x-3 gap-y-1 font-mono text-[12px] text-ink">
         <span>α = {fmt(alpha)}</span><span>β = {fmt(beta)}</span><span>δ = {fmt(delta)}</span><span>γ = {fmt(gamma)}</span>
       </div>
-      <canvas ref={canvas} className="h-[200px] w-full rounded-lg border border-white/[0.07] bg-black/20" aria-label="Phase plot of wolves against deer" />
-      <p><span className="text-[#8fd19a]">Green</span>: the run's path in the deer–wolf plane (cycles show as loops). <span className="text-[#f2c14e]">Gold</span>: the Lotka–Volterra equilibrium (γ/δ, α/β) and, dashed, what the equations predict from today.</p>
+      <canvas ref={canvas} className="h-[200px] w-full rounded-lg border border-line bg-[#f7f9fc]" aria-label="Phase plot of wolves against deer" />
+      <p><span className="text-forest-soft">Green</span>: the run's path in the deer–wolf plane (cycles show as loops). <span className="text-[#b7860f]">Gold</span>: the Lotka–Volterra equilibrium (γ/δ, α/β) and, dashed, what the equations predict from today.</p>
       <p>
         Lotka–Volterra treats animals as well-mixed numbers with constant rates. This simulation is agent-based: deer are
         limited by plants that regrow at a finite rate, water, crowding and age; wolves need to find, chase and catch individual
@@ -394,7 +394,7 @@ export function RightPanel() {
   }, [ctl.selectedId]);
   return (
     <aside className="panel flex min-h-0 flex-col" aria-label="Statistics and details">
-      <div className="flex gap-1 border-b border-white/[0.06] p-2" role="tablist">
+      <div className="flex gap-1 border-b border-line p-2" role="tablist">
         {(['stats', 'inspect', 'web', 'model'] as Tab[]).map((t) => (
           <button key={t} type="button" role="tab" aria-selected={tab === t} className="tab" onClick={() => setTab(t)}>
             {t === 'stats' ? 'Statistics' : t === 'inspect' ? 'Animal' : t === 'web' ? 'Food web' : 'Model'}

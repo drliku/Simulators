@@ -51,11 +51,11 @@ function WeatherCard() {
   const w = ctl.sim.weather;
   const pct = (v: number) => `${v >= 1 ? '+' : ''}${((v - 1) * 100).toFixed(0)}%`;
   return (
-    <div className="rounded-lg border border-white/[0.07] p-2.5">
+    <div className="rounded-lg border border-line p-2.5">
       <div className="flex items-center gap-2">
         <span className="text-[22px]" aria-hidden="true">{WEATHER_ICON[w.kind]}</span>
         <div>
-          <div className="font-display text-[15px] uppercase tracking-[0.05em]">{WEATHER_LABEL[w.kind]}</div>
+          <div className="font-display text-[15px] font-bold">{WEATHER_LABEL[w.kind]}</div>
           <div className="text-[11.5px] text-ink-muted">Wind {(3 + 12 * w.mix.wind).toFixed(0)} m/s</div>
         </div>
       </div>
@@ -75,13 +75,13 @@ function Populations() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-3">
-        <h3 className="h-title text-[14px]">Initial populations</h3>
+        <h3 className="h-title">Initial populations</h3>
         <Slider label="Initial wolves" value={ctl.setup.initialWolves} min={0} max={100} step={1} format={(v) => String(v)} onChange={(v) => ctl.setSetup({ initialWolves: v })} />
         <Slider label="Initial deer" value={ctl.setup.initialDeer} min={0} max={500} step={5} format={(v) => String(v)} onChange={(v) => ctl.setSetup({ initialDeer: v })} />
         <button type="button" className="btn btn-primary" onClick={() => ctl.reset()}>Reset with these populations</button>
       </div>
       <div className="flex flex-col gap-2">
-        <h3 className="h-title text-[14px]">Change the current run</h3>
+        <h3 className="h-title">Change the current run</h3>
         <div className="grid grid-cols-2 gap-2">
           <button type="button" className="btn" onClick={() => ctl.addWolves(1)}>+1 wolf</button>
           <button type="button" className="btn" onClick={() => ctl.addWolves(10)}>+10 wolves</button>
@@ -95,13 +95,13 @@ function Populations() {
         <p className="text-[12px] text-ink-faint">Added wolves arrive as new packs; added deer as small herds. Removals are recorded separately from deaths.</p>
       </div>
       <div className="flex flex-col gap-2">
-        <h3 className="h-title text-[14px]">Other species</h3>
+        <h3 className="h-title">Other species</h3>
         <p className="text-[12px] leading-snug text-ink-faint">Starting numbers apply at the next reset; the buttons act on the current run.</p>
         {FAUNA_IDS.map((id) => {
           const S = SPECIES[id];
           const now = ctl.sim.count(id);
           return (
-            <div key={id} className="rounded-md border border-white/[0.06] px-2 py-1.5" title={S.blurb}>
+            <div key={id} className="rounded-md border border-line px-2 py-1.5" title={S.blurb}>
               <div className="flex items-center justify-between gap-2">
                 <span className="flex min-w-0 items-center gap-1.5 text-[12px] text-ink"><i className="inline-block h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: S.color }} /><span className="truncate">{S.name}</span><span className="font-mono text-ink-faint">({now})</span></span>
                 <span className="flex shrink-0 gap-1">
@@ -125,13 +125,13 @@ function Runs() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
-        <h3 className="h-title text-[14px]">Random seed</h3>
+        <h3 className="h-title">Random seed</h3>
         <div className="flex gap-2">
           <input
             type="number"
             value={ctl.setup.seed}
             onChange={(e) => ctl.setSetup({ seed: Math.max(0, Math.floor(Number(e.target.value) || 0)) })}
-            className="h-8 min-w-0 flex-1 rounded-md border border-white/10 bg-black/30 px-2 font-mono text-[13px] text-ink"
+            className="h-8 min-w-0 flex-1 px-2 font-mono text-[13px]"
             aria-label="Seed"
           />
           <button type="button" className="btn" onClick={() => ctl.newSeed()}>New seed</button>
@@ -143,11 +143,11 @@ function Runs() {
         </p>
       </div>
       <div className="flex flex-col gap-2">
-        <h3 className="h-title text-[14px]">Compare runs</h3>
+        <h3 className="h-title">Compare runs</h3>
         <button type="button" className="btn" onClick={() => ctl.saveRun()}>Save this run to the graph</button>
         {ctl.savedRuns.length === 0 && <p className="text-[12px] text-ink-faint">Saved runs appear as dashed lines on the population graph. Up to four are kept.</p>}
         {ctl.savedRuns.map((r) => (
-          <div key={r.id} className="flex items-center justify-between gap-2 rounded-md border border-white/[0.07] px-2 py-1.5">
+          <div key={r.id} className="flex items-center justify-between gap-2 rounded-md border border-line px-2 py-1.5">
             <span className="flex items-center gap-2 text-[12px] text-ink-muted"><i className="inline-block h-0 w-5 border-t-2 border-dashed" style={{ borderColor: r.color }} />{r.label}</span>
             <button type="button" className="text-[12px] text-ink-faint hover:text-ink" onClick={() => ctl.removeRun(r.id)} aria-label={`Remove ${r.label}`}>✕</button>
           </div>
@@ -166,10 +166,10 @@ function Experiments() {
       {EXPERIMENTS.map((e) => {
         const on = active === e.id;
         return (
-          <article key={e.id} className={`rounded-lg border p-3 ${on ? 'border-forest/60 bg-forest/[0.08]' : 'border-white/[0.07]'}`}>
+          <article key={e.id} className={`rounded-lg border p-3 ${on ? 'border-coral bg-blush' : 'border-line'}`}>
             <div className="flex items-center gap-2">
-              <span className="grid h-6 w-6 place-items-center rounded bg-forest font-display text-[14px] text-char-950">{e.letter}</span>
-              <h3 className="font-display text-[16px] uppercase tracking-[0.04em]">{e.title}</h3>
+              <span className="grid h-6 w-6 place-items-center rounded bg-coral font-display text-[14px] font-bold text-white">{e.letter}</span>
+              <h3 className="font-display text-[16px] font-bold text-ink">{e.title}</h3>
             </div>
             <p className="mt-1.5 text-[12.5px] leading-snug text-ink-muted">{e.summary}</p>
             {on && (
@@ -206,7 +206,7 @@ export function LeftPanel() {
   const [tab, setTab] = useState<Tab>('experiments');
   return (
     <aside className="panel flex min-h-0 flex-col" aria-label="Simulation controls">
-      <div className="flex flex-wrap gap-1 border-b border-white/[0.06] p-2" role="tablist">
+      <div className="flex flex-wrap gap-1 border-b border-line p-2" role="tablist">
         {TABS.map((t) => <button key={t.id} type="button" role="tab" aria-selected={tab === t.id} className="tab" onClick={() => setTab(t.id)}>{t.label}</button>)}
       </div>
       <div className="scroll-thin min-h-0 flex-1 overflow-y-auto p-3">

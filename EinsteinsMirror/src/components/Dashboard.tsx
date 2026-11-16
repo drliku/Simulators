@@ -9,7 +9,7 @@ import { TIPS } from './tips';
 function Row({ label, value, sub, tone }: { label: ReactNode; value: ReactNode; sub?: ReactNode; tone?: 'coral' | 'track' | 'photon' }) {
   const color = tone === 'coral' ? 'text-coral-soft' : tone === 'track' ? 'text-track-soft' : tone === 'photon' ? 'text-photon-soft' : 'text-ink';
   return (
-    <div className="flex items-baseline justify-between gap-4 border-t border-white/[0.06] py-2.5 first:border-t-0">
+    <div className="flex items-baseline justify-between gap-4 border-t border-line py-2.5 first:border-t-0">
       <dt className="text-[13px] text-ink-muted">{label}</dt>
       <dd className="m-0 text-right">
         <div className={`font-mono text-[14.5px] font-medium tabular-nums ${color}`}>{value}</div>

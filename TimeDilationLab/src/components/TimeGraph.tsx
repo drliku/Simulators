@@ -111,7 +111,7 @@ export function TimeGraph() {
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h2 className="panel-title">Time comparison</h2>
         <div className="flex flex-wrap gap-x-4 gap-y-1 text-[12px] lg:text-[11.5px] text-ink-muted">
-          <span className="inline-flex items-center gap-1.5"><i className="inline-block h-0 w-4 border-t border-dashed border-slate-300/70" />equal elapsed time</span>
+          <span className="inline-flex items-center gap-1.5"><i className="inline-block h-0 w-4 border-t border-dashed border-ink-faint" />equal elapsed time</span>
           {frame === 'earth' ? (
             <span className="inline-flex items-center gap-1.5"><i className="inline-block h-[3px] w-4 rounded bg-ship" />ship clock, Δτ = Δt/γ</span>
           ) : (
@@ -123,7 +123,7 @@ export function TimeGraph() {
         </div>
       </div>
       <div className="h-[260px] sm:h-[300px]">
-        <canvas ref={ref} className="h-full w-full" role="img" aria-label="Graph of ship proper time against Earth time, with the equal-time diagonal for reference" />
+        <canvas ref={ref} className="h-full w-full rounded-xl bg-navy-deep" role="img" aria-label="Graph of ship proper time against Earth time, with the equal-time diagonal for reference" />
       </div>
       <p className="text-[12px] leading-relaxed text-ink-faint">
         At constant velocity the ship's line is straight with slope 1/γ. The vertical gap to the diagonal is the time difference.

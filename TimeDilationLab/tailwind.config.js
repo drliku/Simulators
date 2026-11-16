@@ -4,19 +4,26 @@ export default {
   theme: {
     extend: {
       colors: {
-        // The Brain Maze: coral #F37064 on navy #243056. Ship = brand coral, Earth = periwinkle from the navy family.
+        // The Brain Maze site look (thebrainmaze.com): white cards and navy text on a mist page, coral accents.
+        // space-* stays for the dark scene canvases; navy/mist/line are the light UI chrome.
+        // Ship = brand coral, Earth = periwinkle; the *-soft shades are the darker variants used for text on white.
         space: { 950: '#0b1022', 900: '#101731', 850: '#161f3e', 800: '#1b2649', 700: '#243056' },
-        earth: { DEFAULT: '#9fb0ff', soft: '#c3cdff', deep: '#6f86f0' },
-        ship: { DEFAULT: '#f37064', soft: '#ffb4a8', deep: '#e0564a' },
-        ink: { DEFAULT: '#f6efea', muted: '#a3acc9', faint: '#737ea3' },
+        navy: { DEFAULT: '#304169', deep: '#1e2a47' },
+        mist: '#f0f3fa',
+        line: '#e3e8f2',
+        coral: { DEFAULT: '#f78677', hover: '#e67566' },
+        earth: { DEFAULT: '#9fb0ff', soft: '#4a63c9', deep: '#6f86f0', light: '#c3cdff' },
+        ship: { DEFAULT: '#f78677', soft: '#d9594e', deep: '#e67566', light: '#ffb4a8' },
+        ink: { DEFAULT: '#304169', muted: '#6b7c9e', faint: '#8a97b4' },
       },
       fontFamily: {
-        display: ['Brain', '"Saira Semi Condensed"', '"Arial Narrow"', 'sans-serif'],
-        sans: ['Saira', 'system-ui', 'sans-serif'],
-        mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+        display: ['Poppins', 'system-ui', 'sans-serif'],
+        sans: ['Poppins', 'system-ui', 'sans-serif'],
+        mono: ['Poppins', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
-        glass: '0 18px 50px rgba(5, 8, 22, 0.5), inset 0 1px 0 rgba(255,255,255,0.04)',
+        card: '0 4px 15px rgba(48, 65, 105, 0.10)',
+        'card-hover': '0 8px 25px rgba(48, 65, 105, 0.15)',
       },
     },
   },

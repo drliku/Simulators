@@ -47,7 +47,7 @@ export function Term({ children, tip }: { children: ReactNode; tip: ReactNode })
           id={id}
           role="tooltip"
           style={{ position: 'fixed', left: pos.left, top: pos.top, width: pos.width, transform: pos.above ? 'translateY(-100%)' : undefined }}
-          className="pointer-events-none z-50 rounded-xl border border-white/10 bg-space-900/95 px-3.5 py-3 text-left text-[12.5px] font-normal normal-case leading-relaxed tracking-normal text-ink-muted shadow-glass backdrop-blur"
+          className="pointer-events-none z-50 rounded-xl border border-line bg-white px-3.5 py-3 text-left text-[12.5px] font-normal normal-case leading-relaxed tracking-normal text-ink-muted shadow-card-hover"
         >
           {tip}
         </div>,

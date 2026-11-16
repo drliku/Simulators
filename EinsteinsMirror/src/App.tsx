@@ -8,7 +8,7 @@ import { Dashboard } from './components/Dashboard';
 import { Experiments } from './components/Experiments';
 import { Explanation } from './components/Explanation';
 import { Notes } from './components/Notes';
-import brainMark from './assets/brain-mark.png';
+import brainMazeLogo from './assets/brainmaze-logo.png';
 
 export default function App() {
   const [engine] = useState(() => new MirrorEngine());
@@ -33,27 +33,23 @@ export default function App() {
 
   return (
     <EngineContext.Provider value={engine}>
+      <header className="bm-topbar">
+        <a href="https://thebrainmaze.com/" target="_top"><img src={brainMazeLogo} alt="The Brain Maze" width={839} height={256} /></a>
+        <a className="bm-tag" href="https://thebrainmaze.com/" target="_top">Simulators</a>
+      </header>
       <div className="mx-auto flex max-w-[1560px] flex-col gap-5 px-4 pb-10 pt-6 sm:px-6 lg:px-8">
         <header className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex min-w-0 items-center gap-4">
-            <div className="flex items-center gap-2" aria-label="The Brain Maze">
-              <span className="grid font-display text-[21px] uppercase leading-[0.92] tracking-[0.04em] text-coral" aria-hidden="true">
-                <span>The Brain</span>
-                <span className="flex items-center justify-end gap-1.5 before:block before:h-[3px] before:w-[34px] before:bg-coral">Maze</span>
-              </span>
-              <img src={brainMark} alt="" width={42} height={42} className="h-[42px] w-[42px]" />
-            </div>
-            <span className="w-px self-stretch bg-white/15" aria-hidden="true" />
             <div className="min-w-0">
-              <h1 className="font-display text-[26px] font-normal uppercase leading-tight tracking-[0.04em] text-ink sm:text-3xl">Einstein's Mirror</h1>
+              <h1 className="font-display text-[26px] font-bold leading-tight text-ink sm:text-[28px]">Einstein's Mirror</h1>
               <p className="hidden text-[13.5px] text-ink-muted sm:block">An interactive relativity experiment</p>
             </div>
           </div>
-          <span className="font-mono text-[11.5px] text-ink-faint [@media(hover:none)]:hidden">Space play/pause · ← → step · R reset</span>
+          <span className="text-[11.5px] text-ink-faint [@media(hover:none)]:hidden">Space play/pause · ← → step · R reset</span>
         </header>
 
         <section className="glass flex flex-col gap-1 px-6 py-5">
-          <p className="font-display text-[24px] uppercase leading-tight tracking-[0.03em] text-ink sm:text-[30px]">
+          <p className="font-display text-[22px] font-bold leading-tight text-ink sm:text-[28px]">
             If you're travelling almost as fast as light, can you still see yourself in a mirror?
           </p>
           <p className="text-[14px] text-ink-muted">
@@ -65,7 +61,7 @@ export default function App() {
         <div className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_360px] xl:grid-rows-[auto_1fr]">
           <section ref={sceneRef} className="glass flex min-w-0 scroll-mt-4 flex-col gap-4 p-4 xl:col-start-1 xl:row-start-1" aria-label="Experiment">
             <Toolbar />
-            <div className="overflow-hidden rounded-xl border border-white/[0.07]">
+            <div className="overflow-hidden rounded-xl bg-navy-deep">
               <SceneCanvas />
             </div>
             <Timeline />

@@ -10,7 +10,7 @@ import { TIPS } from './tips';
 function Row({ label, value, tone, sub }: { label: ReactNode; value: ReactNode; tone?: 'earth' | 'ship'; sub?: ReactNode }) {
   const color = tone === 'earth' ? 'text-earth-soft' : tone === 'ship' ? 'text-ship-soft' : 'text-ink';
   return (
-    <div className="flex items-baseline justify-between gap-4 border-t border-white/[0.06] py-2.5 first:border-t-0">
+    <div className="flex items-baseline justify-between gap-4 border-t border-line py-2.5 first:border-t-0">
       <dt className="text-[13px] text-ink-muted">{label}</dt>
       <dd className="m-0 text-right">
         <div className={`font-mono text-[15px] font-medium tabular-nums ${color}`}>{value}</div>
@@ -41,8 +41,8 @@ export function StatsPanel() {
       </dl>
 
       {e.frame === 'ship' && (
-        <div className="rounded-xl border border-ship/25 bg-ship/[0.05] p-3.5">
-          <h3 className="mb-1.5 font-display text-[16px] font-normal uppercase tracking-[0.1em] text-ship-soft">Ship-frame comparison</h3>
+        <div className="rounded-xl border border-ship/30 bg-[#fdf2f0] p-3.5">
+          <h3 className="mb-1.5 text-[13px] font-semibold uppercase tracking-[0.5px] text-ship-soft">Ship-frame comparison</h3>
           <dl className="m-0">
             <Row label="Ship clock τ" value={fmt(d.shipTime)} tone="ship" />
             <Row label={<>Earth clock, simultaneous <i>in ship frame</i></>} value={fmt(d.earthInShipFrame)} tone="earth" sub="τ / γ" />

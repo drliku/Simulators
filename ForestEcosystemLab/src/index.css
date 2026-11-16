@@ -2,46 +2,57 @@
 @tailwind components;
 @tailwind utilities;
 
+/* The Brain Maze site look (thebrainmaze.com): Poppins, white panels, navy text, coral accents, pill controls.
+   The 3D forest keeps its own colours because it is part of the simulation. */
 @font-face {
-  /* Brain by Vladimir Nikolic, The Brain Maze typeface. One weight; lowercase draws as capitals. */
+  /* Brain by Vladimir Nikolic, The Brain Maze logo typeface. Only the hunt burst over the 3D view still uses it. */
   font-family: 'Brain';
   src: url('./assets/Brain.woff2') format('woff2');
   font-weight: 400;
   font-display: swap;
 }
 
-:root { color-scheme: dark; }
+:root { color-scheme: light; }
 html, body, #root { height: 100%; }
 #root { height: 100dvh; }
-body { margin: 0; background: #0e1110; color: #e9ede8; -webkit-font-smoothing: antialiased; }
+body { margin: 0; background: #f0f3fa; color: #304169; font-family: 'Poppins', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
 
 @layer components {
-  .panel { @apply rounded-xl border border-white/[0.07] bg-char-850/90; }
-  .h-title { @apply font-display text-[16px] uppercase tracking-[0.08em] text-forest-soft; }
-  .btn { @apply inline-flex h-8 items-center justify-center gap-1.5 rounded-md border border-white/10 bg-white/[0.04] px-2.5 text-[12.5px] font-medium text-ink transition hover:bg-white/[0.1] active:translate-y-px disabled:opacity-40; }
-  .btn-primary { @apply border-transparent bg-forest text-char-950 hover:bg-forest-soft; }
-  .chip { @apply h-7 rounded-md border border-white/10 px-2 text-[12px] text-ink-muted transition hover:text-ink; }
-  .chip[aria-pressed='true'] { @apply border-forest/60 bg-forest/20 text-forest-soft; }
-  .tab { @apply flex-1 rounded-md px-2 py-1.5 text-[12px] font-medium text-ink-muted transition hover:text-ink max-lg:whitespace-nowrap; }
-  .tab[aria-selected='true'] { @apply bg-white/[0.08] text-ink; }
+  .panel { @apply rounded-[14px] bg-white shadow-card; }
+  .h-title { @apply text-[12.5px] font-semibold uppercase tracking-[0.5px] text-coral; }
+  .btn { @apply inline-flex h-[2.1rem] items-center justify-center gap-1.5 rounded-full border-2 border-mist bg-white px-[0.95rem] text-[12px] font-semibold uppercase tracking-[0.3px] text-ink transition-colors duration-200 hover:border-coral hover:text-coral active:translate-y-px disabled:opacity-40; }
+  .btn-primary { @apply border-coral bg-coral text-white hover:border-coral-hover hover:bg-coral-hover hover:text-white; }
+  .chip { @apply h-[1.85rem] rounded-full border-2 border-mist bg-white px-[0.7rem] text-[12px] font-medium text-ink transition-colors duration-200 hover:border-coral hover:text-coral; }
+  .chip[aria-pressed='true'] { @apply border-navy bg-navy text-white hover:text-white; }
+  .tab { @apply flex-1 whitespace-nowrap rounded-full px-[0.35rem] py-1.5 text-[11.5px] font-semibold text-ink-muted transition hover:text-coral; }
+  .tab[aria-selected='true'] { @apply bg-navy text-white; }
   .label { @apply text-[12px] text-ink-muted; }
+  /* Light panels floating over the 3D view (toolbar, chart tooltip, hunt banners). */
+  .float-card { @apply bg-white/95 text-ink shadow-[0_6px_20px_rgba(30,42,71,0.25)]; }
 }
 
-:focus-visible { outline: 2px solid #8fd19a; outline-offset: 2px; }
+.font-mono { font-variant-numeric: tabular-nums; }
+:focus-visible { outline: 3px solid #f78677; outline-offset: 2px; }
 
-input[type='range'] { -webkit-appearance: none; appearance: none; width: 100%; height: 20px; background: transparent; cursor: pointer; --pct: 50%; }
-input[type='range']::-webkit-slider-runnable-track { height: 4px; border-radius: 99px; background: linear-gradient(90deg, #4f9a5b var(--pct), rgba(255,255,255,0.12) var(--pct)); }
-input[type='range']::-moz-range-track { height: 4px; border-radius: 99px; background: rgba(255,255,255,0.12); }
-input[type='range']::-moz-range-progress { height: 4px; border-radius: 99px; background: #4f9a5b; }
-input[type='range']::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; margin-top: -5px; border-radius: 50%; background: #e9ede8; border: 3px solid #4f9a5b; }
-input[type='range']::-moz-range-thumb { width: 10px; height: 10px; border-radius: 50%; background: #e9ede8; border: 3px solid #4f9a5b; }
+/* Selects and text inputs: white with a mist border, coral on focus. */
+select, input[type='text'], input[type='number'], input:not([type]) { border: 2px solid #f0f3fa; border-radius: 10px; background: #fff; color: #304169; }
+select:focus, input[type='text']:focus, input[type='number']:focus, input:not([type]):focus { border-color: #f78677; outline: none; }
+input[type='checkbox'] { accent-color: #f78677; }
+
+/* Range sliders: 6px light track with a coral fill, coral thumb with a white ring. */
+input[type='range'] { -webkit-appearance: none; appearance: none; width: 100%; height: 22px; background: transparent; cursor: pointer; --pct: 50%; }
+input[type='range']::-webkit-slider-runnable-track { height: 6px; border-radius: 3px; background: linear-gradient(90deg, #f78677 var(--pct), #e3e8f2 var(--pct)); }
+input[type='range']::-moz-range-track { height: 6px; border-radius: 3px; background: #e3e8f2; }
+input[type='range']::-moz-range-progress { height: 6px; border-radius: 3px; background: #f78677; }
+input[type='range']::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; margin-top: -6px; border-radius: 50%; background: #f78677; border: 3px solid #fff; box-shadow: 0 2px 6px rgba(48, 65, 105, 0.3); }
+input[type='range']::-moz-range-thumb { width: 12px; height: 12px; border-radius: 50%; background: #f78677; border: 3px solid #fff; box-shadow: 0 2px 6px rgba(48, 65, 105, 0.3); }
 
 /* Touch screens: finger-sized targets, a taller slider hit area, and 16px selects (smaller ones make iOS zoom on focus). */
 @media (pointer: coarse) {
   .chip, select { min-height: 36px; min-width: 36px; }
   .btn, .tab { min-height: 40px; }
   input[type='range'] { height: 32px; }
-  input[type='range']::-webkit-slider-thumb { width: 20px; height: 20px; margin-top: -8px; }
+  input[type='range']::-webkit-slider-thumb { width: 20px; height: 20px; margin-top: -7px; }
   select, input:not([type='range']):not([type='checkbox']):not([type='radio']), textarea { font-size: 16px !important; }
 }
 /* Phones and tablets: lift the smallest labels to 12px. Desktop (lg and up) is unchanged. */
@@ -50,10 +61,10 @@ input[type='range']::-moz-range-thumb { width: 10px; height: 10px; border-radius
 }
 
 .scroll-thin::-webkit-scrollbar { width: 6px; }
-.scroll-thin::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
+.scroll-thin::-webkit-scrollbar-thumb { background: #cfd6e6; border-radius: 3px; }
 
 /* Hunt markers in the 3D view */
-.hunt-label { white-space: nowrap; padding: 2px 8px; border-radius: 6px; font: 600 11px/1.5 'Saira', sans-serif; letter-spacing: 0.06em; color: #1b1205; background: #ffb02e; box-shadow: 0 0 0 2px rgba(0,0,0,0.35), 0 0 16px rgba(255,176,46,0.6); }
+.hunt-label { white-space: nowrap; padding: 2px 8px; border-radius: 6px; font: 600 11px/1.5 'Poppins', system-ui, sans-serif; letter-spacing: 0.06em; color: #1b1205; background: #ffb02e; box-shadow: 0 0 0 2px rgba(0,0,0,0.35), 0 0 16px rgba(255,176,46,0.6); }
 .hunt-label[data-phase='chase'] { color: #fff; background: #ff3b30; box-shadow: 0 0 0 2px rgba(0,0,0,0.35), 0 0 22px rgba(255,59,48,0.9); animation: hunt-throb 0.45s ease-in-out infinite alternate; }
 .hunt-label:empty, .hunt-burst:empty { display: none; }
 .hunt-burst { white-space: nowrap; font: 400 22px/1 'Brain', 'Saira Semi Condensed', sans-serif; letter-spacing: 0.08em; color: #ff4b3a; text-shadow: 0 0 12px rgba(255,59,48,0.9), 0 2px 0 #000; }

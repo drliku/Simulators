@@ -8,7 +8,7 @@ import { TimeGraph } from './components/TimeGraph';
 import { LightClock, type LightClockSettings } from './components/LightClock';
 import { Scenarios } from './components/Scenarios';
 import { Notes } from './components/Notes';
-import brainMark from './assets/brain-mark.png';
+import brainMazeLogo from './assets/brainmaze-logo.png';
 
 export default function App() {
   const [engine] = useState(() => new SimEngine({ autoStart: false }));
@@ -42,19 +42,15 @@ export default function App() {
 
   return (
     <EngineContext.Provider value={engine}>
+      <header className="bm-topbar">
+        <a href="https://thebrainmaze.com/" target="_top"><img src={brainMazeLogo} alt="The Brain Maze" width={839} height={256} /></a>
+        <a className="bm-tag" href="https://thebrainmaze.com/" target="_top">Simulators</a>
+      </header>
       <div className="mx-auto flex max-w-[1560px] flex-col gap-5 px-4 pb-10 pt-6 sm:px-6 lg:px-8">
         <header className="flex flex-wrap items-end justify-between gap-4">
           <div className="flex min-w-0 items-center gap-4">
-            <div className="flex items-center gap-2" aria-label="The Brain Maze">
-              <span className="grid font-display text-[21px] uppercase leading-[0.92] tracking-[0.04em] text-ship" aria-hidden="true">
-                <span>The Brain</span>
-                <span className="flex items-center justify-end gap-1.5 before:block before:h-[3px] before:w-[34px] before:bg-ship">Maze</span>
-              </span>
-              <img src={brainMark} alt="" width={42} height={42} className="h-[42px] w-[42px]" />
-            </div>
-            <span className="w-px self-stretch bg-white/15" aria-hidden="true" />
             <div className="min-w-0">
-              <h1 className="font-display text-[26px] font-normal uppercase leading-tight tracking-[0.04em] text-ink sm:text-3xl">Time Dilation Lab</h1>
+              <h1 className="font-display text-[26px] font-bold leading-tight text-ink sm:text-[28px]">Time Dilation Lab</h1>
               <p className="hidden text-[13.5px] text-ink-muted sm:block">Two perfect clocks, two observers in relative motion, two different elapsed times.</p>
             </div>
           </div>

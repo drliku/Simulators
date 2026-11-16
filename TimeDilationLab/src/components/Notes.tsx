@@ -31,11 +31,11 @@ const items: { title: string; body: React.ReactNode }[] = [
 export function Notes() {
   return (
     <section aria-labelledby="notesTitle" className="flex flex-col gap-4">
-      <h2 id="notesTitle" className="font-display text-[30px] font-normal uppercase tracking-[0.04em] text-ship">Reading the experiment carefully</h2>
+      <h2 id="notesTitle" className="font-display text-[26px] font-bold text-ink">Reading the experiment carefully</h2>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((it) => (
           <article key={it.title} className="glass p-5">
-            <h3 className="mb-2 font-display text-[19px] font-normal uppercase tracking-[0.04em] text-ink">{it.title}</h3>
+            <h3 className="mb-2 font-display text-[18px] font-bold text-ink">{it.title}</h3>
             <p className="text-[13px] leading-relaxed text-ink-muted">{it.body}</p>
           </article>
         ))}

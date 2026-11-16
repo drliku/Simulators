@@ -21,9 +21,7 @@ export function Toolbar() {
           type="button"
           onClick={() => engine.toggle()}
           aria-pressed={playing}
-          className={`btn min-w-[104px] font-display text-[16px] font-normal uppercase tracking-[0.06em] ${playing
-            ? 'border-coral/50 bg-coral/10 text-coral-soft'
-            : 'border-transparent bg-coral text-space-700 shadow-[0_6px_24px_rgba(243,112,100,0.35)] hover:bg-[#f6857a]'}`}
+          className={`btn btn-primary min-w-[104px] ${playing ? '' : 'shadow-[0_6px_20px_rgba(247,134,119,0.35)]'}`}
         >
           {playing
             ? <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" /></svg>
@@ -44,7 +42,7 @@ export function Toolbar() {
           type="button"
           aria-pressed={slow}
           onClick={() => engine.setSlow(!slow)}
-          className="btn aria-pressed:border-photon/60 aria-pressed:bg-photon/10 aria-pressed:text-photon-soft"
+          className="btn"
           title="Play the photon at 15% speed (playback only)"
         >
           Slow motion
@@ -136,16 +134,16 @@ export function Narration() {
 
   return (
     <div className="grid gap-3 md:grid-cols-2">
-      <div className="rounded-xl border border-coral/25 bg-black/20 px-4 py-3">
+      <div className="rounded-xl border border-coral/40 bg-mist px-4 py-3">
         <div className="flex items-baseline justify-between gap-2">
-          <span className="font-display text-[15px] uppercase tracking-[0.08em] text-coral-soft">Train frame</span>
+          <span className="font-display text-[15px] font-semibold text-coral-soft">Train frame</span>
           <span className="font-mono text-[12.5px] tabular-nums text-photon-soft">t′ = {ns(e.tPrime)}</span>
         </div>
         <p className="mt-1 text-[13px] leading-relaxed text-ink-muted">{trainText}</p>
       </div>
-      <div className="rounded-xl border border-track/25 bg-black/20 px-4 py-3">
+      <div className="rounded-xl border border-track/50 bg-mist px-4 py-3">
         <div className="flex items-baseline justify-between gap-2">
-          <span className="font-display text-[15px] uppercase tracking-[0.08em] text-track-soft">Track frame</span>
+          <span className="font-display text-[15px] font-semibold text-track-soft">Track frame</span>
           <span className="font-mono text-[12.5px] tabular-nums text-photon-soft">t = {ns(e.t)}</span>
         </div>
         <p className="mt-1 text-[13px] leading-relaxed text-ink-muted">{trackText}</p>

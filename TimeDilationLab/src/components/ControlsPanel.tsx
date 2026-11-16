@@ -33,9 +33,7 @@ export function ControlsPanel() {
           type="button"
           onClick={() => engine.toggle()}
           aria-pressed={running}
-          className={`btn h-12 text-[15px] font-semibold ${running
-            ? 'border-ship/50 bg-ship/10 text-ship-soft hover:bg-ship/20'
-            : 'border-transparent bg-gradient-to-r from-ship to-ship-deep text-space-950 shadow-[0_8px_30px_rgba(243,112,100,0.35)] hover:brightness-110'}`}
+          className={`btn btn-primary h-12 ${running ? '' : 'shadow-[0_6px_20px_rgba(247,134,119,0.35)]'}`}
         >
           {running ? (
             <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" /></svg>
@@ -76,18 +74,18 @@ export function ControlsPanel() {
               type="button"
               onClick={() => engine.setBeta(p / 100)}
               aria-pressed={Math.abs(beta * 100 - p) < 1e-9}
-              className="h-7 rounded-md border [@media(pointer:coarse)]:h-10 border-white/10 px-2 font-mono text-[12px] lg:text-[11.5px] text-ink-muted transition hover:border-ship/50 hover:text-ink aria-pressed:border-ship/60 aria-pressed:bg-ship/15 aria-pressed:text-ship-soft"
+              className="chip"
             >
               {p}%
             </button>
           ))}
         </div>
         <div className="mt-1 grid grid-cols-2 gap-2">
-          <div className="rounded-lg border border-white/[0.07] bg-black/25 px-3 py-2">
+          <div className="rounded-xl bg-mist px-3 py-2">
             <div className="text-[12px] lg:text-[11px] text-ink-faint"><Term tip={TIPS.gamma}>Lorentz factor γ</Term></div>
             <div className="font-mono text-[17px] font-semibold tabular-nums text-ink">{formatGamma(beta)}</div>
           </div>
-          <div className="rounded-lg border border-white/[0.07] bg-black/25 px-3 py-2">
+          <div className="rounded-xl bg-mist px-3 py-2">
             <div className="text-[12px] lg:text-[11px] text-ink-faint">Speed</div>
             <div className="font-mono text-[15px] tabular-nums text-ink">{withThousands(speedKmPerSecond(beta), beta < 0.001 ? 6 : 0)} <span className="text-[12px] lg:text-[11px] text-ink-muted">km/s</span></div>
           </div>
@@ -115,14 +113,14 @@ export function ControlsPanel() {
       {/* Duration */}
       <div className="flex flex-col gap-2">
         <span className="text-[13px] font-medium text-ink-muted" id="durLabel">Experiment duration (Earth frame)</span>
-        <div className="grid grid-cols-3 gap-1 rounded-lg border border-white/[0.07] bg-black/30 p-1" role="group" aria-labelledby="durLabel">
+        <div className="grid grid-cols-3 gap-1 rounded-[18px] bg-mist p-1" role="group" aria-labelledby="durLabel">
           {DURATIONS.map((d) => (
             <button
               key={d.label}
               type="button"
               aria-pressed={Math.abs(durationYears - d.years) < 1e-12}
               onClick={() => engine.setDurationYears(d.years)}
-              className="h-8 rounded-md font-mono [@media(pointer:coarse)]:h-10 text-[12px] text-ink-muted transition-colors hover:text-ink aria-pressed:bg-white/10 aria-pressed:text-ink"
+              className="h-8 rounded-full [@media(pointer:coarse)]:h-10 text-[13px] font-semibold text-ink transition-colors hover:text-ship-soft aria-pressed:bg-navy aria-pressed:text-white"
             >
               {d.label}
             </button>
@@ -136,16 +134,16 @@ export function ControlsPanel() {
         <span className="text-[13px] font-medium text-ink-muted" id="frameLabel">
           <Term tip={TIPS.frame}>Reference frame</Term>
         </span>
-        <div className="grid grid-cols-2 gap-1 rounded-lg border border-white/[0.07] bg-black/30 p-1" role="group" aria-labelledby="frameLabel">
+        <div className="grid grid-cols-2 gap-1 rounded-full bg-mist p-1" role="group" aria-labelledby="frameLabel">
           {(['earth', 'ship'] as Frame[]).map((f) => (
             <button
               key={f}
               type="button"
               aria-pressed={frame === f}
               onClick={() => engine.setFrame(f)}
-              className={`h-9 rounded-md text-[13px] font-medium transition-colors ${frame === f
-                ? f === 'earth' ? 'bg-earth/15 text-earth-soft shadow-[inset_0_0_0_1px_rgba(159,176,255,0.4)]' : 'bg-ship/15 text-ship-soft shadow-[inset_0_0_0_1px_rgba(243,112,100,0.45)]'
-                : 'text-ink-muted hover:text-ink'}`}
+              className={`h-9 rounded-full text-[13px] font-semibold transition-colors ${frame === f
+                ? 'bg-navy text-white'
+                : 'text-ink hover:text-ship-soft'}`}
             >
               {f === 'earth' ? 'Earth frame' : 'Ship frame'}
             </button>

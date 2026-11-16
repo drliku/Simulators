@@ -47,21 +47,21 @@ function DigitalClock({
   tone, label, sub, value, unit, secondary,
 }: { tone: 'earth' | 'ship'; label: string; sub: React.ReactNode; value: string; unit: string; secondary: string }) {
   const c = tone === 'earth'
-    ? { border: 'border-earth/35', label: 'text-earth-soft', glow: 'shadow-[0_0_40px_rgba(159,176,255,0.12)]', text: 'text-[#eef1ff] [text-shadow:0_0_22px_rgba(159,176,255,0.45)]' }
-    : { border: 'border-ship/40', label: 'text-ship-soft', glow: 'shadow-[0_0_40px_rgba(243,112,100,0.12)]', text: 'text-[#fff1ec] [text-shadow:0_0_22px_rgba(243,112,100,0.45)]' };
+    ? { border: 'border-earth/35', label: 'text-earth-light', glow: 'shadow-[0_0_40px_rgba(159,176,255,0.12)]', text: 'text-[#eef1ff] [text-shadow:0_0_22px_rgba(159,176,255,0.45)]' }
+    : { border: 'border-ship/40', label: 'text-ship-light', glow: 'shadow-[0_0_40px_rgba(243,112,100,0.12)]', text: 'text-[#fff1ec] [text-shadow:0_0_22px_rgba(243,112,100,0.45)]' };
   return (
     <div className={`rounded-xl border ${c.border} ${c.glow} bg-space-950/75 px-4 py-3 backdrop-blur-md`}>
       <div className="flex items-baseline justify-between gap-3">
-        <span className={`font-display text-[16px] font-normal uppercase tracking-[0.12em] ${c.label}`}>{label}</span>
-        <span className="truncate text-[12px] lg:text-[11px] text-ink-faint">{sub}</span>
+        <span className={`font-display text-[16px] font-bold ${c.label}`}>{label}</span>
+        <span className="truncate text-[12px] lg:text-[11px] text-[#a3acc9]">{sub}</span>
       </div>
-      <div className={`clock-value mt-1 font-display text-[36px] leading-none sm:text-[46px] ${c.text}`}>
+      <div className={`clock-value mt-1 font-display text-[36px] font-semibold leading-none sm:text-[46px] ${c.text}`}>
         {[...value].map((ch, i) => (
           <span key={i} className={/\d/.test(ch) ? 'digit' : undefined}>{ch}</span>
         ))}
-        <span className="ml-2 font-sans text-sm font-normal text-ink-muted">{unit}</span>
+        <span className="ml-2 font-sans text-sm font-normal text-[#bec6de]">{unit}</span>
       </div>
-      <div className="mt-1.5 font-mono text-[12px] lg:text-[11.5px] tabular-nums text-ink-muted">{secondary}</div>
+      <div className="mt-1.5 font-mono text-[12px] lg:text-[11.5px] tabular-nums text-[#bec6de]">{secondary}</div>
     </div>
   );
 }
@@ -199,7 +199,7 @@ function EarthLane() {
 
   const g = earthGeom(size.width, size.height);
   return (
-    <div ref={wrapRef} className="relative h-[250px] overflow-hidden sm:h-[230px]">
+    <div ref={wrapRef} className="relative h-[250px] overflow-hidden bg-navy-deep sm:h-[230px]">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-hidden="true" />
       <div
         className="absolute top-3 w-[min(340px,calc(100%-24px))]"
@@ -273,7 +273,7 @@ function ShipLane() {
 
   const g = shipGeom(size.width, size.height);
   return (
-    <div ref={wrapRef} className="relative h-[250px] overflow-hidden sm:h-[230px]">
+    <div ref={wrapRef} className="relative h-[250px] overflow-hidden bg-navy-deep sm:h-[230px]">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-hidden="true" />
       <div className="absolute top-3 w-[min(340px,calc(100%-24px))]" style={{ left: g.compact ? 12 : g.clockLeft }}>
         <ShipClock />
@@ -287,10 +287,10 @@ function VelocityBadge() {
   const beta = useSim((e) => e.beta);
   const frame = useSim((e) => e.frame);
   return (
-    <div className="absolute bottom-3 right-3 flex items-center gap-2 rounded-lg border border-ship/30 bg-space-950/80 px-3 py-1.5 font-mono text-[12px] text-ship-soft backdrop-blur">
-      <span className="text-ink-faint">{frame === 'earth' ? 'v =' : 'Earth moves at −v,'}</span>
+    <div className="absolute bottom-3 right-3 flex items-center gap-2 rounded-lg border border-ship/30 bg-space-950/80 px-3 py-1.5 font-mono text-[12px] text-ship-light backdrop-blur">
+      <span className="text-[#a3acc9]">{frame === 'earth' ? 'v =' : 'Earth moves at −v,'}</span>
       <span className="font-semibold">{formatPercentC(beta)} c</span>
-      <span className="hidden text-ink-faint sm:inline">· {withThousands((beta * 299_792_458) / 1000, beta < 0.001 ? 6 : 0)} km/s</span>
+      <span className="hidden text-[#a3acc9] sm:inline">· {withThousands((beta * 299_792_458) / 1000, beta < 0.001 ? 6 : 0)} km/s</span>
     </div>
   );
 }
@@ -303,9 +303,9 @@ function StageHeader() {
   const status = e.running ? 'Running' : e.finished ? 'Complete' : e.earthTime > 0 ? 'Paused' : 'Ready';
   const statusColor = e.running ? 'bg-emerald-400' : e.finished ? 'bg-ship' : 'bg-ink-faint';
   return (
-    <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-white/[0.06] px-4 py-3">
+    <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-line px-4 py-3">
       <div className="flex items-center gap-3">
-        <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/30 px-2.5 py-1 font-mono text-[12px] lg:text-[11px] text-ink">
+        <span className="inline-flex items-center gap-2 rounded-full bg-mist px-2.5 py-1 font-mono text-[12px] lg:text-[11px] text-ink">
           <span className={`h-1.5 w-1.5 rounded-full ${statusColor} ${e.running ? 'animate-pulse' : ''}`} />
           {status}
         </span>
@@ -317,7 +317,7 @@ function StageHeader() {
         </span>
       </div>
       <div className="flex min-w-[180px] flex-1 items-center gap-3 sm:max-w-[320px]">
-        <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/10">
+        <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-line">
           <div className="h-full rounded-full bg-gradient-to-r from-earth-deep via-earth to-ship" style={{ width: `${(d.progress * 100).toFixed(2)}%` }} />
         </div>
         <span className="font-mono text-[12px] lg:text-[11px] tabular-nums text-ink-muted">{(d.progress * 100).toFixed(1)}%</span>
@@ -331,9 +331,9 @@ export function SimulationStage() {
     <section className="glass overflow-hidden" aria-label="Earth and spaceship clocks">
       <StageHeader />
       <EarthLane />
-      <div className="relative h-px bg-gradient-to-r from-earth/30 via-white/10 to-ship/40" />
+      <div className="relative h-px bg-gradient-to-r from-earth/30 via-line to-ship/40" />
       <ShipLane />
-      <p className="border-t border-white/[0.06] px-4 py-2.5 text-[12px] leading-relaxed text-ink-faint">
+      <p className="border-t border-line px-4 py-2.5 text-[12px] leading-relaxed text-ink-faint">
         Both clocks start at zero as the ship passes Earth (event O). They then show the time between O and the ship's current
         event E. Star motion and markers are illustrations; the scale bar and clocks are exact.
       </p>

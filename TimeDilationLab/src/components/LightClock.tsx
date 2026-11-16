@@ -155,7 +155,7 @@ export const LightClock = forwardRef<HTMLElement, Props>(function LightClock({ s
       </div>
 
       <div className="h-[520px] sm:h-[300px]">
-        <canvas ref={canvasRef} className="h-full w-full" role="img" aria-label="A photon bouncing vertically in a clock at rest, and along a longer diagonal path in a moving clock" />
+        <canvas ref={canvasRef} className="h-full w-full rounded-xl bg-navy-deep" role="img" aria-label="A photon bouncing vertically in a clock at rest, and along a longer diagonal path in a moving clock" />
       </div>
 
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
@@ -179,7 +179,7 @@ export const LightClock = forwardRef<HTMLElement, Props>(function LightClock({ s
               type="button"
               aria-pressed={settings.linked}
               onClick={() => onChange({ ...settings, linked: !settings.linked, beta })}
-              className="btn h-9 text-[12.5px] aria-pressed:border-ship/50 aria-pressed:bg-ship/10 aria-pressed:text-ship-soft"
+              className="btn h-9 text-[12.5px]"
             >
               {settings.linked ? 'Linked to ship velocity' : 'Link to ship velocity'}
             </button>
@@ -187,7 +187,7 @@ export const LightClock = forwardRef<HTMLElement, Props>(function LightClock({ s
               type="button"
               aria-pressed={settings.slow}
               onClick={() => onChange({ ...settings, slow: !settings.slow })}
-              className="btn h-9 text-[12.5px] aria-pressed:border-earth/50 aria-pressed:bg-earth/10 aria-pressed:text-earth-soft"
+              className="btn h-9 text-[12.5px]"
             >
               Slow motion {settings.slow ? 'on' : 'off'}
             </button>
@@ -195,15 +195,15 @@ export const LightClock = forwardRef<HTMLElement, Props>(function LightClock({ s
           </div>
         </div>
         <div className="grid grid-cols-3 gap-2 text-center">
-          <div className="rounded-lg border border-earth/25 bg-black/25 px-2 py-2">
+          <div className="rounded-lg border border-earth/40 bg-mist px-2 py-2">
             <div className="text-[12px] lg:text-[11px] text-ink-faint">Ticks at rest</div>
             <div className="font-mono text-xl font-semibold tabular-nums text-earth-soft">{ticks.rest}</div>
           </div>
-          <div className="rounded-lg border border-ship/25 bg-black/25 px-2 py-2">
+          <div className="rounded-lg border border-ship/40 bg-mist px-2 py-2">
             <div className="text-[12px] lg:text-[11px] text-ink-faint">Ticks moving</div>
             <div className="font-mono text-xl font-semibold tabular-nums text-ship-soft">{ticks.moving}</div>
           </div>
-          <div className="rounded-lg border border-white/10 bg-black/25 px-2 py-2">
+          <div className="rounded-lg border border-line bg-mist px-2 py-2">
             <div className="text-[12px] lg:text-[11px] text-ink-faint"><Term tip={TIPS.gamma}>γ</Term> (tick ratio)</div>
             <div className="font-mono text-xl font-semibold tabular-nums text-ink">{formatGamma(beta, 3)}</div>
           </div>
