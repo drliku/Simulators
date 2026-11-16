@@ -29,6 +29,10 @@
       linear-gradient(90deg, rgba(166, 176, 216, 0.05) 1px, transparent 1px);
     background-size: auto, auto, auto, 32px 32px, 32px 32px;
     background-attachment: fixed;
+    /* Keep content clear of notches / home indicator on phones (0 on desktop). */
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
   }
 }
 
@@ -101,6 +105,17 @@
 }
 .ph-range:hover::-webkit-slider-thumb,
 .ph-range:focus-visible::-webkit-slider-thumb { transform: scale(1.12); }
+
+/* Phones & tablets: comfortable tap targets and no text below 12px. */
+@media (max-width: 1023px) {
+  .chip {
+    min-height: 40px;
+  }
+  .text-\[10px\],
+  .text-\[11px\] {
+    font-size: 12px;
+  }
+}
 
 @keyframes rise {
   from { transform: translateY(6px); opacity: 0; }

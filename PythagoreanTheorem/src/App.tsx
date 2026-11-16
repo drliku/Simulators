@@ -122,7 +122,7 @@ export default function App() {
   const demoActive = demo.frame !== null;
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen min-h-[100dvh]">
       <header className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 pb-2 pt-6 sm:px-6 lg:px-8 lg:pt-8">
         {/* Wordmark laid out like The Brain Maze logo: big word, rule + word, coral icon block */}
         <div className="flex items-stretch gap-3 sm:gap-4">
@@ -181,7 +181,7 @@ export default function App() {
               />
             </div>
 
-            <div className="relative h-[420px] sm:h-[520px] lg:h-[600px]">
+            <div className="relative h-[420px] sm:h-[520px] max-lg:max-h-[calc(100dvh-1.5rem)] max-lg:min-h-[320px] lg:h-[600px]">
               <TriangleCanvas
                 state={tri}
                 onChange={setTri}
@@ -249,7 +249,7 @@ export default function App() {
                         demo.stop();
                         animateTo({ ...tri, a: p.a, b: p.b });
                       }}
-                      className={`rounded-lg border-2 px-3 py-1 font-mono text-xs font-semibold transition duration-200 ${
+                      className={`rounded-lg border-2 px-3 py-1 font-mono text-xs font-semibold transition duration-200 max-lg:min-h-[40px] ${
                         active
                           ? 'border-navy bg-navy text-white'
                           : 'border-slate-200 bg-white text-slate-600 hover:border-navy hover:text-navy'

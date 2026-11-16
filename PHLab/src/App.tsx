@@ -199,7 +199,7 @@ export default function App() {
   const reading = readingForPh(ph);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen min-h-[100dvh]">
       <header className="mx-auto flex max-w-[1500px] flex-wrap items-center justify-between gap-4 px-4 pb-3 pt-6 sm:px-6 lg:px-8">
         {/* Wordmark laid out like The Brain Maze logo; "pH" stays in Saira to keep its lowercase p */}
         <div className="flex items-stretch gap-3 sm:gap-4">
@@ -249,7 +249,7 @@ export default function App() {
         {/* Stage */}
         <section className="order-1 flex min-w-0 flex-col gap-5 xl:order-2">
           <div className="panel relative overflow-hidden">
-            <div className="relative h-[420px] sm:h-[520px] xl:h-[600px]">
+            <div className="relative h-[420px] sm:h-[520px] max-xl:max-h-[calc(100dvh-1.5rem)] max-xl:min-h-[320px] xl:h-[600px]">
               <Suspense fallback={null}>
                 <BeakerScene
                   beakers={beakers}
@@ -307,7 +307,13 @@ export default function App() {
                   </div>
                 </div>
               )}
-              <div className="pointer-events-none absolute bottom-3 right-3 max-w-[230px] text-right text-[11px] leading-snug text-lab-400 sm:bottom-4 sm:right-4">
+              {/* Narrow phones: the dropper's 3D label would be clipped, so show the reagent here. */}
+              {mode === 'experiment' && drops.length > 0 && (
+                <div className="pointer-events-none absolute bottom-16 right-3 whitespace-nowrap rounded-md border border-white/20 bg-lab-950/85 px-2.5 py-1 font-mono text-xs font-semibold text-white backdrop-blur min-[520px]:hidden">
+                  Adding {reagentLabel[drops[drops.length - 1].kind]}
+                </div>
+              )}
+              <div className="pointer-events-none absolute bottom-3 right-3 max-w-[230px] max-sm:max-w-[42%] text-right text-[11px] leading-snug text-lab-400 sm:bottom-4 sm:right-4">
                 Drag to look around · scroll or pinch to zoom
                 {paused && <div className="mt-1 font-display text-sm font-bold uppercase tracking-wide text-coral">Animation paused</div>}
               </div>
@@ -395,7 +401,7 @@ export default function App() {
                   role="radio"
                   aria-checked={molarity === m}
                   onClick={() => setMolarity(m)}
-                  className={`rounded-xl py-1.5 font-mono text-xs font-semibold transition ${
+                  className={`rounded-xl py-1.5 font-mono text-xs font-semibold transition max-lg:min-h-[40px] ${
                     molarity === m ? 'bg-coral text-white' : 'text-lab-200 hover:bg-white/[0.06]'
                   }`}
                 >

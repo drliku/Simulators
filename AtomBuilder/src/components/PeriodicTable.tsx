@@ -15,7 +15,7 @@ export function PeriodicTable({ activeZ, onPick }: Props) {
         <span className="text-xs text-lab-300">Click an element to build its neutral atom</span>
       </div>
       <div className="-mx-1 overflow-x-auto px-1 pb-1">
-        <div className="mx-auto grid min-w-[620px] max-w-[1040px] gap-1.5" style={{ gridTemplateColumns: 'repeat(18, minmax(0, 1fr))' }}>
+        <div className="mx-auto grid min-w-[620px] max-w-[1040px] max-lg:min-w-[740px] gap-1.5" style={{ gridTemplateColumns: 'repeat(18, minmax(0, 1fr))' }}>
           {ELEMENTS.map((el) => {
             const c = CATEGORY_INFO[el.category].color;
             const active = el.z === activeZ;
