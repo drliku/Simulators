@@ -196,15 +196,15 @@ export const LightClock = forwardRef<HTMLElement, Props>(function LightClock({ s
         </div>
         <div className="grid grid-cols-3 gap-2 text-center">
           <div className="rounded-lg border border-earth/25 bg-black/25 px-2 py-2">
-            <div className="text-[11px] text-ink-faint">Ticks at rest</div>
+            <div className="text-[12px] lg:text-[11px] text-ink-faint">Ticks at rest</div>
             <div className="font-mono text-xl font-semibold tabular-nums text-earth-soft">{ticks.rest}</div>
           </div>
           <div className="rounded-lg border border-ship/25 bg-black/25 px-2 py-2">
-            <div className="text-[11px] text-ink-faint">Ticks moving</div>
+            <div className="text-[12px] lg:text-[11px] text-ink-faint">Ticks moving</div>
             <div className="font-mono text-xl font-semibold tabular-nums text-ship-soft">{ticks.moving}</div>
           </div>
           <div className="rounded-lg border border-white/10 bg-black/25 px-2 py-2">
-            <div className="text-[11px] text-ink-faint"><Term tip={TIPS.gamma}>γ</Term> (tick ratio)</div>
+            <div className="text-[12px] lg:text-[11px] text-ink-faint"><Term tip={TIPS.gamma}>γ</Term> (tick ratio)</div>
             <div className="font-mono text-xl font-semibold tabular-nums text-ink">{formatGamma(beta, 3)}</div>
           </div>
         </div>

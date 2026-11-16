@@ -49,7 +49,7 @@ export default function App() {
               <p className="hidden text-[13.5px] text-ink-muted sm:block">An interactive relativity experiment</p>
             </div>
           </div>
-          <span className="font-mono text-[11.5px] text-ink-faint">Space play/pause · ← → step · R reset</span>
+          <span className="font-mono text-[11.5px] text-ink-faint [@media(hover:none)]:hidden">Space play/pause · ← → step · R reset</span>
         </header>
 
         <section className="glass flex flex-col gap-1 px-6 py-5">

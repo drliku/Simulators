@@ -30,21 +30,22 @@ export default function App() {
 
   return (
     <ControllerContext.Provider value={controller}>
-      <div className="flex min-h-full flex-col lg:h-full lg:min-h-[680px] gap-2 bg-char-950 p-2 font-sans text-ink">
+      <div className="flex min-h-full flex-col lg:h-full lg:min-h-[680px] gap-2 bg-char-950 p-2 font-sans text-ink max-lg:pb-[max(0.5rem,env(safe-area-inset-bottom))] max-lg:pl-[max(0.5rem,env(safe-area-inset-left))] max-lg:pr-[max(0.5rem,env(safe-area-inset-right))]">
         <Header />
         <div className="grid min-h-0 flex-1 grid-cols-1 gap-2 lg:grid-cols-[300px_minmax(0,1fr)_320px] lg:grid-rows-[minmax(0,1fr)_230px]">
           <div className="order-2 h-[420px] lg:order-none lg:row-span-2 lg:h-auto lg:min-h-0 [&>aside]:h-full"><LeftPanel /></div>
-          <main className="relative order-1 h-[52vh] min-h-[320px] overflow-hidden rounded-xl border border-white/[0.07] lg:order-none lg:h-auto" aria-label="3D forest view">
+          <main className="relative order-1 h-[60vh] min-h-[320px] overflow-hidden rounded-xl border border-white/[0.07] lg:order-none lg:h-auto" aria-label="3D forest view">
             <Scene controller={controller} />
             <ViewToolbar />
             <HuntToasts />
             <HuntBanner />
-            <p className="pointer-events-none absolute bottom-2 left-3 text-[11px] text-white/60">Drag to orbit · scroll to zoom · right-drag to pan · click an animal to inspect</p>
+            <p className="pointer-events-none absolute bottom-2 left-3 text-[11px] text-white/60 [@media(hover:none)]:hidden">Drag to orbit · scroll to zoom · right-drag to pan · click an animal to inspect</p>
+            <p className="pointer-events-none absolute bottom-2 left-3 hidden text-[11px] text-white/60 [@media(hover:none)]:block">Drag to orbit · pinch to zoom · two fingers to pan · tap an animal</p>
           </main>
           <div className="order-3 h-[420px] lg:order-none lg:row-span-2 lg:h-auto lg:min-h-0 [&>aside]:h-full"><RightPanel /></div>
           <div className="order-4 h-[240px] min-w-0 lg:order-none lg:col-start-2 lg:row-start-2 lg:h-auto lg:min-h-0 [&>section]:h-full"><Chart /></div>
         </div>
-        <p className="px-1 text-[11px] text-ink-faint">Space play/pause · → step · 1–4 speed · F follow · H watch a hunt · Esc deselect. An agent-based model for exploring ideas, not a forecast of any real population.</p>
+        <p className="px-1 text-[11px] text-ink-faint"><span className="[@media(hover:none)]:hidden">Space play/pause · → step · 1–4 speed · F follow · H watch a hunt · Esc deselect. </span>An agent-based model for exploring ideas, not a forecast of any real population.</p>
       </div>
     </ControllerContext.Provider>
   );

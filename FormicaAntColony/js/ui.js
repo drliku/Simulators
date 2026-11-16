@@ -120,8 +120,16 @@ const UI = {
     this.bindCanvas(Render.canvas);
     this.bindKeys();
     window.addEventListener('resize', () => Render.resize());
-    if (window.innerWidth < 760) document.body.classList.add('sb-collapsed');
+    // phones (portrait, or landscape with little height) start with the map visible
+    if (window.innerWidth < 760 || window.innerHeight < 500) document.body.classList.add('sb-collapsed');
+    if (matchMedia('(hover: none) and (pointer: coarse)').matches) this.addTouchHelp();
     this.setTool('inspect');
+  },
+
+  addTouchHelp() {
+    const g = document.querySelector('.help-grid');
+    if (!g) return;
+    g.insertAdjacentHTML('afterbegin', '<div><kbd>Tap / drag</kbd> Use tool</div><div><kbd>Drag (Inspect)</kbd> Pan</div><div><kbd>Pinch</kbd> Zoom</div><div><kbd>Two-finger drag</kbd> Pan</div>');
   },
 
   seg(el, opts, cur, fn) {
@@ -205,8 +213,12 @@ const UI = {
     cv.addEventListener('pointerdown', e => {
       cv.setPointerCapture(e.pointerId);
       this.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
-      if (this.pointers.size === 2) { this.painting = false; this.panning = true; this.pinch = this.pinchState(); cv.classList.add('panning'); return; }
-      if (e.button === 1 || e.button === 2 || (e.button === 0 && this.keys[' hold'])) {
+      if (this.pointers.size === 2) { this.touchTap = null; this.painting = false; this.panning = true; this.pinch = this.pinchState(); cv.classList.add('panning'); return; }
+      if (e.pointerType === 'touch' && this.tool === 'inspect') {
+        // touch + Inspect: one finger pans the map; a tap without movement inspects (on release)
+        this.touchTap = { id: e.pointerId, x: e.clientX, y: e.clientY };
+        this.panning = true;
+      } else if (e.button === 1 || e.button === 2 || (e.button === 0 && this.keys[' hold'])) {
         this.panning = true; cv.classList.add('panning');
       } else if (e.button === 0) {
         this.painting = true;
@@ -221,6 +233,7 @@ const UI = {
       const c = Render.screenToCell(e.clientX, e.clientY);
       Render.cursor.x = c.x; Render.cursor.y = c.y; Render.cursor.on = e.pointerType !== 'touch';
       if (prev) {
+        if (this.touchTap && Math.hypot(e.clientX - this.touchTap.x, e.clientY - this.touchTap.y) > 8) this.touchTap = null;
         if (this.pointers.size === 2) {
           prev.x = e.clientX; prev.y = e.clientY;
           const ps = this.pinchState();
@@ -248,6 +261,15 @@ const UI = {
       }
     });
     const up = e => {
+      const tap = this.touchTap;
+      if (tap && tap.id === e.pointerId) {
+        this.touchTap = null;
+        if (e.type === 'pointerup') {
+          const c = Render.screenToCell(tap.x, tap.y);
+          Sim.useTool('inspect', c.x, c.y, true);
+          this.showInspector();
+        }
+      }
       this.pointers.delete(e.pointerId);
       if (this.pointers.size < 2) this.pinch = null;
       if (this.pointers.size === 0) { this.painting = false; this.panning = false; cv.classList.remove('panning'); }

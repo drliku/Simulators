@@ -17,6 +17,7 @@ html { -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
   min-height: 100vh;
+  min-height: 100dvh;
   background-color: #0e1530;
   background-image:
     radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,0.5) 50%, transparent 51%),
@@ -75,6 +76,14 @@ input[type='range']::-moz-range-thumb {
   box-shadow: 0 0 0 5px rgba(243,112,100,0.16), 0 0 14px rgba(243,112,100,0.55);
 }
 input[type='range'].photon-range { --fill: #ffe066; }
+
+/* Touch screens: roomier tap targets and a taller slider hit area. */
+@media (pointer: coarse) {
+  .chip { @apply h-10; }
+  .seg > button { @apply h-10; }
+  input[type='range'] { height: 36px; }
+  .timeline-marks { top: 24px; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }

@@ -64,6 +64,18 @@ p {
 .muted {
   color: var(--navy-soft);
 }
+/* wording for mouse vs touch ("scroll" / "pinch", "click" / "tap") */
+.only-touch {
+  display: none;
+}
+@media (hover: none) and (pointer: coarse) {
+  .only-touch {
+    display: inline;
+  }
+  .only-mouse {
+    display: none;
+  }
+}
 .small {
   font-size: 12.5px;
 }
@@ -701,6 +713,7 @@ p {
   .stage {
     position: relative;
     height: 62vh;
+    height: 62svh;
     min-height: 360px;
   }
   .overlay {
@@ -717,6 +730,7 @@ p {
     width: auto;
     min-width: 0;
     max-height: 55vh;
+    max-height: 55dvh;
     transform: none;
   }
   @keyframes rise {
@@ -724,5 +738,115 @@ p {
       opacity: 0;
       transform: translateY(12px);
     }
+  }
+}
+
+/* ---------- phones and tablets: finger-sized controls, safe areas ---------- */
+@media (max-width: 980px) {
+  .app {
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+  }
+  .overlay {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+  .info-card {
+    left: max(16px, env(safe-area-inset-left));
+    right: max(16px, env(safe-area-inset-right));
+    bottom: max(16px, env(safe-area-inset-bottom));
+    overscroll-behavior: contain;
+  }
+  .info-card h3 {
+    padding-right: 44px;
+  }
+  .icon-btn {
+    width: 40px;
+    height: 40px;
+  }
+  .info-card .close {
+    top: 10px;
+    right: 10px;
+  }
+  .process-row {
+    min-height: 42px;
+  }
+  .segmented button,
+  .segmented.compact button,
+  .btn {
+    min-height: 44px;
+  }
+  .wordmark p,
+  .readouts span,
+  .ticks,
+  .legend {
+    font-size: 12px;
+  }
+  /* taller hit area for the sliders: the 8px track moves onto the track pseudo-element */
+  .slider.temp,
+  .slider.sun {
+    height: 32px;
+    margin: 0;
+    background: transparent;
+  }
+  .slider::-webkit-slider-runnable-track {
+    height: 8px;
+    border-radius: 2px;
+    background: var(--track);
+  }
+  .slider::-moz-range-track {
+    height: 8px;
+    border-radius: 2px;
+    background: var(--track);
+  }
+  .slider.temp {
+    --track: linear-gradient(90deg, #2f6fb8 0%, #8ec5f0 26%, #e3eef2 28.6%, #f9c7bf 55%, var(--coral) 80%, var(--coral-deep) 100%);
+  }
+  .slider.sun {
+    --track: linear-gradient(90deg, var(--coral) var(--pct), var(--navy-tint) var(--pct));
+  }
+  .slider::-webkit-slider-thumb {
+    width: 24px;
+    height: 28px;
+    margin-top: -10px;
+  }
+  .slider::-moz-range-thumb {
+    width: 20px;
+    height: 24px;
+  }
+  .scene-label {
+    padding: 6px 10px 5px 8px;
+  }
+  /* the molecule view sits in the scrolling column: vertical swipes scroll the page,
+     sideways swipes still spin the molecules */
+  .molecule-canvas div,
+  .molecule-canvas canvas {
+    touch-action: pan-y !important;
+  }
+}
+
+/* landscape phones: 3D view on the left, panels scroll on the right */
+@media (max-width: 980px) and (max-height: 500px) and (orientation: landscape) {
+  .app {
+    padding-left: 56vw;
+    padding-top: 12px;
+  }
+  .stage {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 56vw;
+    height: auto;
+    min-height: 0;
+  }
+  .overlay {
+    padding-left: 12px;
+  }
+  .info-card {
+    left: max(12px, env(safe-area-inset-left));
+    right: auto;
+    bottom: 12px;
+    width: calc(56vw - 24px);
+    max-height: calc(100dvh - 24px);
   }
 }

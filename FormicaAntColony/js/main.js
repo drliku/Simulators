@@ -8,7 +8,10 @@
   UI.init();
   Sim.newWorld();
   UI.refreshColonyList();
-  setTimeout(() => UI.toast('Welcome! Scroll to zoom, right-drag to pan, press H for all controls.', 'info'), 900);
+  const touch = matchMedia('(hover: none) and (pointer: coarse)').matches;
+  setTimeout(() => UI.toast(touch
+    ? 'Welcome! Pinch to zoom, drag to pan, tap ? for all controls.'
+    : 'Welcome! Scroll to zoom, right-drag to pan, press H for all controls.', 'info'), 900);
 
   let last = performance.now(), acc = 0;
   function frame(now) {

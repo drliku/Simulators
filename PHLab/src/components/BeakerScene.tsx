@@ -466,7 +466,8 @@ function Dropper({ kind, visible, label, paused }: { kind: 'acid' | 'base'; visi
         <meshPhysicalMaterial color={color} roughness={0.45} clearcoat={0.4} />
       </mesh>
       <Html position={[0.32, 1.7, 0]} zIndexRange={[10, 0]}>
-        <div className="pointer-events-none whitespace-nowrap rounded-md border border-white/20 bg-lab-950/85 px-2.5 py-1 font-mono text-[11px] font-semibold text-white backdrop-blur">
+        {/* On narrow phones this would run off the stage; App shows it as an overlay instead. */}
+        <div className="pointer-events-none whitespace-nowrap rounded-md border border-white/20 bg-lab-950/85 px-2.5 py-1 font-mono text-[11px] font-semibold text-white backdrop-blur max-[519px]:hidden">
           {label}
         </div>
       </Html>

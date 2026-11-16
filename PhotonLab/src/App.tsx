@@ -60,7 +60,7 @@ function useShortcuts() {
 function Toasts() {
   const toasts = useToasts((s) => s.toasts);
   return (
-    <div className="pointer-events-none absolute bottom-4 left-1/2 z-50 flex -translate-x-1/2 flex-col items-center gap-2">
+    <div className="pointer-events-none absolute bottom-4 left-1/2 z-50 flex w-max max-w-[calc(100%-24px)] -translate-x-1/2 flex-col items-center gap-2">
       {toasts.map((t) => (
         <div
           key={t.id}
@@ -84,7 +84,7 @@ function ExportPreview() {
       <div className="flex max-h-full w-full max-w-4xl flex-col gap-3 rounded-xl border border-white/10 bg-ink-900 p-4" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between gap-3">
           <p className="text-[12.5px] text-slate-300">Right-click the image (or long-press on a phone) and choose “Save image”.</p>
-          <button type="button" onClick={close} className="rounded-lg px-3 py-1.5 text-[12px] text-slate-300 hover:bg-white/10">
+          <button type="button" onClick={close} className="tap shrink-0 rounded-lg px-3 py-1.5 text-[12px] text-slate-300 hover:bg-white/10">
             Close
           </button>
         </div>
@@ -99,33 +99,50 @@ export default function App() {
   const wide = typeof window !== 'undefined' && window.innerWidth >= 1024;
   const [showLeft, setShowLeft] = useState(wide);
   const [showRight, setShowRight] = useState(wide);
+  // Below lg the panels are overlays over the canvas: only one at a time, and a tap outside closes it.
+  const narrow = () => window.innerWidth < 1024;
+  const toggleLeft = () => {
+    if (!showLeft && narrow()) setShowRight(false);
+    setShowLeft(!showLeft);
+  };
+  const toggleRight = () => {
+    if (!showRight && narrow()) setShowLeft(false);
+    setShowRight(!showRight);
+  };
+  const closePanels = () => {
+    setShowLeft(false);
+    setShowRight(false);
+  };
 
   return (
     <div className="flex h-full flex-col bg-ink-950 text-slate-200">
       <TopBar />
       <div className="relative flex min-h-0 flex-1">
+        {(showLeft || showRight) && (
+          <div className="absolute inset-0 z-20 bg-black/40 lg:hidden" aria-hidden="true" onClick={closePanels} />
+        )}
         {showLeft && (
-          <div className="absolute inset-y-0 left-0 z-30 w-[248px] shrink-0 border-r border-white/[0.07] bg-ink-900/95 backdrop-blur lg:static lg:z-auto lg:bg-ink-900/70">
-            <Library />
+          <div className="absolute inset-y-0 left-0 z-30 w-[248px] max-w-[85vw] shrink-0 border-r border-white/[0.07] bg-ink-900/95 backdrop-blur lg:static lg:z-auto lg:bg-ink-900/70">
+            <Library onAdd={() => narrow() && setShowLeft(false)} />
           </div>
         )}
         <main className="relative min-w-0 flex-1 overflow-hidden">
           <CanvasView />
           <CanvasToolbar />
-          <div className="absolute bottom-3 left-3 flex gap-1">
+          <div className="absolute bottom-3 left-3 flex gap-1 [@media(pointer:coarse)]:gap-2">
             <button
               type="button"
               title="Toggle object library"
-              onClick={() => setShowLeft(!showLeft)}
-              className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-ink-900/85 text-slate-300 hover:text-white"
+              onClick={toggleLeft}
+              className="tap flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-ink-900/85 text-slate-300 hover:text-white"
             >
               <PanelLeft className="h-4 w-4" />
             </button>
             <button
               type="button"
               title="Toggle properties panel"
-              onClick={() => setShowRight(!showRight)}
-              className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-ink-900/85 text-slate-300 hover:text-white"
+              onClick={toggleRight}
+              className="tap flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-ink-900/85 text-slate-300 hover:text-white"
             >
               <PanelRight className="h-4 w-4" />
             </button>
@@ -134,7 +151,7 @@ export default function App() {
           <ExportPreview />
         </main>
         {showRight && (
-          <div className="absolute inset-y-0 right-0 z-30 w-[300px] shrink-0 border-l border-white/[0.07] bg-ink-900/95 backdrop-blur lg:static lg:z-auto lg:bg-ink-900/70">
+          <div className="absolute inset-y-0 right-0 z-30 w-[300px] max-w-[85vw] shrink-0 border-l border-white/[0.07] bg-ink-900/95 backdrop-blur lg:static lg:z-auto lg:bg-ink-900/70">
             <PropertiesPanel />
           </div>
         )}

@@ -206,7 +206,7 @@ export function TriangleCanvas({ state, onChange, onInteract, showSquares, showU
               {key}²
             </text>
             {sidePx > 70 && (
-              <text textAnchor="middle" y={fs * 1.05} className="font-mono" fontWeight={600} fontSize={fs * 0.72} fill={COLORS.ink} fillOpacity={0.7}>
+              <text textAnchor="middle" y={fs * 1.05} className="font-mono" fontWeight={600} fontSize={Math.max(fs * 0.72, 11)} fill={COLORS.ink} fillOpacity={0.7}>
                 = {area}
               </text>
             )}

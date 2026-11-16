@@ -207,7 +207,9 @@ export function Evaporation() {
   const acc = useRef(0)
   const cursor = useRef(0)
   const resetCount = useSim((s) => s.resetCount)
-  useEffect(() => P.y.fill(-999), [resetCount, P])
+  useEffect(() => {
+    P.y.fill(-999)
+  }, [resetCount, P])
 
   useFrame((_, delta) => {
     const dt = simDelta(delta)
@@ -306,7 +308,9 @@ export function Runoff() {
   const flow = useRef(0.3)
   const ice = useRef(0)
   const resetCount = useSim((s) => s.resetCount)
-  useEffect(() => S.y.fill(-999), [resetCount, S])
+  useEffect(() => {
+    S.y.fill(-999)
+  }, [resetCount, S])
   const tmpP = useMemo(() => new THREE.Vector3(), [])
   const tmpT = useMemo(() => new THREE.Vector3(), [])
   const grad = useMemo(() => [0, 0], [])

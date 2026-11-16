@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Marble Race · The Brain Maze</title>
 <link rel="icon" href="assets/brainmaze-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -106,7 +106,7 @@ li.p1 .pos{color:#e0a800}li.p2 .pos{color:#8d99ae}li.p3 .pos{color:#cd7f32}
 #followTag{position:fixed;top:calc(var(--top,72px) + 6px);left:50%;transform:translateX(-50%);padding:7px 14px;font-weight:600;font-size:14px;display:flex;align-items:center;gap:8px;z-index:6}
 #stats{position:fixed;right:14px;bottom:12px;font-size:11.5px;color:rgba(35,41,70,.55);z-index:4;font-variant-numeric:tabular-nums}
 #modal{position:fixed;inset:0;background:rgba(30,30,70,.28);display:flex;align-items:center;justify-content:center;z-index:50;backdrop-filter:blur(3px)}
-.mcard{width:min(480px,92vw);padding:20px 22px;max-height:84vh;overflow:auto;background:#fff;border-radius:18px;box-shadow:0 30px 80px rgba(35,41,70,.3);animation:tin .2s ease-out}
+.mcard{width:min(480px,92vw);padding:20px 22px;max-height:84vh;max-height:84dvh;overflow:auto;background:#fff;border-radius:18px;box-shadow:0 30px 80px rgba(35,41,70,.3);animation:tin .2s ease-out}
 .mcard h2{margin:0 0 12px;font-family:Brain,Outfit,sans-serif;font-weight:400;letter-spacing:.03em;font-size:26px;color:var(--navy)}
 .mcard p{color:var(--muted);font-size:14px;line-height:1.5;margin:6px 0}
 .mcard input[type=text]{width:100%;font:inherit;font-size:15px;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;outline:none}
@@ -130,6 +130,64 @@ kbd{display:inline-block;background:#f1f2f8;border:1px solid #dfe1ee;border-bott
 body.drop #app canvas{cursor:crosshair}
 body.placing #app canvas{cursor:copy}
 @media (max-width:1100px){#racePanel{width:210px}#palette{width:180px}#ctxbar{max-width:calc(100% - 420px)}.speed input{width:70px}}
+
+/* ---------- Phones (portrait up to 760px wide, landscape up to 520px tall) ---------- */
+@media (max-width:760px),(max-height:520px) and (max-width:1023px){
+  #topbar{top:calc(6px + env(safe-area-inset-top));left:calc(6px + env(safe-area-inset-left));right:calc(6px + env(safe-area-inset-right));flex-wrap:nowrap;gap:6px;overflow-x:auto;overflow-y:hidden;pointer-events:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:2px}
+  #topbar::-webkit-scrollbar{display:none}
+  #topbar>*{flex:none}
+  #topbar .spacer{display:none}
+  .brand{padding:4px 10px 4px 8px;gap:8px}
+  .brand img{height:26px}
+  .brand .title{font-size:16px;padding-left:8px}
+  .brand small{display:none}
+  .bar{padding:3px}
+  #racePanel{right:calc(6px + env(safe-area-inset-right));top:var(--top,60px);width:172px;padding:10px 8px 8px}
+  .timer{font-size:28px;cursor:pointer;display:flex;align-items:baseline;gap:2px}
+  .timer::after{content:"";margin-left:auto;align-self:center;width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-135deg) translate(-2px,-2px)}
+  #racePanel.mini .timer::after{transform:rotate(45deg)}
+  #racePanel.mini #raceStatus,#racePanel.mini #board{display:none}
+  #raceStatus{font-size:12.5px}
+  #board li{font-size:13px;padding:6px}
+  .empty{font-size:12.5px;padding:8px 4px}
+  #stats{display:none}
+  .pal-foot{display:none}
+  .card span{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #ctxbar{transform:none;max-width:none;padding:4px 6px;row-gap:2px}
+  #ctxbar .hintsm{font-size:12.5px;text-align:center}
+  #countdown span{font-size:120px}
+  .mcard{padding:16px 16px}
+  .mcard input[type=text]{font-size:16px}
+  .keys{font-size:13.5px;gap:6px 10px}
+}
+/* portrait phones: pieces become a strip along the bottom, scrolled sideways; drag a piece up into the scene */
+@media (max-width:760px) and (min-height:521px){
+  #palette{top:auto;left:calc(6px + env(safe-area-inset-left));right:calc(6px + env(safe-area-inset-right));bottom:calc(6px + env(safe-area-inset-bottom));width:auto;height:122px;display:flex;gap:10px;padding:4px 8px 6px;overflow-x:auto;overflow-y:hidden;overscroll-behavior:contain}
+  .cat{flex:none;display:flex;flex-direction:column}
+  .cat h4{margin:4px 4px 4px;font-size:12px}
+  .cards{display:flex;gap:6px}
+  .card{width:78px;flex:none;touch-action:pan-x}
+  #ctxbar{left:calc(6px + env(safe-area-inset-left));right:calc(6px + env(safe-area-inset-right));bottom:calc(140px + env(safe-area-inset-bottom))}
+  #racePanel{max-height:calc(100% - var(--top,60px) - 210px)}
+}
+/* landscape phones: a narrow single column of pieces on the left */
+@media (max-height:520px) and (max-width:1023px){
+  #palette{left:calc(6px + env(safe-area-inset-left));top:var(--top,60px);bottom:calc(6px + env(safe-area-inset-bottom));width:104px;padding:2px 6px 6px;overscroll-behavior:contain}
+  .cat h4{margin:6px 2px 4px;font-size:12px}
+  .cards{grid-template-columns:1fr}
+  .card{touch-action:pan-y}
+  #ctxbar{left:calc(122px + env(safe-area-inset-left));right:calc(190px + env(safe-area-inset-right));bottom:calc(6px + env(safe-area-inset-bottom))}
+  #racePanel{max-height:calc(100% - var(--top,60px) - 6px - env(safe-area-inset-bottom))}
+}
+/* touch screens: finger-sized buttons */
+@media (pointer:coarse) and (max-width:1023px){
+  button.b{height:40px;min-width:40px}
+  .seg button.b{height:36px}
+  .panel-foot button.b{height:36px}
+  .sw i{width:26px;height:26px}
+  input[type=range]{height:8px}
+  input[type=range]::-webkit-slider-thumb{width:22px;height:22px}
+}
 </style>
 <script type="importmap">
 {"imports":{
@@ -1380,6 +1438,9 @@ function frameTrack() {
 const ui = { mode: 'select', placeType: null, level: 8, rot: 0, color: null, snap: true, ghost: null, ghostSpec: null, valid: false, problem: null, snapped: false, selected: null, fromPalette: false, moveOrig: null, ctxSig: '' };
 const raycaster = new THREE.Raycaster();
 const ndc = new THREE.Vector2();
+// touch screens get "tap" wording, a cancel button while placing and touch tips in the help
+const touchUI = matchMedia('(pointer: coarse)').matches;
+const tapWord = touchUI ? 'Tap' : 'Click';
 const ptr = { x: innerWidth / 2, y: innerHeight / 2, over: false, down: false, bx: 0, by: 0, btn: 0, moved: false, pendingMove: null, alt: false };
 const selBox = new THREE.Box3Helper(new THREE.Box3(), new THREE.Color('#f37265')); selBox.visible = false; scene.add(selBox);
 const tileMat = new THREE.MeshBasicMaterial({ color: '#3b4f99', transparent: true, opacity: 0.22, depthWrite: false });
@@ -1551,6 +1612,8 @@ $('#app').addEventListener('pointerdown', e => {
   if (e.target !== cv) return;
   ptr.down = true; ptr.bx = e.clientX; ptr.by = e.clientY; ptr.btn = e.button; ptr.moved = false;
   ptr.x = e.clientX; ptr.y = e.clientY;
+  // touch has no hover, so the ghost has to follow the finger from the moment it lands
+  if (e.pointerType !== 'mouse') { ptr.over = true; if (ui.mode === 'place' || ui.mode === 'move') updateGhost(); }
   if (ui.mode === 'select' && e.button === 0 && ui.selected) {
     const hit = pickPiece(e.clientX, e.clientY);
     if (hit && hit.piece === ui.selected) { ptr.pendingMove = hit.piece; controls.enabled = false; }
@@ -1584,6 +1647,12 @@ window.addEventListener('pointerup', e => {
   if (ui.mode === 'place') placeGhost();
   else if (ui.mode === 'drop') dropMarbleAt(e.clientX, e.clientY);
   else { const hit = pickPiece(e.clientX, e.clientY); select(hit ? hit.piece : null); }
+});
+// the browser took over the gesture (e.g. a sideways swipe scrolling the piece strip): abandon the palette drag
+window.addEventListener('pointercancel', () => {
+  ptr.down = false; ptr.pendingMove = null;
+  if (ui.fromPalette) { ui.fromPalette = false; exitPlace(); }
+  if (cam.mode === 'orbit') controls.enabled = true;
 });
 cv.addEventListener('contextmenu', e => e.preventDefault());
 $('#app').addEventListener('wheel', e => {
@@ -1639,7 +1708,7 @@ function flashCard(type) { const c = document.querySelector(`.card[data-t="${typ
 function togglePause() { paused = !paused; updateRaceButtons(); }
 function toggleSlow() { slowmo = !slowmo; $('#btnSlow').classList.toggle('on', slowmo); }
 function setDropMode(on) {
-  if (on) { if (ui.mode === 'place') exitPlace(); select(null); ui.mode = 'drop'; document.body.classList.add('drop'); toast('Click on the track to drop marbles'); }
+  if (on) { if (ui.mode === 'place') exitPlace(); select(null); ui.mode = 'drop'; document.body.classList.add('drop'); toast(tapWord + ' on the track to drop marbles'); }
   else if (ui.mode === 'drop') { ui.mode = 'select'; document.body.classList.remove('drop'); }
   $('#btnDrop').classList.toggle('on', ui.mode === 'drop');
   renderCtx();
@@ -1662,9 +1731,10 @@ function renderCtx() {
       <button class="b icon" data-a="down" title="Lower (Q)">${ic('down')}</button><button class="b icon" data-a="up" title="Raise (E)">${ic('up')}</button>
       <button class="b icon" data-a="rot" title="Rotate (R)">${ic('rotate')}</button>
       <button class="b ${ui.snap ? 'on' : ''}" data-a="snap" title="Snap to open track ends (hold Alt to bypass)">${ic('magnet')}Snap</button>
-      ${ui.problem && ui.ghostSpec ? `<span class="warn">${ui.problem}</span>` : `<span class="hintsm">${ui.snapped ? '🔗 Snapped to track end · ' : ''}${ui.mode === 'move' ? 'Release to drop' : 'Click to place · Esc / right-click to stop'}</span>`}`;
+      ${touchUI && ui.mode === 'place' ? `<button class="b icon" data-a="noplace" title="Stop placing">${ic('x')}</button>` : ''}
+      ${ui.problem && ui.ghostSpec ? `<span class="warn">${ui.problem}</span>` : `<span class="hintsm">${ui.snapped ? '🔗 Snapped to track end · ' : ''}${ui.mode === 'move' ? 'Release to drop' : touchUI ? 'Tap to place' : 'Click to place · Esc / right-click to stop'}</span>`}`;
   } else if (ui.mode === 'drop') {
-    sig = 'drop'; html = `<span class="tag"><b>Drop marbles</b></span><span class="hintsm">Click anywhere on the track · Esc to stop</span><button class="b icon" data-a="nodrop">${ic('x')}</button>`;
+    sig = 'drop'; html = `<span class="tag"><b>Drop marbles</b></span><span class="hintsm">${tapWord} anywhere on the track${touchUI ? '' : ' · Esc to stop'}</span><button class="b icon" data-a="nodrop">${ic('x')}</button>`;
   } else if (ui.selected) {
     const p = ui.selected, def = PIECES[p.type];
     sig = ['s', p.id, p.level, p.rot, p.color].join('|');
@@ -1676,7 +1746,8 @@ function renderCtx() {
       <div class="sw">${TRACK_COLORS.map(c => `<i data-c="${c}" style="background:${c}" class="${c === p.color ? 'on' : ''}"></i>`).join('')}</div>
       <span class="hintsm">Drag to move</span>`;
   } else {
-    sig = 'idle'; html = `<span class="hintsm">Click or drag a piece from the left to build · click a piece to edit it · Space to race</span>`;
+    sig = 'idle' + (innerWidth > innerHeight); html = touchUI ? `<span class="hintsm">Tap or drag a piece ${innerWidth > innerHeight ? 'from the left' : 'up from the strip below'} to build · tap a piece to edit it</span>`
+      : `<span class="hintsm">Click or drag a piece from the left to build · click a piece to edit it · Space to race</span>`;
   }
   if (sig !== ui.ctxSig) { ui.ctxSig = sig; el.innerHTML = html; }
 }
@@ -1684,7 +1755,7 @@ $('#ctxbar').addEventListener('click', e => {
   const sw = e.target.closest('[data-c]'); if (sw) return paintSel(sw.dataset.c);
   const b = e.target.closest('[data-a]'); if (!b) return;
   ({ up: () => levelAction(1), down: () => levelAction(-1), rot: () => rotateAction(1), dup: duplicateSel, del: deleteSel,
-    snap: () => { ui.snap = !ui.snap; updateGhost(); }, nodrop: () => setDropMode(false) })[b.dataset.a]?.();
+    snap: () => { ui.snap = !ui.snap; updateGhost(); }, nodrop: () => setDropMode(false), noplace: exitPlace })[b.dataset.a]?.();
 });
 
 let boardTimer = 0;
@@ -1714,6 +1785,9 @@ function updateBoard(force) {
   if (fm && live(fm)) { ft.classList.remove('hidden'); ft.innerHTML = `${ic('cam')}<span class="dot" style="background:${fm.color}"></span>${fm.name}${cam.mode === 'cinematic' ? ' · cinematic' : ''}`; }
   else ft.classList.add('hidden');
 }
+// phones: tap the timer to fold the standings away (starts folded on portrait screens)
+$('#timer').addEventListener('click', () => $('#racePanel').classList.toggle('mini'));
+if (matchMedia('(max-width: 760px) and (min-height: 521px)').matches) $('#racePanel').classList.add('mini');
 $('#board').addEventListener('click', e => { const li = e.target.closest('li'); if (!li) return; const m = marbles.find(x => x.id === +li.dataset.id); if (m) setCamMode('follow', m); });
 
 let fpsAcc = 0, fpsN = 0, fps = 60;
@@ -1781,6 +1855,7 @@ function openHelp() {
   const row = (k, d) => `<div>${k}</div><div>${d}</div>`;
   openModal(`<h2>How to play</h2>
     <p>Drag pieces from the left onto the ground, or click a piece and then click to place it. Pieces snap to open track ends (green arrows). Connect a <b>Start Gate</b> to a <b>Finish Line</b>, then press <b>Race</b>.</p>
+    ${touchUI ? `<p><b>On a touch screen:</b> drag with one finger to orbit, pinch or use two fingers to zoom and pan. Tap a piece on the track to select it, drag it to move it, and use the bar at the bottom to rotate, raise, lower, copy or delete it. Tap the timer to show or hide the standings.</p>` : ''}
     <div class="keys">
       ${row('<kbd>Left drag</kbd>', 'Orbit camera')}${row('<kbd>Right drag</kbd> / <kbd>WASD</kbd>', 'Pan camera')}${row('<kbd>Wheel</kbd>', 'Zoom (follow distance in Follow mode)')}
       ${row('<kbd>R</kbd> / <kbd>Shift R</kbd>', 'Rotate piece')}${row('<kbd>E</kbd> / <kbd>Q</kbd>, <kbd>Shift</kbd>+wheel', 'Raise / lower piece')}

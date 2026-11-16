@@ -110,7 +110,7 @@ export function TimeGraph() {
     <section className="glass flex flex-col gap-3 p-5" aria-label="Time comparison graph">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h2 className="panel-title">Time comparison</h2>
-        <div className="flex flex-wrap gap-x-4 gap-y-1 text-[11.5px] text-ink-muted">
+        <div className="flex flex-wrap gap-x-4 gap-y-1 text-[12px] lg:text-[11.5px] text-ink-muted">
           <span className="inline-flex items-center gap-1.5"><i className="inline-block h-0 w-4 border-t border-dashed border-slate-300/70" />equal elapsed time</span>
           {frame === 'earth' ? (
             <span className="inline-flex items-center gap-1.5"><i className="inline-block h-[3px] w-4 rounded bg-ship" />ship clock, Δτ = Δt/γ</span>

@@ -7,7 +7,7 @@ import { ItemIcon } from './ItemIcon';
 
 const ORDER: LibraryCategory[] = ['sources', 'mirrors', 'lenses', 'prisms', 'materials', 'tools'];
 
-export function Library() {
+export function Library({ onAdd }: { onAdd?: () => void } = {}) {
   const [query, setQuery] = useState('');
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
   const addCount = useRef(0);
@@ -25,6 +25,7 @@ export function Library() {
     const [cx, cy] = canvasApi.center();
     const k = addCount.current++ % 6;
     addObject(item.create(Math.round(cx + k * 20), Math.round(cy - k * 20)));
+    onAdd?.();
   };
 
   return (

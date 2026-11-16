@@ -150,8 +150,8 @@ export class AudioEngine {
 
   async play() {
     if (this.mode !== 'file') return;
-    await this.ctx.resume();
-    await this.element.play();
+    // start both straight away (no await in between) so mobile browsers still see the user's tap
+    await Promise.all([this.ctx.resume(), this.element.play()]);
   }
 
   pause() {

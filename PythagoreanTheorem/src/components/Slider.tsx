@@ -64,7 +64,7 @@ export function Slider({ id, label, symbol, value, min, max, step, color, onChan
             type="button"
             aria-label={`Decrease ${symbol}`}
             onClick={() => nudge(-0.1)}
-            className="grid h-7 w-7 place-items-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-slate-800"
+            className="grid h-7 w-7 place-items-center rounded-lg text-slate-500 max-lg:h-10 max-lg:w-10 max-lg:text-lg transition hover:bg-slate-100 hover:text-slate-800"
           >
             −
           </button>
@@ -88,7 +88,7 @@ export function Slider({ id, label, symbol, value, min, max, step, color, onChan
                 e.currentTarget.blur();
               }
             }}
-            className={`w-[4.5rem] rounded-lg border-2 bg-white px-2 py-0.5 text-center font-mono text-sm font-semibold tabular-nums outline-none transition-colors ${
+            className={`w-[4.5rem] rounded-lg border-2 bg-white px-2 py-0.5 text-center font-mono text-sm font-semibold max-lg:py-1.5 max-lg:text-base tabular-nums outline-none transition-colors ${
               invalid ? 'border-coral text-coral-600' : 'border-slate-200 text-slate-800 hover:border-slate-300 focus:border-navy'
             }`}
           />
@@ -96,7 +96,7 @@ export function Slider({ id, label, symbol, value, min, max, step, color, onChan
             type="button"
             aria-label={`Increase ${symbol}`}
             onClick={() => nudge(0.1)}
-            className="grid h-7 w-7 place-items-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-slate-800"
+            className="grid h-7 w-7 place-items-center rounded-lg text-slate-500 max-lg:h-10 max-lg:w-10 max-lg:text-lg transition hover:bg-slate-100 hover:text-slate-800"
           >
             +
           </button>

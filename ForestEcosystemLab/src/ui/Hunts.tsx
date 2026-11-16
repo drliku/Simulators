@@ -46,7 +46,7 @@ export function HuntToasts() {
   const ctl = useUi();
   if (!ctl.huntAlerts || ctl.huntFlashes.length === 0) return null;
   return (
-    <div className="pointer-events-none absolute right-2 top-[84px] flex w-64 flex-col gap-1.5" aria-live="polite">
+    <div className="pointer-events-none absolute right-2 top-[84px] flex w-64 flex-col gap-1.5 max-sm:top-[104px] max-sm:max-w-[calc(100%-16px)]" aria-live="polite">
       {ctl.huntFlashes.slice(-3).reverse().map((f) => (
         <div key={f.seq} className={`rounded-lg border px-2.5 py-1.5 text-[12px] shadow-lg backdrop-blur ${f.outcome === 'kill' ? 'border-[#ff3b30]/70 bg-[#3a0d0b]/90' : 'border-[#5eea8a]/60 bg-[#0d2a17]/90'}`}>
           <span className={`font-display text-[14px] uppercase tracking-[0.06em] ${f.outcome === 'kill' ? 'text-[#ff6b5e]' : 'text-[#6ff09a]'}`}>{f.outcome === 'kill' ? 'Kill' : 'Escaped'}</span>

@@ -33,7 +33,10 @@ export function ProcessPanel() {
           )
         })}
       </ul>
-      <p className="muted small">Click a process here or a label in the scene to learn what is happening.</p>
+      <p className="muted small">
+        <span className="only-mouse">Click</span>
+        <span className="only-touch">Tap</span> a process here or a label in the scene to learn what is happening.
+      </p>
     </section>
   )
 }

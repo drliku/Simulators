@@ -474,7 +474,7 @@
   .sim-directory .chips { flex-wrap: nowrap; overflow-x: auto; width: 100%; padding-bottom: 4px; }
   .sim-directory .chip { flex: none; }
   .sim-directory .search { width: 100%; }
-  .sim-directory .search input { width: 100%; }
+  .sim-directory .search input { width: 100%; font-size: 16px; } /* 16px stops iOS zooming in on focus */
   .sim-directory main.wrap { padding-top: 32px; }
   .sim-directory .grid { grid-template-columns: 1fr; }
   .sim-directory .subject-head { flex-wrap: wrap; }
@@ -482,6 +482,19 @@
 }
 @media (max-width: 480px) {
   .sim-directory .hero h1 { font-size: 26px; }
+}
+/* Phones: keep the "How to use" window inside the visible screen (dvh skips the URL bar) */
+@media (max-width: 960px), (max-height: 500px) {
+  .sim-directory .guide { max-height: calc(100% - 32px); max-height: calc(100dvh - 32px); }
+}
+/* Landscape phones: the cover art would leave no room for the text, so shrink it */
+@media (max-height: 500px) {
+  .sim-directory .guide { width: min(640px, calc(100% - 32px)); }
+  .sim-directory .guide-art,
+  .sim-directory .guide-art svg { height: 84px; }
+  .sim-directory .guide-scroll { padding: 14px 22px 6px; }
+  .sim-directory .guide h2 { font-size: 20px; }
+  .sim-directory .guide-foot { padding: 10px 22px 14px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

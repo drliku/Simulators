@@ -66,20 +66,65 @@ composer.addPass(
 );
 composer.addPass(new OutputPass());
 
+// On phones the panels cover much of the screen, so frame the cochlea in the strip they leave
+// free: below the title card (portrait) and above the wide panels docked at the bottom.
+const phoneLayout = matchMedia('(max-width: 760px), (max-height: 500px)');
+function freeBand(w, h) {
+  if (!phoneLayout.matches) return [0, h];
+  let top = 0, bottom = h;
+  for (const el of document.querySelectorAll('.title, .gram, #pianoPanel, .dock, #ytPanel')) {
+    if (el.hidden || !el.getClientRects().length) continue;
+    const r = el.getBoundingClientRect();
+    if (r.top < h * 0.35) {
+      if (h > w) top = Math.max(top, r.bottom); // in portrait the title spans most of the width
+    } else if (r.width >= w * 0.5) bottom = Math.min(bottom, r.top); // narrow side cards don't hide the middle
+  }
+  return bottom - top < Math.min(140, h * 0.2) ? [0, h] : [top, bottom];
+}
+
 function resize() {
   const w = innerWidth, h = innerHeight;
   renderer.setSize(w, h, false);
   composer.setSize(w, h);
   bloom.setSize(w, h);
-  camera.aspect = w / h;
+  frameCamera();
+}
+let bandKey = '';
+function frameCamera() {
+  const w = innerWidth, h = innerHeight;
+  const [top, bottom] = freeBand(w, h);
+  bandKey = `${w}x${h}:${top}-${bottom}`;
+  const bandH = bottom - top;
+  const aspect = w / bandH;
   // Landscape: 33 mm lens on a 36 mm sensor (57° across the width), as in the .blend.
   // Portrait: keep at least ~44° across the width so the whole spiral fits on a phone.
-  const halfH = camera.aspect >= 1 ? Math.atan(18 / 33) : THREE.MathUtils.degToRad(22);
-  camera.fov = THREE.MathUtils.radToDeg(2 * Math.atan(Math.tan(halfH) / camera.aspect));
+  // In the phone band, frame tighter across the width (16°) so the spiral is bigger, but always
+  // keep enough height for the spiral and the instrument above it.
+  const phone = bandH < h;
+  const halfH = aspect >= 1 ? Math.atan(18 / 33) : THREE.MathUtils.degToRad(phone ? 16 : 22);
+  const minTan = phone ? (aspect >= 1 ? 0.3 : 0.185) : 0;
+  const tanBand = Math.max(Math.tan(halfH) / aspect, minTan); // vertical half-angle across the band
+  // Shift the optical centre to the middle of the band with a taller virtual frame.
+  const shift = h / 2 - (top + bottom) / 2; // > 0 when the band sits above the middle
+  const fullH = h + 2 * Math.abs(shift);
+  camera.aspect = w / fullH;
+  camera.fov = THREE.MathUtils.radToDeg(2 * Math.atan(tanBand * (fullH / bandH)));
+  if (shift === 0) camera.clearViewOffset();
+  else camera.setViewOffset(w, fullH, 0, shift > 0 ? 2 * shift : 0, w, h);
   camera.updateProjectionMatrix();
-  cochlea?.sparks.setPixelScale(h * renderer.getPixelRatio(), camera.fov);
+  cochlea?.sparks.setPixelScale(fullH * renderer.getPixelRatio(), camera.fov);
 }
 addEventListener('resize', resize);
+phoneLayout.addEventListener('change', resize);
+// Panels settle after load and change height later (instrument picked, YouTube opened), so
+// re-check the free band a few times a second and re-frame only when it moves.
+let bandCheck = 0;
+function checkBand(dt) {
+  if (!phoneLayout.matches || (bandCheck += dt) < 0.25) return;
+  bandCheck = 0;
+  const w = innerWidth, h = innerHeight, [top, bottom] = freeBand(w, h);
+  if (`${w}x${h}:${top}-${bottom}` !== bandKey) frameCamera();
+}
 resize();
 
 // ---------- app state
@@ -333,6 +378,7 @@ function setupInstrumentKeyboard() {
 }
 
 // The bar under the instrument: what you just played and where the cochlea hears it
+const touchOnly = matchMedia('(hover: none) and (pointer: coarse)').matches;
 let notesShownAt = 0;
 function updateNotes(now) {
   if (now - notesShownAt < 120) return;
@@ -344,7 +390,9 @@ function updateNotes(now) {
     text = `${midiName(lastPlayed.m)}  ·  ${formatHz(f)}  ·  ${regionName(f)}`;
     idle = false;
   } else if (inst) {
-    text = `Click the ${inst.name.toLowerCase()} or play with your keyboard: Z–M and Q–P rows, [ ] change octave (now C${3 + octave})`;
+    text = touchOnly
+      ? `Tap or slide along the ${inst.name.toLowerCase()} to play it`
+      : `Click the ${inst.name.toLowerCase()} or play with your keyboard: Z–M and Q–P rows, [ ] change octave (now C${3 + octave})`;
   } else {
     text = 'Choose an instrument to play it and watch where the cochlea responds.';
   }
@@ -397,6 +445,7 @@ function frame(now) {
   const dt = Math.min(raw, 1 / 20);
   simTime += dt;
   updateFps(raw, now);
+  checkBand(raw);
 
   audio.readPower(model.power);
   model.step(dt);
@@ -418,10 +467,17 @@ function setupHover() {
   const v = new THREE.Vector3();
   const tip = $('tooltip');
   let pending = null;
+  let hideTimer = 0;
   canvas.addEventListener('pointermove', (e) => {
-    pending = e;
+    if (e.pointerType !== 'touch') pending = e; // a dragging finger is orbiting, not inspecting
   });
-  canvas.addEventListener('pointerleave', () => { tip.hidden = true; pending = null; });
+  // touch has no hover: a tap shows the nearest hair cell for a few seconds
+  canvas.addEventListener('pointerdown', (e) => {
+    if (e.pointerType !== 'mouse') pending = e;
+  });
+  canvas.addEventListener('pointerleave', (e) => {
+    if (e.pointerType === 'mouse') { tip.hidden = true; pending = null; }
+  });
   const check = () => {
     if (pending) {
       const e = pending;
@@ -440,9 +496,14 @@ function setupHover() {
       if (best >= 0) {
         const c = cells[best], f = c.f;
         tip.innerHTML = `${c.inner ? 'Inner' : 'Outer'} hair cell <b>#${best + 1}</b> · ${formatHz(f)} (${noteName(f)})<br>${regionName(f)} · activity ${Math.round(model.vv[c.ch] * 100)}%`;
-        tip.style.left = `${e.clientX}px`;
-        tip.style.top = `${e.clientY}px`;
+        const touch = e.pointerType !== 'mouse';
+        tip.classList.toggle('touch', touch);
         tip.hidden = false;
+        // keep it on screen (and above the finger on touch)
+        tip.style.left = `${Math.max(8, Math.min(e.clientX, innerWidth - tip.offsetWidth - (touch ? 8 : 22)))}px`;
+        tip.style.top = `${e.clientY}px`;
+        clearTimeout(hideTimer);
+        if (touch) hideTimer = setTimeout(() => { tip.hidden = true; }, 2500);
       } else tip.hidden = true;
     }
     requestAnimationFrame(check);
@@ -580,6 +641,23 @@ $('ytClose').addEventListener('click', () => {
 if (import.meta.env.VITE_SHARED) {
   document.querySelectorAll('[data-action="demo"], [data-action="mic"], [data-action="tab"], .tab-hint, .yt-only').forEach((b) => b.remove());
 }
+
+// Phones and tablets can't share another tab's sound
+if (!navigator.mediaDevices?.getDisplayMedia || matchMedia('(hover: none) and (pointer: coarse)').matches) $('tabBtn')?.remove();
+
+// Small screens fold the theme / cells / toggles away behind a settings button
+$('moreBtn').addEventListener('click', () => {
+  const open = document.querySelector('.dock').classList.toggle('more-open');
+  $('moreBtn').setAttribute('aria-expanded', String(open));
+  $('moreBtn').classList.toggle('active', open);
+});
+
+// Mobile browsers only start audio from a user gesture: wake the AudioContext on the first touch/click.
+// On iOS, the "playback" session also keeps sound on when the silent switch is set.
+try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch {}
+const unlockAudio = () => { audio.context().resume().catch(() => {}); };
+addEventListener('pointerdown', unlockAudio, { capture: true, once: true });
+addEventListener('keydown', unlockAudio, { capture: true, once: true });
 
 document.querySelectorAll('[data-action]').forEach((b) => b.addEventListener('click', () => action(b.dataset.action)));
 fileInput.addEventListener('change', () => { loadFile(fileInput.files[0]); fileInput.value = ''; });

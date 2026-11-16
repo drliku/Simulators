@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ChevronDown, Download, FilePlus2, FlaskConical, FolderOpen, ImageDown, Redo2, RotateCcw, Undo2 } from 'lucide-react';
+import { ChevronDown, Download, FilePlus2, FlaskConical, FolderOpen, ImageDown, MoreHorizontal, Redo2, RotateCcw, Undo2 } from 'lucide-react';
 import { PRESETS } from '../scene/presets';
 import { parseScene, serializeScene } from '../scene/serialize';
 import { useStore, useToasts } from '../state/store';
@@ -39,26 +39,26 @@ function PresetMenu() {
 
   useEffect(() => {
     if (!open) return;
-    const close = (e: MouseEvent) => {
+    const close = (e: PointerEvent) => {
       if (!ref.current?.contains(e.target as Node)) setOpen(false);
     };
-    window.addEventListener('mousedown', close);
-    return () => window.removeEventListener('mousedown', close);
+    window.addEventListener('pointerdown', close);
+    return () => window.removeEventListener('pointerdown', close);
   }, [open]);
 
   return (
-    <div ref={ref} className="relative">
+    <div ref={ref} className="relative min-w-0">
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="flex h-8 items-center gap-2 rounded-md border border-white/15 bg-ink-900/40 px-3 text-[13px] font-medium text-slate-100 hover:border-coral-400/60 hover:bg-ink-900/60"
+        className="tap flex h-8 max-w-full items-center gap-2 rounded-md border border-white/15 bg-ink-900/40 px-3 text-[13px] font-medium text-slate-100 hover:border-coral-400/60 hover:bg-ink-900/60"
       >
-        <FlaskConical className="h-3.5 w-3.5 text-coral-400" />
+        <FlaskConical className="h-3.5 w-3.5 shrink-0 text-coral-400" />
         <span className="max-w-[220px] truncate">{current ? current.name : 'Experiments'}</span>
-        <ChevronDown className="h-3.5 w-3.5 text-slate-500" />
+        <ChevronDown className="h-3.5 w-3.5 shrink-0 text-slate-500" />
       </button>
       {open && (
-        <div className="scroll-thin absolute left-0 top-11 z-50 max-h-[70vh] w-[360px] overflow-y-auto rounded-xl border border-white/10 bg-ink-900/95 p-1.5 shadow-2xl shadow-black/60 backdrop-blur">
+        <div className="scroll-thin absolute left-0 top-11 z-50 max-h-[70vh] w-[360px] overflow-y-auto max-sm:fixed max-sm:inset-x-2 max-sm:top-[60px] max-sm:w-auto max-sm:max-h-[calc(100dvh-72px)] rounded-xl border border-white/10 bg-ink-900/95 p-1.5 shadow-2xl shadow-black/60 backdrop-blur">
           {PRESETS.map((p, i) => (
             <button
               key={p.id}
@@ -67,13 +67,63 @@ function PresetMenu() {
                 loadPreset(p.id);
                 setOpen(false);
               }}
-              className={`flex w-full gap-3 rounded-lg px-3 py-2 text-left hover:bg-white/[0.06] ${p.id === presetId ? 'bg-coral-500/10' : ''}`}
+              className={`flex w-full gap-3 rounded-lg px-3 py-2 text-left max-sm:py-2.5 hover:bg-white/[0.06] ${p.id === presetId ? 'bg-coral-500/10' : ''}`}
             >
               <span className="brand-label mt-0.5 text-[12px] text-coral-500/80">{String(i + 1).padStart(2, '0')}</span>
               <span>
                 <span className="block text-[12.5px] text-slate-100">{p.name}</span>
                 <span className="block text-[11px] leading-snug text-slate-500">{p.description}</span>
               </span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** Phones: the scene/file actions collapse into one menu so the header fits. */
+function FileMenu({ onOpen }: { onOpen: () => void }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const { resetScene, clearScene } = useStore.getState();
+
+  useEffect(() => {
+    if (!open) return;
+    const close = (e: PointerEvent) => {
+      if (!ref.current?.contains(e.target as Node)) setOpen(false);
+    };
+    window.addEventListener('pointerdown', close);
+    return () => window.removeEventListener('pointerdown', close);
+  }, [open]);
+
+  const items: { label: string; icon: typeof RotateCcw; run: () => void }[] = [
+    { label: 'Reset scene', icon: RotateCcw, run: resetScene },
+    { label: 'New empty scene', icon: FilePlus2, run: clearScene },
+    { label: 'Open scene JSON', icon: FolderOpen, run: onOpen },
+    { label: SANDBOXED ? 'Copy scene JSON' : 'Save scene JSON', icon: Download, run: saveSceneFile },
+    { label: 'Export PNG', icon: ImageDown, run: () => canvasApi.exportPNG() },
+  ];
+
+  return (
+    <div ref={ref} className="relative sm:hidden">
+      <IconButton title="Scene and file actions" active={open} onClick={() => setOpen(!open)}>
+        <MoreHorizontal className="h-4 w-4" />
+      </IconButton>
+      {open && (
+        <div className="absolute right-0 top-11 z-50 w-52 rounded-xl border border-white/10 bg-ink-900/95 p-1.5 shadow-2xl shadow-black/60 backdrop-blur">
+          {items.map(({ label, icon: Icon, run }) => (
+            <button
+              key={label}
+              type="button"
+              onClick={() => {
+                setOpen(false);
+                run();
+              }}
+              className="flex h-11 w-full items-center gap-3 rounded-lg px-3 text-left text-[14px] text-slate-200 hover:bg-white/[0.06]"
+            >
+              <Icon className="h-4 w-4 text-slate-400" />
+              {label}
             </button>
           ))}
         </div>
@@ -101,11 +151,11 @@ export function TopBar() {
   };
 
   return (
-    <header className="relative z-40 flex h-14 shrink-0 items-center gap-3 border-b-2 border-coral-500/70 bg-ink-700 pr-3">
+    <header className="relative z-40 flex h-14 shrink-0 items-center gap-2 border-b-2 border-coral-500/70 bg-ink-700 pr-2 sm:gap-3 sm:pr-3">
       {/* Brand lock-up mirrors the logo: coral brain square, wordmark, rule + sub-name */}
-      <div className="flex h-full items-center gap-3 pr-1">
+      <div className="flex h-full shrink-0 items-center gap-3 pr-1">
         <img src={brainMark} alt="The Brain Maze" className="h-full w-14 bg-coral-500 object-contain" />
-        <div className="leading-none">
+        <div className="hidden leading-none sm:block">
           <div className="brand-label text-[19px] text-coral-500">The Brain Maze</div>
           <div className="mt-1 hidden items-center gap-2 sm:flex">
             <span className="h-[3px] w-7 bg-coral-500" />
@@ -113,9 +163,9 @@ export function TopBar() {
           </div>
         </div>
       </div>
-      <div className="h-7 w-px bg-white/15" />
+      <div className="hidden h-7 w-px shrink-0 bg-white/15 sm:block" />
       <PresetMenu />
-      <div className="ml-auto flex items-center gap-0.5">
+      <div className="ml-auto flex shrink-0 items-center gap-0.5">
         <IconButton title="Undo (Ctrl+Z)" onClick={undo} disabled={!canUndo}>
           <Undo2 className="h-4 w-4" />
         </IconButton>
@@ -123,26 +173,29 @@ export function TopBar() {
           <Redo2 className="h-4 w-4" />
         </IconButton>
         <div className="mx-1 h-6 w-px bg-white/10" />
-        <IconButton title="Reset scene to its initial state" onClick={resetScene}>
-          <RotateCcw className="h-4 w-4" />
-          <span className="hidden lg:inline">Reset</span>
-        </IconButton>
-        <IconButton title="New empty scene" onClick={clearScene}>
-          <FilePlus2 className="h-4 w-4" />
-          <span className="hidden lg:inline">New</span>
-        </IconButton>
-        <IconButton title="Load scene JSON" onClick={() => fileRef.current?.click()}>
-          <FolderOpen className="h-4 w-4" />
-          <span className="hidden lg:inline">Open</span>
-        </IconButton>
-        <IconButton title={SANDBOXED ? 'Copy scene JSON to clipboard (Ctrl+S)' : 'Save scene as JSON (Ctrl+S)'} onClick={saveSceneFile}>
-          <Download className="h-4 w-4" />
-          <span className="hidden lg:inline">{SANDBOXED ? 'Copy' : 'Save'}</span>
-        </IconButton>
-        <IconButton title="Export canvas as PNG" onClick={() => canvasApi.exportPNG()}>
-          <ImageDown className="h-4 w-4" />
-          <span className="hidden lg:inline">PNG</span>
-        </IconButton>
+        <FileMenu onOpen={() => fileRef.current?.click()} />
+        <div className="hidden items-center gap-0.5 sm:flex">
+          <IconButton title="Reset scene to its initial state" onClick={resetScene}>
+            <RotateCcw className="h-4 w-4" />
+            <span className="hidden lg:inline">Reset</span>
+          </IconButton>
+          <IconButton title="New empty scene" onClick={clearScene}>
+            <FilePlus2 className="h-4 w-4" />
+            <span className="hidden lg:inline">New</span>
+          </IconButton>
+          <IconButton title="Load scene JSON" onClick={() => fileRef.current?.click()}>
+            <FolderOpen className="h-4 w-4" />
+            <span className="hidden lg:inline">Open</span>
+          </IconButton>
+          <IconButton title={SANDBOXED ? 'Copy scene JSON to clipboard (Ctrl+S)' : 'Save scene as JSON (Ctrl+S)'} onClick={saveSceneFile}>
+            <Download className="h-4 w-4" />
+            <span className="hidden lg:inline">{SANDBOXED ? 'Copy' : 'Save'}</span>
+          </IconButton>
+          <IconButton title="Export canvas as PNG" onClick={() => canvasApi.exportPNG()}>
+            <ImageDown className="h-4 w-4" />
+            <span className="hidden lg:inline">PNG</span>
+          </IconButton>
+        </div>
         <input
           ref={fileRef}
           type="file"

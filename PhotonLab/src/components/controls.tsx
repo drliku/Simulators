@@ -184,7 +184,7 @@ export function SelectInput<T extends string>({
 
 export function Toggle({ checked, onChange, label, hint }: { checked: boolean; onChange: (v: boolean) => void; label: string; hint?: string }) {
   return (
-    <button type="button" className="group flex w-full items-center justify-between gap-2 py-0.5 text-left" onClick={() => onChange(!checked)} title={hint}>
+    <button type="button" className="group flex w-full items-center justify-between gap-2 py-0.5 text-left [@media(pointer:coarse)]:min-h-[36px]" onClick={() => onChange(!checked)} title={hint}>
       <span className="text-[11px] text-slate-400 group-hover:text-slate-300">{label}</span>
       <span className={`relative h-[18px] w-8 shrink-0 rounded-full transition-colors ${checked ? 'bg-coral-500' : 'bg-white/10'}`}>
         <span className={`absolute top-[2px] h-[14px] w-[14px] rounded-full bg-white shadow transition-all ${checked ? 'left-[16px]' : 'left-[2px]'}`} />
@@ -198,7 +198,7 @@ export function Section({ title, children, right, defaultOpen = true }: { title:
   return (
     <section className="border-b border-white/[0.06] px-4 py-3">
       <div className="mb-2 flex items-center justify-between">
-        <button type="button" className="flex items-center gap-1.5 brand-label text-[12.5px] text-slate-400 hover:text-coral-300" onClick={() => setOpen(!open)}>
+        <button type="button" className="flex items-center gap-1.5 brand-label text-[12.5px] text-slate-400 hover:text-coral-300 [@media(pointer:coarse)]:min-h-[36px]" onClick={() => setOpen(!open)}>
           <ChevronDown className={`h-3 w-3 transition-transform ${open ? '' : '-rotate-90'}`} />
           {title}
         </button>
@@ -240,7 +240,7 @@ export function IconButton({
       aria-label={title}
       disabled={disabled}
       onClick={onClick}
-      className={`flex h-8 min-w-8 items-center justify-center gap-1.5 rounded-lg px-2 text-[11.5px] transition-colors disabled:cursor-not-allowed disabled:opacity-35 ${
+      className={`tap flex h-8 min-w-8 items-center justify-center gap-1.5 rounded-lg px-2 text-[11.5px] transition-colors disabled:cursor-not-allowed disabled:opacity-35 ${
         active ? 'bg-coral-500/20 text-coral-300 ring-1 ring-inset ring-coral-500/40' : 'text-slate-300 hover:bg-white/[0.07] hover:text-white'
       } ${className ?? ''}`}
     >

@@ -704,6 +704,10 @@ output {
   line-height: 1.4;
 }
 
+.hint-touch {
+  display: none;
+}
+
 /* ---------- toast + loading ---------- */
 .toast {
   position: absolute;
@@ -833,5 +837,81 @@ output {
   .toast.show {
     position: fixed;
     transform: translate(-50%, 0);
+  }
+}
+
+/* ---------- phones (portrait + landscape) ---------- */
+@media (max-width: 860px) {
+  #app {
+    padding: max(12px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom))
+      max(16px, env(safe-area-inset-left));
+  }
+  /* toast sits at the bottom of the screen instead of covering the title bar */
+  .toast,
+  .toast.show {
+    top: auto;
+    bottom: max(16px, env(safe-area-inset-bottom));
+    left: 50%;
+    transform: translate(-50%, 0);
+  }
+  .toast {
+    transform: translate(-50%, 8px);
+  }
+  /* the inspector works by tapping, so show it under the tool dock */
+  .inspector {
+    display: block;
+    order: 1;
+  }
+  .insp-title strong {
+    font-size: 15px;
+  }
+  .inspector dl div {
+    font-size: 13px;
+  }
+  .hint {
+    font-size: 12px;
+  }
+  /* touch-sized controls */
+  .btn {
+    min-height: 44px;
+  }
+  .segmented button {
+    min-height: 40px;
+  }
+  .polarity button {
+    min-height: 40px;
+  }
+  .tools button {
+    height: 56px;
+  }
+  /* larger touch area; the coloured track stays 6px by clipping it to the padding box */
+  .range,
+  .range.temp,
+  .range.rain,
+  .range.sea {
+    height: 30px;
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    background-clip: padding-box;
+    margin: -10px 0;
+  }
+  .range::-webkit-slider-thumb {
+    width: 20px;
+    height: 26px;
+  }
+}
+@media (max-width: 860px) and (hover: none) {
+  .hint:not(.hint-touch) {
+    display: none;
+  }
+  .hint-touch {
+    display: block;
+  }
+}
+/* landscape phones: keep the map and the tool dock on one screen */
+@media (max-width: 1023px) and (orientation: landscape) and (max-height: 540px) {
+  #map {
+    width: min(100%, calc((100dvh - 108px) * 2));
+    align-self: center;
   }
 }

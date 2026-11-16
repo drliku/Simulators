@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Cochlea Simulator</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -83,6 +83,10 @@
         <svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z" /></svg>
         <input id="volume" type="range" min="0" max="1" step="0.01" value="0.9" aria-label="Volume" />
       </label>
+      <button id="moreBtn" class="more-btn" aria-label="Settings" aria-expanded="false" aria-controls="dockMore" title="Settings">
+        <svg viewBox="0 0 24 24"><path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z" /></svg>
+      </button>
+      <div id="dockMore" class="dock-more">
       <label class="cells" title="Colour theme for the hair cells, sparks and membrane">
         <span>Theme</span>
         <span id="themeSwatch" class="swatch" aria-hidden="true"></span>
@@ -96,6 +100,7 @@
       <div class="toggles">
         <label><input id="tLabels" type="checkbox" checked /> Labels</label>
         <label><input id="tOrbit" type="checkbox" checked /> Orbit</label>      </div>
+      </div>
       <button data-action="open">Open file</button>
       <button data-action="demo">Demo</button>
       <button data-action="youtube" class="yt-only">YouTube</button>

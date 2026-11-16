@@ -183,7 +183,7 @@ body:not(.sb-collapsed) #toasts { left: calc(50% + var(--sb-w) / 2); }
 
 /* ---------- modal ---------- */
 .modal { position: fixed; inset: 0; background: rgba(8, 6, 4, 0.55); display: grid; place-items: center; z-index: 10; padding: 16px; }
-.modal-card { width: min(560px, 100%); padding: 16px 18px 18px; max-height: calc(100vh - 32px); overflow: auto; }
+.modal-card { width: min(560px, 100%); padding: 16px 18px 18px; max-height: calc(100vh - 32px); max-height: calc(100dvh - 32px); overflow: auto; overscroll-behavior: contain; }
 .help-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px 16px; font-size: 12.5px; color: var(--muted); }
 .help-grid kbd { display: inline-block; min-width: 0; padding: 2px 6px; margin-right: 6px; border-radius: 5px; background: var(--raise-2); border: 1px solid var(--line); color: var(--text); font-family: var(--font); font-size: 11px; }
 .help-notes { margin-top: 14px; border-top: 1px solid var(--line); padding-top: 10px; }
@@ -199,4 +199,54 @@ body:not(.sb-collapsed) #toasts { left: calc(50% + var(--sb-w) / 2); }
   #inspector { left: 14px; right: 14px; width: auto; }
   body:not(.sb-collapsed) #toasts { left: 50%; }
   .help-grid { grid-template-columns: 1fr; }
+}
+
+/* ---------- phones ---------- */
+@media (max-width: 760px) {
+  #hud { top: 14px; left: 64px; right: 10px; }
+  #hud-env { gap: 7px; padding: 6px 11px; font-size: 12px; max-width: 100%; }
+  /* playback controls become a bottom bar so they fit next to the thumb */
+  .hud-controls { position: fixed; left: 50%; transform: translateX(-50%); bottom: 12px; bottom: max(12px, env(safe-area-inset-bottom, 0px)); max-width: calc(100vw - 20px); }
+  #toasts { bottom: 70px; width: calc(100vw - 24px); }
+  .toast { max-width: 100%; }
+  #inspector { bottom: 66px; max-height: calc(100dvh - 140px); overflow-y: auto; }
+}
+@media (max-width: 380px) {
+  #hud-env { gap: 5px; padding: 6px 9px; font-size: 11.5px; }
+  #hud-env .hud-item small { display: none; }
+}
+/* landscape phones: little height, so keep panels short and scrollable */
+@media (max-height: 500px) {
+  #sidebar { top: 10px; bottom: 10px; left: 10px; }
+  body:not(.sb-collapsed) #hud { left: calc(var(--sb-w) + 20px); }
+  #hud { top: 10px; }
+  .icon-btn.floating { top: 10px; left: 10px; }
+  #inspector { right: 10px; bottom: 10px; max-height: calc(100dvh - 110px); overflow-y: auto; }
+}
+/* touch screens: finger-sized targets and no keyboard hints */
+@media (hover: none) and (pointer: coarse) {
+  .icon-btn { width: 40px; height: 40px; }
+  .icon-btn.small { width: 36px; height: 36px; }
+  .seg button { min-height: 36px; font-size: 12.5px; }
+  .seg.small button { min-height: 34px; min-width: 34px; font-size: 12px; }
+  .hud-controls { gap: 4px; }
+  .tool kbd { display: none; }
+  .tool span { font-size: 11.5px; }
+  .btn { height: 40px; }
+  .link-btn { padding: 10px 0 10px 12px; margin: -10px 0; font-size: 12.5px; }
+  .colony-chip { min-height: 40px; }
+  .switch { min-height: 36px; font-size: 13px; }
+  .switch span { width: 38px; height: 22px; border-radius: 11px; }
+  .switch span::after { width: 18px; height: 18px; }
+  .switch input:checked + span::after { transform: translateX(16px); }
+  .switch.mini span { width: 32px; height: 19px; }
+  .switch.mini span::after { width: 15px; height: 15px; }
+  .switch.mini input:checked + span::after { transform: translateX(13px); }
+  input[type=range] { height: 34px; }
+  input[type=range]::-webkit-slider-thumb { width: 22px; height: 22px; margin-top: -9px; }
+  input[type=range]::-moz-range-thumb { width: 20px; height: 20px; }
+  .stat .k, .legend, .activity span { font-size: 11.5px; }
+  .hud-item small { font-size: 11.5px; }
+  .brand span { font-size: 12px; }
+  .sb-scroll { overscroll-behavior: contain; }
 }

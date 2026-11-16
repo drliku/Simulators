@@ -89,7 +89,7 @@ export default function App() {
   const isActive = (c: AtomCounts) => c.protons === counts.protons && c.neutrons === counts.neutrons && c.electrons === counts.electrons;
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen min-h-[100dvh]">
       <header className="mx-auto flex max-w-[1500px] flex-wrap items-center justify-between gap-4 px-4 pb-3 pt-6 sm:px-6 lg:px-8">
         {/* Wordmark laid out like The Brain Maze logo */}
         <div className="flex items-stretch gap-3 sm:gap-4">
@@ -113,7 +113,7 @@ export default function App() {
       <main className="mx-auto grid max-w-[1500px] gap-5 px-4 pb-10 pt-2 sm:px-6 lg:px-8 xl:grid-cols-[320px_minmax(0,1fr)_360px]">
         {/* Stage */}
         <section className="relative order-1 min-w-0 xl:order-2">
-          <div className="panel stage-grid relative h-[440px] overflow-hidden sm:h-[560px] xl:h-[720px]">
+          <div className="panel stage-grid relative h-[440px] overflow-hidden sm:h-[560px] max-xl:max-h-[calc(100dvh-1.5rem)] max-xl:min-h-[320px] xl:h-[720px]">
             <Suspense fallback={null}>
               <AtomScene
                 protons={counts.protons}
@@ -164,10 +164,10 @@ export default function App() {
 
             {/* Selection explainer */}
             {sel && (
-              <div className="absolute inset-x-3 bottom-14 flex justify-center sm:bottom-16">
+              <div className="absolute inset-x-3 bottom-14 z-30 flex justify-center sm:bottom-16">
                 <div key={JSON.stringify(sel)} className="animate-rise max-w-md rounded-2xl border border-white/10 bg-lab-950/85 p-4 shadow-panel backdrop-blur-xl">
                   <SelectionText selection={sel} protons={counts.protons} neutrons={counts.neutrons} shells={shells} />
-                  <button type="button" className="mt-2 font-display text-sm font-bold uppercase tracking-wide text-coral hover:text-coral-400" onClick={() => setSelected(null)}>
+                  <button type="button" className="mt-2 font-display text-sm font-bold uppercase tracking-wide text-coral hover:text-coral-400 max-lg:-mb-2 max-lg:min-h-[40px] max-lg:pr-4" onClick={() => setSelected(null)}>
                     Close
                   </button>
                 </div>

@@ -221,6 +221,9 @@ button.active:hover:not(:disabled) { color: #fff; border-color: var(--navy); }
   padding: 10px 16px;
 }
 .dock .track { min-width: 220px; }
+/* settings fold-out: only folds on small screens; on desktop its contents sit in the dock as usual */
+.dock-more { display: contents; }
+.more-btn { display: none; }
 .icon { width: 46px; height: 46px; padding: 0; display: grid; place-items: center; background: var(--coral); border-color: var(--coral); color: #fff; border-radius: 50%; }
 .icon:hover:not(:disabled) { background: var(--coral-hi); border-color: var(--coral-hi); color: #fff; }
 .icon svg { width: 20px; height: 20px; fill: currentColor; }
@@ -307,6 +310,7 @@ input[type='range']:disabled { opacity: 0.45; cursor: default; }
   transform: translate(14px, 14px);
 }
 #tooltip b { color: var(--coral); font-weight: 700; }
+#tooltip.touch { transform: translate(0, calc(-100% - 28px)); max-width: calc(100vw - 16px); }
 
 #drop {
   position: fixed;
@@ -353,7 +357,7 @@ input[type='range']:disabled { opacity: 0.45; cursor: default; }
   .title .brand img { height: 24px; }
   .title h1 { font-size: 20px; }
   .title p { display: none; }
-  .explain { top: 150px; right: 16px; left: 16px; width: auto; max-height: calc(100vh - 340px); overflow: auto; }
+  .explain { top: 150px; right: 16px; left: 16px; width: auto; max-height: calc(100vh - 340px); max-height: calc(100dvh - 340px); overflow: auto; }
   .explain:not([open]) { left: auto; }
   .gram { left: 16px; }
   .yt-panel { top: 150px; bottom: auto; left: 16px; right: 16px; width: auto; }
@@ -366,4 +370,111 @@ input[type='range']:disabled { opacity: 0.45; cursor: default; }
   .ph-notes, .ph-notes.idle { flex-basis: 100%; font-size: 12.5px; }
   .gram { width: 240px; }
   .gram-head { font-size: 11px; white-space: nowrap; gap: 8px; }
+}
+
+/* ---- phones (portrait and landscape): fold the settings away, finger-sized controls ---- */
+@media (max-width: 760px), (max-height: 500px) {
+  .title { top: max(12px, env(safe-area-inset-top)); left: max(16px, env(safe-area-inset-left)); }
+  .title .eyebrow, .title p { display: none; }
+  .title h1 { margin-top: 0; }
+  .title h1::after { margin-top: 6px; }
+
+  /* "How it works" is a small pill at the top right; open, it becomes a scrolling sheet over the view */
+  .explain {
+    top: max(12px, env(safe-area-inset-top));
+    right: max(16px, env(safe-area-inset-right));
+    left: auto;
+    width: auto;
+    padding: 0;
+    max-height: calc(100dvh - var(--dock-h, 70px) - 40px);
+    overflow: auto;
+    overscroll-behavior: contain;
+    z-index: 3;
+  }
+  .explain summary { padding: 10px 12px; font-size: 11.5px; min-height: 42px; display: flex; align-items: center; }
+  .explain summary::before { margin-right: 6px; }
+  button, summary, label, select { -webkit-tap-highlight-color: transparent; }
+  .explain[open] { left: max(16px, env(safe-area-inset-left)); }
+  .explain ol, .explain .note { margin-left: 14px; margin-right: 14px; }
+  .explain .note { margin-bottom: 14px; }
+
+  .dock {
+    left: max(12px, env(safe-area-inset-left));
+    right: max(12px, env(safe-area-inset-right));
+    bottom: max(12px, env(safe-area-inset-bottom));
+    gap: 8px;
+    padding: 8px 12px;
+    z-index: 2;
+  }
+  .piano, .gram { left: max(12px, env(safe-area-inset-left)); }
+  .piano { right: max(12px, env(safe-area-inset-right)); bottom: calc(var(--dock-h, 70px) + max(12px, env(safe-area-inset-bottom)) + 8px); }
+  .gram, .yt-panel { bottom: calc(var(--dock-h, 70px) + var(--piano-h, 0px) + max(12px, env(safe-area-inset-bottom)) + 8px); }
+  .vol { display: none; }
+  .more-btn { display: grid; place-items: center; width: 42px; height: 42px; padding: 0; border-radius: 50%; }
+  .more-btn svg { width: 20px; height: 20px; fill: currentColor; }
+  .dock-more { display: none; }
+  .dock.more-open .dock-more {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 16px;
+    order: 10;
+    flex-basis: 100%;
+    padding-top: 8px;
+    border-top: 2px solid var(--mist);
+  }
+  .dock > button:not(.icon):not(.more-btn) { min-height: 42px; padding: 0 12px; font-size: 11.5px; flex: 1 1 auto; }
+  .toggles label { min-height: 40px; }
+  .cells select, .ph-hear select { font-size: 16px; padding: 7px 8px; min-height: 40px; }
+  .yt-form input { font-size: 16px; }
+  .yt-form button, .yt-foot button { min-height: 40px; }
+  .yt-head .x { width: 40px; height: 40px; }
+  .seek-row input { height: 28px; }
+  .ph-notes.idle { font-size: 12.5px; }
+  .gram { width: 240px; }
+  .gram-head { font-size: 12px; white-space: nowrap; gap: 8px; }
+  #tooltip { font-size: 13px; }
+}
+
+/* portrait phones: the play/track row, then the source buttons */
+@media (max-width: 760px) {
+  .title h1 { font-size: 18px; }
+  .track { flex-basis: calc(100% - 108px); }
+  .gram { padding: 10px 12px 12px; }
+  .gram canvas { height: 52px; }
+  .piano { padding: 8px 12px; }
+  .yt-panel { top: auto; left: max(12px, env(safe-area-inset-left)); right: max(12px, env(safe-area-inset-right)); max-height: calc(100dvh - var(--dock-h, 70px) - var(--piano-h, 0px) - 40px); overflow: auto; }
+}
+@media (max-width: 380px) {
+  /* keep the source buttons on one row so the dock doesn't eat the view */
+  .dock > button:not(.icon):not(.more-btn) { flex: 1 1 0; min-width: 0; padding: 0 4px; font-size: 11px; letter-spacing: 0.02em; }
+  .dock { gap: 6px; }
+  .title h1 { font-size: 16px; }
+  .title { padding: 8px 12px 10px; }
+}
+
+/* short portrait phones: a slimmer cochleagram leaves room for the cochlea */
+@media (max-width: 760px) and (max-height: 720px) {
+  .gram canvas { height: 40px; }
+  .gram-head { margin-bottom: 6px; }
+}
+
+/* landscape phones: one-row dock, compact panels */
+@media (max-height: 500px) {
+  .title { padding: 8px 12px 10px; }
+  .title .brand { margin-bottom: 4px; }
+  .title .brand img { height: 22px; }
+  .title h1 { font-size: 18px; }
+  .dock { flex-wrap: wrap; }
+  .dock .track { min-width: 160px; flex-basis: auto; }
+  .icon { width: 42px; height: 42px; }
+  .dock > button:not(.icon):not(.more-btn) { flex: 0 0 auto; }
+  .gram { padding: 8px 12px 10px; }
+  body:has(.dock.more-open) .gram { display: none; } /* no room beside the open settings */
+  .gram-head { margin-bottom: 6px; }
+  .gram canvas { height: 44px; }
+  .piano { padding: 6px 12px; }
+  .piano-head { flex-wrap: nowrap; }
+  .ph-notes, .ph-notes.idle { flex-basis: auto; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .yt-panel { top: max(12px, env(safe-area-inset-top)); bottom: calc(var(--dock-h, 70px) + 20px); left: auto; right: max(12px, env(safe-area-inset-right)); width: min(340px, 45vw); overflow: auto; z-index: 3; }
 }

@@ -824,7 +824,10 @@
       ctx.font = `500 13px ${FONT_BODY}`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(isProb ? 'Theoretical probabilities — drop balls to compare' : `Expected shape for ${fmtInt(state.target)} balls — drop balls to compare`, (plotL + plotR) / 2, plotT + 14);
+      let msg = isProb ? 'Theoretical probabilities — drop balls to compare' : `Expected shape for ${fmtInt(state.target)} balls — drop balls to compare`;
+      // On narrow (phone) histograms, fall back to a shorter label so it is not clipped.
+      if (ctx.measureText(msg).width > plotR - plotL) msg = isProb ? 'Theoretical probabilities' : `Expected shape for ${fmtInt(state.target)} balls`;
+      ctx.fillText(msg, (plotL + plotR) / 2, plotT + 14);
     }
   }
 
@@ -994,8 +997,12 @@
   for (const [canvas, fn] of [[boardCanvas, boardHover], [histCanvas, histHover]]) {
     canvas.addEventListener('pointermove', fn);
     canvas.addEventListener('pointerdown', fn);
-    canvas.addEventListener('pointerleave', hideTooltip);
+    // Touch pointers "leave" right after lifting, so keep a tapped tooltip open until the next tap elsewhere.
+    canvas.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') hideTooltip(); });
   }
+  document.addEventListener('pointerdown', (e) => {
+    if (e.pointerType !== 'mouse' && !tooltip.hidden && e.target !== boardCanvas && e.target !== histCanvas) hideTooltip();
+  });
   window.addEventListener('scroll', () => { if (!tooltip.hidden) hideTooltip(); }, { passive: true });
 
   // ------------------------------------------------------------------ Controls

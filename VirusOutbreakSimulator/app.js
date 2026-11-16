@@ -633,7 +633,7 @@ function fit() {
   const cw = Math.max(1, Math.floor(W * k)), ch = Math.max(1, Math.floor(H * k));
   const wrap = $('canvasWrap');
   wrap.style.width = cw + 'px'; wrap.style.height = ch + 'px';
-  view.k = cw / W; view.dpr = window.devicePixelRatio || 1;
+  view.k = cw / W; view.dpr = Math.min(window.devicePixelRatio || 1, 2); // cap for phone GPUs
   canvas.width = bgCanvas.width = Math.round(cw * view.dpr);
   canvas.height = bgCanvas.height = Math.round(ch * view.dpr);
   const g = bgCanvas.getContext('2d');
@@ -961,7 +961,8 @@ function bindChartHover(o) {
     drawEpiChart(); drawHospChart();
   };
   o.c.addEventListener('pointermove', move);
-  o.c.addEventListener('pointerleave', () => { o.hoverX = null; hoverDay = null; drawEpiChart(); drawHospChart(); });
+  o.c.addEventListener('pointerdown', move); // a tap on a touch screen shows that day's values
+  o.c.addEventListener('pointerleave', e => { if (e.pointerType === 'touch') return; o.hoverX = null; hoverDay = null; drawEpiChart(); drawHospChart(); });
 }
 bindChartHover(epi); bindChartHover(hosp);
 
@@ -1262,20 +1263,35 @@ function agentAt(clientX, clientY, maxDist = 9) {
   return best;
 }
 
-canvas.addEventListener('click', e => selectAgent(agentAt(e.clientX, e.clientY)));
+function showTip(a, clientX, clientY) {
+  const tip = $('tip');
+  if (!a) { tip.hidden = true; return; }
+  const r = canvas.getBoundingClientRect();
+  const x = clientX - r.left;
+  tip.hidden = false;
+  tip.style.left = x + 'px'; tip.style.top = clientY - r.top + 'px';
+  // flip to the left of the finger/cursor near the right edge so it never overflows the page
+  tip.classList.toggle('flip', x > r.width * 0.6);
+  tip.innerHTML = `<b style="color:${COLORS[a.state]}">●</b> #${a.id} · ${STATE_NAMES[a.state]}${a.vaccinated && a.state === 'S' ? ' · vaccinated' : ''}`;
+}
+
+let lastPointerType = 'mouse';
+canvas.addEventListener('pointerdown', e => { lastPointerType = e.pointerType; });
+canvas.addEventListener('click', e => {
+  // fingers are imprecise and people are tiny on a phone: use a larger hit radius for touch
+  const touch = lastPointerType === 'touch';
+  const a = agentAt(e.clientX, e.clientY, touch ? 22 / view.k : 9);
+  selectAgent(a);
+  if (touch) { sim.hover = a; showTip(a, e.clientX, e.clientY); }
+});
 canvas.addEventListener('pointermove', e => {
+  if (e.pointerType === 'touch') return;
   const a = agentAt(e.clientX, e.clientY);
   sim.hover = a;
   canvas.classList.toggle('pointer', !!a);
-  const tip = $('tip');
-  if (a) {
-    const r = canvas.getBoundingClientRect();
-    tip.hidden = false;
-    tip.style.left = e.clientX - r.left + 'px'; tip.style.top = e.clientY - r.top + 'px';
-    tip.innerHTML = `<b style="color:${COLORS[a.state]}">●</b> #${a.id} · ${STATE_NAMES[a.state]}${a.vaccinated && a.state === 'S' ? ' · vaccinated' : ''}`;
-  } else tip.hidden = true;
+  showTip(a, e.clientX, e.clientY);
 });
-canvas.addEventListener('pointerleave', () => { sim.hover = null; $('tip').hidden = true; });
+canvas.addEventListener('pointerleave', e => { if (e.pointerType === 'touch') return; sim.hover = null; $('tip').hidden = true; });
 
 $('insBody').addEventListener('click', e => {
   const link = e.target.closest('.plink');

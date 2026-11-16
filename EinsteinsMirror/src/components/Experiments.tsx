@@ -45,7 +45,7 @@ export function Experiments({ onRun }: { onRun: () => void }) {
                 return (
                   <span
                     key={p.pct}
-                    className={`rounded-md border px-2 py-0.5 font-mono text-[11.5px] ${now ? 'border-coral/70 bg-coral/15 text-coral-soft' : done ? 'border-emerald-400/40 text-emerald-300' : 'border-white/10 text-ink-faint'}`}
+                    className={`rounded-md border px-2 py-0.5 font-mono text-[12px] lg:text-[11.5px] ${now ? 'border-coral/70 bg-coral/15 text-coral-soft' : done ? 'border-emerald-400/40 text-emerald-300' : 'border-white/10 text-ink-faint'}`}
                   >
                     {done ? '✓ ' : ''}{p.pct}%
                   </span>
