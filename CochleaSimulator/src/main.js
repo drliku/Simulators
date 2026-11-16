@@ -66,20 +66,65 @@ composer.addPass(
 );
 composer.addPass(new OutputPass());
 
+// On phones the panels cover much of the screen, so frame the cochlea in the strip they leave
+// free: below the title card (portrait) and above the wide panels docked at the bottom.
+const phoneLayout = matchMedia('(max-width: 760px), (max-height: 500px)');
+function freeBand(w, h) {
+  if (!phoneLayout.matches) return [0, h];
+  let top = 0, bottom = h;
+  for (const el of document.querySelectorAll('.title, .gram, #pianoPanel, .dock, #ytPanel')) {
+    if (el.hidden || !el.getClientRects().length) continue;
+    const r = el.getBoundingClientRect();
+    if (r.top < h * 0.35) {
+      if (h > w) top = Math.max(top, r.bottom); // in portrait the title spans most of the width
+    } else if (r.width >= w * 0.5) bottom = Math.min(bottom, r.top); // narrow side cards don't hide the middle
+  }
+  return bottom - top < Math.min(140, h * 0.2) ? [0, h] : [top, bottom];
+}
+
 function resize() {
   const w = innerWidth, h = innerHeight;
   renderer.setSize(w, h, false);
   composer.setSize(w, h);
   bloom.setSize(w, h);
-  camera.aspect = w / h;
+  frameCamera();
+}
+let bandKey = '';
+function frameCamera() {
+  const w = innerWidth, h = innerHeight;
+  const [top, bottom] = freeBand(w, h);
+  bandKey = `${w}x${h}:${top}-${bottom}`;
+  const bandH = bottom - top;
+  const aspect = w / bandH;
   // Landscape: 33 mm lens on a 36 mm sensor (57° across the width), as in the .blend.
   // Portrait: keep at least ~44° across the width so the whole spiral fits on a phone.
-  const halfH = camera.aspect >= 1 ? Math.atan(18 / 33) : THREE.MathUtils.degToRad(22);
-  camera.fov = THREE.MathUtils.radToDeg(2 * Math.atan(Math.tan(halfH) / camera.aspect));
+  // In the phone band, frame tighter across the width (16°) so the spiral is bigger, but always
+  // keep enough height for the spiral and the instrument above it.
+  const phone = bandH < h;
+  const halfH = aspect >= 1 ? Math.atan(18 / 33) : THREE.MathUtils.degToRad(phone ? 16 : 22);
+  const minTan = phone ? (aspect >= 1 ? 0.3 : 0.185) : 0;
+  const tanBand = Math.max(Math.tan(halfH) / aspect, minTan); // vertical half-angle across the band
+  // Shift the optical centre to the middle of the band with a taller virtual frame.
+  const shift = h / 2 - (top + bottom) / 2; // > 0 when the band sits above the middle
+  const fullH = h + 2 * Math.abs(shift);
+  camera.aspect = w / fullH;
+  camera.fov = THREE.MathUtils.radToDeg(2 * Math.atan(tanBand * (fullH / bandH)));
+  if (shift === 0) camera.clearViewOffset();
+  else camera.setViewOffset(w, fullH, 0, shift > 0 ? 2 * shift : 0, w, h);
   camera.updateProjectionMatrix();
-  cochlea?.sparks.setPixelScale(h * renderer.getPixelRatio(), camera.fov);
+  cochlea?.sparks.setPixelScale(fullH * renderer.getPixelRatio(), camera.fov);
 }
 addEventListener('resize', resize);
+phoneLayout.addEventListener('change', resize);
+// Panels settle after load and change height later (instrument picked, YouTube opened), so
+// re-check the free band a few times a second and re-frame only when it moves.
+let bandCheck = 0;
+function checkBand(dt) {
+  if (!phoneLayout.matches || (bandCheck += dt) < 0.25) return;
+  bandCheck = 0;
+  const w = innerWidth, h = innerHeight, [top, bottom] = freeBand(w, h);
+  if (`${w}x${h}:${top}-${bottom}` !== bandKey) frameCamera();
+}
 resize();
 
 // ---------- app state
@@ -400,6 +445,7 @@ function frame(now) {
   const dt = Math.min(raw, 1 / 20);
   simTime += dt;
   updateFps(raw, now);
+  checkBand(raw);
 
   audio.readPower(model.power);
   model.step(dt);
