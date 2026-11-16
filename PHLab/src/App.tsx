@@ -201,7 +201,7 @@ export default function App() {
   return (
     <div className="min-h-screen min-h-[100dvh]">
       <header className="mx-auto flex max-w-[1500px] flex-wrap items-center justify-between gap-4 px-4 pb-3 pt-6 sm:px-6 lg:px-8">
-        {/* Wordmark laid out like The Brain Maze logo; "pH" stays in Saira to keep its lowercase p */}
+        {/* Wordmark laid out like The Brain Maze logo; "pH" keeps its lowercase p */}
         <div className="flex items-stretch gap-3 sm:gap-4">
           <h1 className="flex flex-col justify-center text-coral">
             <span className="flex items-baseline gap-2 leading-[0.9]">
@@ -536,7 +536,7 @@ export default function App() {
   );
 }
 
-/** "pH" inside Brain-set (caps-only) headings: keep the lowercase p. */
+/** "pH" inside uppercase headings: keep the lowercase p. */
 const Ph = () => <span className="font-math normal-case">pH</span>;
 
 function Panel({ title, children }: { title: ReactNode; children: ReactNode }) {

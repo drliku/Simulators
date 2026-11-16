@@ -4,15 +4,14 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        // The Brain Maze display face (caps-only); missing glyphs fall back to Saira.
-        sans: ['Saira', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        display: ['Brain', '"Saira Semi Condensed"', 'Saira', 'ui-sans-serif', 'sans-serif'],
-        // Chemistry notation (pH, [H⁺], mL) needs lowercase letters, which Brain doesn't have.
-        math: ['"Saira Semi Condensed"', 'Saira', 'ui-sans-serif', 'sans-serif'],
+        // The Brain Maze site face (Poppins) for all UI text; the Brain logo font is not used for UI text.
+        sans: ['Poppins', 'system-ui', 'sans-serif'],
+        display: ['Poppins', 'system-ui', 'sans-serif'],
+        math: ['Poppins', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
       colors: {
-        // Dark scale built around The Brain Maze navy (#232F5B).
+        // Dark scale built around The Brain Maze navy; still used inside the dark 3D scene.
         lab: {
           950: '#0f1430',
           900: '#161d3f',
@@ -27,10 +26,15 @@ export default {
           100: '#eef0f8',
         },
         coral: {
-          DEFAULT: '#F37367',
+          DEFAULT: '#f78677',
           400: '#F68B81',
-          600: '#E25A4D',
+          600: '#e67566',
         },
+        // The Brain Maze site tokens (thebrainmaze.com).
+        navy: { DEFAULT: '#304169', deep: '#1e2a47' },
+        mist: '#f0f3fa',
+        line: '#e3e8f2',
+        muted: '#6b7c9e',
         acid: '#f26522',
         base: '#6c4bd6',
         aqua: '#5cc8ff',

@@ -1,20 +1,3 @@
-/*
- * Brain (The Brain Maze display face) is bundled from src/assets/fonts.
- * It is caps-only and lacks symbols such as + = ² √ ≈, which the browser
- * fills in glyph-by-glyph from Saira Semi Condensed (next in the stack).
- */
-@font-face {
-  font-family: 'Brain';
-  src:
-    url('./assets/fonts/Brain.woff2') format('woff2'),
-    local('Brain'),
-    local('Brain Regular');
-  /* Single weight: claim the full range so browsers don't fake bold. */
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -26,12 +9,8 @@
     text-rendering: optimizeLegibility;
   }
   body {
-    @apply font-sans text-slate-800;
-    background-color: #fbf9f8;
-    background-image:
-      radial-gradient(900px 500px at 100% -10%, rgba(243, 115, 103, 0.10), transparent 60%),
-      radial-gradient(900px 500px at -10% 110%, rgba(35, 47, 91, 0.06), transparent 60%);
-    background-attachment: fixed;
+    /* The Brain Maze site look: white page, navy text, Poppins. */
+    @apply bg-white font-sans text-navy;
     /* Keep content clear of notches / home indicator on phones (0 on desktop). */
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
@@ -40,24 +19,30 @@
 }
 
 @layer components {
+  /* White cards, 14px radius, soft navy shadow, no outline (site cards). */
   .card {
-    @apply rounded-3xl border border-slate-200 bg-white shadow-soft;
+    @apply rounded-3xl bg-white;
+    box-shadow: 0 4px 15px rgba(48, 65, 105, 0.1);
   }
+  /* Pill buttons: 12px 600 uppercase. */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 font-display text-[16px] font-bold uppercase tracking-wide transition duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50;
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-[1.1rem] py-[0.55rem] font-display text-[12px] uppercase tracking-wide transition duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50;
   }
   .btn-primary {
-    @apply btn bg-coral text-white shadow-lift hover:bg-coral-600 focus-visible:ring-coral-200;
+    @apply btn bg-coral text-white hover:bg-coral-600 focus-visible:ring-coral-200;
   }
+  /* Section titles: 13px coral eyebrow over a mist rule with a short coral underline. */
   .section-title {
-    @apply flex items-center gap-3 font-display text-xl font-bold uppercase tracking-wide text-coral;
+    @apply relative flex items-center pb-2.5 font-display text-[13px] uppercase leading-[1.4] text-coral;
+    letter-spacing: 0.5px !important;
+    border-bottom: 2px solid #f0f3fa;
   }
-  .section-title::before {
+  .section-title::after {
     content: '';
-    @apply h-[3px] w-6 shrink-0 bg-coral;
+    @apply absolute -bottom-[2px] left-0 h-[2px] w-10 bg-coral;
   }
   .btn-ghost {
-    @apply btn border-2 border-navy bg-white text-navy hover:bg-navy hover:text-white focus-visible:ring-slate-300;
+    @apply btn border-2 border-slate-100 bg-white text-navy hover:border-coral hover:text-coral focus-visible:ring-slate-300;
   }
 }
 
@@ -76,39 +61,40 @@
   outline: none;
 }
 .range::-webkit-slider-runnable-track {
-  height: 8px;
-  border-radius: 2px;
-  background: linear-gradient(to right, var(--accent) var(--fill), #e2e8f0 var(--fill));
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, var(--accent) var(--fill), #e3e8f2 var(--fill));
 }
 .range::-moz-range-track {
-  height: 8px;
-  border-radius: 2px;
-  background: #e2e8f0;
+  height: 6px;
+  border-radius: 3px;
+  background: #e3e8f2;
 }
 .range::-moz-range-progress {
-  height: 8px;
-  border-radius: 2px;
+  height: 6px;
+  border-radius: 3px;
   background: var(--accent);
 }
+/* Round thumb in the side colour with a white ring (site slider style). */
 .range::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  margin-top: -7px;
-  width: 22px;
-  height: 22px;
-  border-radius: 3px;
-  background: #fff;
-  border: 3px solid var(--accent);
-  box-shadow: 0 2px 6px rgba(35, 47, 91, 0.2);
+  margin-top: -6px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid #fff;
+  box-shadow: 0 2px 6px rgba(48, 65, 105, 0.3);
   transition: transform 150ms ease, box-shadow 150ms ease;
 }
 .range::-moz-range-thumb {
-  width: 16px;
-  height: 16px;
-  border-radius: 3px;
-  background: #fff;
-  border: 3px solid var(--accent);
-  box-shadow: 0 2px 6px rgba(35, 47, 91, 0.2);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid #fff;
+  box-shadow: 0 2px 6px rgba(48, 65, 105, 0.3);
 }
 .range:hover::-webkit-slider-thumb,
 .range:focus-visible::-webkit-slider-thumb {
@@ -135,6 +121,36 @@
     font-size: 12px;
   }
 }
+
+/* The Brain Maze site skin ---------------------------------------------- */
+/* Navy hero band with the logo pill, coral eyebrow and white title (App.tsx header). */
+.bm-hero { background: linear-gradient(135deg, #304169 0%, #1e2a47 100%); color: #fff; margin-bottom: 8px; }
+.bm-hero-in { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-top: 28px; padding-bottom: 28px; flex-wrap: wrap; }
+.bm-logo { display: inline-flex; align-items: center; background: #fff; border-radius: 50px; padding: 7px 16px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.18); order: 2; }
+.bm-logo img { height: 30px; width: auto; display: block; }
+.bm-hero-text { order: 1; min-width: 0; }
+.bm-eyebrow { margin: 0 0 8px; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: #f78677; }
+.bm-title { margin: 0; font-size: 40px; font-weight: 700; line-height: 1.15; color: #fff; }
+.bm-sub { margin: 8px 0 0; font-size: 16px; line-height: 1.6; color: rgba(255, 255, 255, 0.85); }
+.bm-sub b { color: #fff; font-weight: 700; }
+@media (max-width: 640px) {
+  .bm-title { font-size: 28px; }
+  .bm-sub { font-size: 14px; }
+  .bm-logo { order: 0; }
+  .bm-logo img { height: 24px; }
+  .bm-hero-in { padding-top: 18px; padding-bottom: 22px; gap: 14px; }
+}
+/* Labels formerly set in the caps-only Brain face: Poppins 600 small caps-style labels. */
+.font-display { font-weight: 600 !important; letter-spacing: 0.4px !important; }
+.font-display.text-\[16px\],
+.font-display.text-\[15px\] { font-size: 13px; }
+.font-mono { font-variant-numeric: tabular-nums; }
+/* Pills for buttons, triple chips and toggle switches. */
+button.rounded-lg,
+.rounded-lg.border-2.bg-white.px-3 { border-radius: 50px; }
+[role='switch'] .rounded-md { border-radius: 50px; }
+[role='switch'] .rounded { border-radius: 50%; }
+:focus-visible { outline: 3px solid #f78677 !important; outline-offset: 2px; }
 
 @keyframes fade-in {
   from {

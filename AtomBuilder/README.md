@@ -18,10 +18,11 @@ An interactive 3D Bohr-model atom builder for chemistry students, built with **R
 
 ## Branding
 
-Styled after The Brain Maze logo: navy background scale built on `#232F5B`, coral `#F37367` accents
-(protons are coral too), squared corners and a logo-style wordmark. Headings, buttons and labels use the
-**Brain** typeface (inlined at build time). Brain is capitals-only, so chemical symbols (Na, Fe, p⁺, e⁻)
-use Saira Semi Condensed to keep their correct letter case.
+Styled after The Brain Maze site (thebrainmaze.com): a white site bar with the Brain Maze logo
+(`public/brainmaze-logo.png`, linking to the site), a navy hero band, white cards on a `#f0f3fa` page,
+navy `#304169` text, coral `#f78677` accents and pill buttons, all in **Poppins**. The 3D stage stays a
+dark navy scene. The light skin lives in `src/brainmaze-skin.css`; fonts and colour tokens are in
+`tailwind.config.js`.
 
 ## Science notes
 

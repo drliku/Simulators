@@ -1,0 +1,93 @@
+/*
+ * The Brain Maze site skin (thebrainmaze.com): white cards, navy text, coral accents, Poppins.
+ *
+ * The app was designed dark; this sheet turns the chrome light while the 3D stage (.stage-grid) stays a
+ * dark navy scene. Most rules re-map the dark-theme utility colours *outside* the stage, which is why they
+ * use `:not(.stage-grid *)` and !important (they must beat Tailwind utilities). Fonts, coral, radii and the
+ * page background live in tailwind.config.js / index.css. Imported after index.css in main.tsx.
+ */
+
+.font-display,
+.font-math,
+.font-mono,
+code,
+kbd { letter-spacing: 0.2px; }
+.font-display.uppercase { letter-spacing: 0.4px; }
+.font-display.uppercase:is(.text-lg, .text-base) { font-size: 14px !important; line-height: 1.3 !important; letter-spacing: 0.3px; }
+.font-display:is(.text-xl, .text-2xl, .text-3xl, .text-4xl, .text-5xl, .text-\[34px\]) { text-transform: none; letter-spacing: 0; }
+
+/* ---- Site bar with the Brain Maze logo (markup in index.html) ---- */
+.bm-site { background: #fff; box-shadow: 0 2px 10px rgba(48, 65, 105, 0.08); position: relative; z-index: 20; }
+.bm-site-in { max-width: 1500px; margin: 0 auto; height: 64px; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.bm-site img { display: block; height: 36px; width: auto; }
+.bm-site a.bm-back { font: 600 12px Poppins, system-ui, sans-serif; letter-spacing: 0.5px; text-transform: uppercase; color: #f78677; text-decoration: none; }
+.bm-site a.bm-back:hover { color: #e67566; }
+.bm-site a:focus-visible { outline: 3px solid #f78677; outline-offset: 2px; }
+@media (max-width: 640px) {
+  .bm-site-in { height: 54px; padding: 0 16px; }
+  .bm-site img { height: 30px; }
+}
+
+/* ---- App header -> full-width navy hero band ---- */
+#root > div > header {
+  position: relative;
+  background: linear-gradient(135deg, #304169 0%, #1e2a47 100%);
+  box-shadow: 0 0 0 100vmax #304169;
+  clip-path: inset(0 -100vmax);
+  padding-top: 28px !important;
+  padding-bottom: 28px !important;
+  margin-bottom: 24px;
+}
+#root > div > header h1,
+#root > div > header h1 + div span:not(.bg-coral) { color: #fff !important; font-weight: 700 !important; text-transform: none !important; letter-spacing: 0 !important; }
+#root > div > header .bg-coral.aspect-square { border-radius: 14px; }
+#root > div > header :is(p, .text-lab-300, .text-lab-200) { color: rgba(255, 255, 255, 0.82) !important; }
+
+/* ---- Panels ---- */
+.panel:not(.stage-grid) { background: #fff !important; }
+.panel { border: 0 !important; border-radius: 14px !important; box-shadow: 0 4px 15px rgba(48, 65, 105, 0.1) !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+.panel.stage-grid { box-shadow: 0 10px 30px rgba(30, 42, 71, 0.25) !important; }
+.panel-title { font-size: 13px !important; line-height: 1.4 !important; font-weight: 600 !important; letter-spacing: 0.5px !important; color: #f78677 !important; }
+.panel-title::before { height: 2px; width: 24px; background: #f78677 !important; }
+
+/* ---- Text colours on white (outside the dark 3D stage) ---- */
+:is(.text-white, .text-lab-100, .text-lab-200):not(.stage-grid *) { color: #304169 !important; }
+:is(.text-lab-300, .text-lab-400):not(.stage-grid *) { color: #6b7c9e !important; }
+.text-neutron:not(.stage-grid *) { color: #6b7c9e !important; }
+.text-electron:not(.stage-grid *) { color: #1f7fc4 !important; }
+:is(.text-coral, .text-proton):not(.stage-grid *) { color: #e8685a !important; }
+.text-emerald-300:not(.stage-grid *) { color: #0f8a5f !important; }
+.text-amber-300:not(.stage-grid *) { color: #b45309 !important; }
+.\[\&_b\]\:text-white b { color: #304169 !important; }
+
+/* ---- Surfaces / borders on white ---- */
+:is(.bg-lab-950\/60, .bg-lab-950\/70, .bg-lab-950\/85, .bg-lab-950\/90, .bg-lab-850):not(.stage-grid *) { background-color: #f0f3fa !important; }
+:is(.bg-white\/\[0\.025\], .bg-white\/\[0\.03\]):not(.stage-grid *) { background-color: #f7f9fd !important; }
+.bg-white\/15:not(.stage-grid *) { background-color: #cfd6e6 !important; }
+:is(.border-white\/10, .border-white\/15, .border-white\/\[0\.05\], .border-white\/\[0\.06\], .border-white\/\[0\.08\]):not(.stage-grid *) { border-color: #e3e8f2 !important; }
+.border-t:not(.stage-grid *) { border-color: #e3e8f2; }
+.bg-lab-400:not(.stage-grid *) { background-color: #a8b3c9 !important; }
+
+/* ---- Controls ---- */
+.chip { border-radius: 50px !important; border: 2px solid #f0f3fa !important; background: #fff !important; color: #304169 !important; font-weight: 600 !important; }
+.chip:hover { border-color: #f78677 !important; color: #f78677 !important; }
+.chip:is(.bg-coral, .bg-coral\/20, .border-coral) { background: #304169 !important; border-color: #304169 !important; color: #fff !important; }
+.chip:is(.bg-coral, .bg-coral\/20, .border-coral) * { color: #fff !important; }
+.btn-coral { border-radius: 50px !important; background: #f78677 !important; color: #fff !important; font-size: 13px !important; font-weight: 600 !important; letter-spacing: 0.3px !important; box-shadow: 0 4px 12px rgba(247, 134, 119, 0.3) !important; padding: 0.6rem 1.2rem !important; }
+.btn-coral:hover { background: #e67566 !important; }
+.btn-coral * { color: #fff !important; }
+.icon-btn { border-radius: 10px !important; border: 2px solid #f0f3fa !important; background: #fff !important; color: #304169 !important; }
+.icon-btn:hover:not(:disabled) { border-color: #f78677 !important; color: #f78677 !important; background: #fff !important; }
+.icon-btn:disabled { opacity: 0.35; }
+button:is(.border-coral, .border-coral\/60, .border-coral\/40):not(.chip) { border-radius: 50px !important; font-weight: 600 !important; }
+button.border-coral.bg-transparent:hover { background: #fdf2f0 !important; }
+.bg-coral .text-white,
+.bg-coral.text-white { color: #fff !important; }
+.stage-grid .chip { background: rgba(255, 255, 255, 0.95) !important; border-color: transparent !important; }
+.stage-grid .chip:is(.bg-coral, .border-coral) { background: #f78677 !important; color: #fff !important; }
+:is(button, a, [role='button']):focus-visible { outline: 3px solid #f78677 !important; outline-offset: 2px; }
+
+/* Narrow 3-column desktop layout: 36px step buttons leave room for "Electrons" in Poppins (phones keep 44px taps). */
+@media (min-width: 1280px) {
+  .icon-btn { width: 36px; height: 36px; }
+}

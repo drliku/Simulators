@@ -4,43 +4,42 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        // "Brain" is used when installed; any glyph it lacks falls back per-character.
-        sans: ['Saira', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        display: ['Brain', '"Saira Semi Condensed"', 'Saira', 'ui-sans-serif', 'sans-serif'],
-        // Brain is caps-only, so math (a, b, c) uses Saira to keep variables lowercase.
-        math: ['"Saira Semi Condensed"', 'Saira', 'ui-sans-serif', 'sans-serif'],
-        mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+        // The Brain Maze site face (Poppins) for all UI text; the Brain logo font is not used for UI text.
+        sans: ['Poppins', 'system-ui', 'sans-serif'],
+        display: ['Poppins', 'system-ui', 'sans-serif'],
+        math: ['Poppins', 'system-ui', 'sans-serif'],
+        mono: ['Poppins', 'system-ui', 'sans-serif'],
       },
       colors: {
         coral: {
           50: '#FEF3F1',
           100: '#FDE4E0',
           200: '#FAC6BF',
-          DEFAULT: '#F37367',
-          500: '#F37367',
-          600: '#E25A4D',
+          DEFAULT: '#F78677',
+          500: '#F78677',
+          600: '#E67566',
           700: '#C2463A',
         },
-        navy: '#232F5B',
-        // Navy-tinted neutrals so every grey in the UI leans toward the brand navy.
+        navy: '#304169',
+        // Navy-tinted neutrals, mapped onto The Brain Maze site tokens (mist, line, muted, navy).
         slate: {
           50: '#F7F7FA',
-          100: '#EEEFF5',
-          200: '#DEE0EA',
+          100: '#F0F3FA',
+          200: '#E3E8F2',
           300: '#C4C8DA',
           400: '#9399B5',
-          500: '#6B7299',
-          600: '#4D557D',
-          700: '#39416A',
-          800: '#2A3360',
+          500: '#6B7C9E',
+          600: '#56678C',
+          700: '#304169',
+          800: '#304169',
           900: '#232F5B',
         },
       },
       borderRadius: {
-        lg: '4px',
+        lg: '10px',
         xl: '6px',
-        '2xl': '6px',
-        '3xl': '8px',
+        '2xl': '10px',
+        '3xl': '14px',
       },
       boxShadow: {
         soft: '0 1px 0 rgba(35, 47, 91, 0.04), 0 6px 18px -10px rgba(35, 47, 91, 0.18)',

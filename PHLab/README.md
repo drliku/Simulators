@@ -22,10 +22,11 @@ An interactive 3D pH scale simulator for chemistry students, built with **React*
 
 ## Branding
 
-Styled after The Brain Maze logo: navy background scale built on `#232F5B`, coral `#F37367` accents, squared
-corners and a logo-style "pH SCALE — LAB" wordmark. Headings, buttons and labels use the **Brain** typeface
-(inlined at build time). Brain is capitals-only, so chemistry notation ("pH", [H⁺], mL, mol/L) stays in
-Saira Semi Condensed. Universal-indicator colours are unchanged.
+Styled after The Brain Maze site (thebrainmaze.com): a white top bar with the Brain Maze logo
+(`public/brainmaze-logo.png`, linking to the site), a navy hero band, white cards on a `#f0f3fa` page, navy
+`#304169` text, coral `#f78677` accents and pill buttons, all in **Poppins** (readouts in JetBrains Mono).
+The 3D beaker scene stays dark. The light skin lives in `src/brainmaze-skin.css`; fonts and colour tokens
+are in `tailwind.config.js`. Universal-indicator colours are unchanged.
 
 ## The model
 

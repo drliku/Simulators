@@ -79,7 +79,7 @@ function canvasTexture(draw: (ctx: CanvasRenderingContext2D, size: number) => vo
 function labelTexture(text: string, color: string) {
   return canvasTexture((ctx, s) => {
     ctx.fillStyle = color;
-    ctx.font = `700 ${s * 0.72}px 'Saira Semi Condensed', Saira, system-ui, sans-serif`;
+    ctx.font = `700 ${s * 0.72}px Poppins, system-ui, sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(text, s / 2, s / 2 + s * 0.04);

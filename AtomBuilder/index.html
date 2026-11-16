@@ -8,12 +8,19 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Saira:wght@400;500;600;700&family=Saira+Semi+Condensed:wght@500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <title>Atom Builder</title>
   </head>
   <body>
+    <!-- The Brain Maze site bar (styles in src/brainmaze-skin.css) -->
+    <header class="bm-site">
+      <div class="bm-site-in">
+        <a href="https://thebrainmaze.com/" target="_top" aria-label="The Brain Maze home"><img src="./brainmaze-logo.png" alt="The Brain Maze" width="118" height="36" /></a>
+        <a class="bm-back" href="https://thebrainmaze.com/" target="_top">Back to The Brain Maze</a>
+      </div>
+    </header>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

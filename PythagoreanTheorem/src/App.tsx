@@ -123,30 +123,19 @@ export default function App() {
 
   return (
     <div className="min-h-screen min-h-[100dvh]">
-      <header className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 pb-2 pt-6 sm:px-6 lg:px-8 lg:pt-8">
-        {/* Wordmark laid out like The Brain Maze logo: big word, rule + word, coral icon block */}
-        <div className="flex items-stretch gap-3 sm:gap-4">
-          <div className="flex flex-col justify-center leading-none">
-            <h1 className="font-display text-[36px] font-extrabold uppercase leading-[0.9] tracking-wide text-coral sm:text-[58px]">
-              Pythagorean
-            </h1>
-            <div className="mt-1 flex items-center gap-2 sm:gap-3">
-              <span className="h-[3px] flex-1 bg-coral sm:h-1" />
-              <span className="font-display text-[36px] font-extrabold uppercase leading-[0.9] tracking-wide text-coral sm:text-[58px]">
-                Lab
-              </span>
-            </div>
-          </div>
-          <div className="grid aspect-square w-[64px] shrink-0 place-items-center bg-coral sm:w-[104px]">
-            <svg viewBox="0 0 32 32" className="h-3/4 w-3/4" aria-hidden>
-              <path d="M7 26 L7 7 L26 26 Z" fill="none" stroke={COLORS.ink} strokeWidth="2.8" strokeLinejoin="round" />
-              <rect x="7" y="21" width="5" height="5" fill="none" stroke={COLORS.ink} strokeWidth="2" />
-            </svg>
+      <header className="bm-hero">
+        <div className="bm-hero-in mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <a className="bm-logo" href="https://thebrainmaze.com/" target="_top">
+            <img src="./brainmaze-logo.png" alt="The Brain Maze" width={98} height={30} />
+          </a>
+          <div className="bm-hero-text">
+            <p className="bm-eyebrow">Mathematics simulator</p>
+            <h1 className="bm-title">Pythagorean Lab</h1>
+            <p className="bm-sub">
+              Experiment with right triangles and see&nbsp;why <b className="whitespace-nowrap">a² + b² = c²</b>.
+            </p>
           </div>
         </div>
-        <p className="hidden max-w-sm text-right text-sm font-medium text-slate-500 md:block">
-          Experiment with right triangles and see&nbsp;why <span className="whitespace-nowrap font-math font-bold text-navy">a² + b² = c²</span>.
-        </p>
       </header>
 
       <main className="mx-auto grid max-w-7xl gap-5 px-4 pb-10 pt-4 sm:px-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-6 lg:px-8">

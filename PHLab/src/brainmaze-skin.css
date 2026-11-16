@@ -1,0 +1,100 @@
+/*
+ * The Brain Maze site skin (thebrainmaze.com): white cards, navy text, coral accents, pill buttons.
+ *
+ * The app was designed dark; this sheet turns the chrome light while the 3D beaker panel
+ * (.panel.overflow-hidden) keeps its dark scene and navy glass overlays. Most rules re-map the
+ * dark-theme utility colours inside light panels, so they need !important to beat Tailwind utilities.
+ * Fonts (Poppins), coral, page background and text colour live in tailwind.config.js / index.css.
+ * Imported after index.css in main.tsx.
+ */
+:root{--bm-navy:#304169;--bm-navy-deep:#1e2a47;--bm-coral:#f78677;--bm-coral-hover:#e67566;--bm-mist:#f0f3fa;--bm-line:#e3e8f2;--bm-muted:#6b7c9e;--bm-soft:#8a97b3;--bm-shadow:0 4px 15px rgba(48,65,105,.10);--bm-font:"Poppins",system-ui,sans-serif}
+.font-display,.font-math{letter-spacing:0}
+.tracking-wide{letter-spacing:.3px}
+/* Top bar with the site logo */
+.bm-topbar{background:#fff;box-shadow:0 2px 10px rgba(48,65,105,.08);position:relative;z-index:2}
+.bm-topbar-in{max-width:1500px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.bm-topbar img{height:34px;width:auto;display:block}
+.bm-topbar .bm-link{font:600 12px var(--bm-font);letter-spacing:.5px;text-transform:uppercase;color:var(--bm-coral);text-decoration:none}
+.bm-topbar .bm-link:hover{color:var(--bm-navy)}
+@media (min-width:640px){.bm-topbar-in{padding:14px 24px}}
+@media (min-width:1024px){.bm-topbar-in{padding:14px 32px}}
+/* Navy hero band behind the app header */
+#root header{position:relative;isolation:isolate;padding-bottom:1.5rem!important;margin-bottom:1rem}
+#root header::before{content:"";position:absolute;top:0;bottom:0;left:50%;width:100vw;transform:translateX(-50%);background:linear-gradient(135deg,var(--bm-navy) 0%,var(--bm-navy-deep) 100%);z-index:-1}
+#root header h1{color:#fff}
+#root header h1 .font-math{color:var(--bm-coral)}
+#root header h1 .uppercase{text-transform:none}
+#root header h1 .font-display{font-weight:700}
+#root header .text-lab-300{color:rgba(255,255,255,.85)}
+#root header .grid.aspect-square{border-radius:14px}
+#root header [role=tablist]{border-radius:50px;border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.1)}
+#root header [role=tab]{border-radius:50px;font-size:13px;font-weight:600;letter-spacing:.3px;padding:.45rem 1rem}
+#root header [role=tab].text-lab-200{color:rgba(255,255,255,.85)}
+/* Panels: white cards */
+.panel{border-radius:14px!important;border:0!important;background:#fff!important;box-shadow:var(--bm-shadow)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;color:var(--bm-navy)}
+.panel-title{font-size:13px!important;line-height:1.4!important;font-weight:600!important;letter-spacing:.5px!important;color:var(--bm-coral)!important;display:block!important;text-transform:uppercase}
+.panel-title:before{display:none!important}
+.panel-title:after{content:"";display:block;width:40px;height:2px;background:var(--bm-coral);margin-top:8px}
+/* Text colours inside the light panels (the 3D scene panel keeps its dark overlays) */
+.panel:not(.overflow-hidden) .text-white:not([style]),
+.panel:not(.overflow-hidden) .text-lab-100{color:var(--bm-navy)!important}
+.panel:not(.overflow-hidden) .text-lab-200{color:#3d4d75!important}
+.panel:not(.overflow-hidden) .text-lab-300{color:var(--bm-muted)!important}
+.panel:not(.overflow-hidden) .text-lab-400{color:var(--bm-soft)!important}
+.panel:not(.overflow-hidden) .font-display.uppercase:not(.text-sm){text-transform:none;font-weight:600}
+.panel:not(.overflow-hidden) .border-white\/\[0\.06\],
+.panel:not(.overflow-hidden) .border-white\/\[0\.08\],
+.panel:not(.overflow-hidden) .border-white\/10,
+.panel:not(.overflow-hidden) .border-white\/15{border-color:var(--bm-line)!important}
+.panel:not(.overflow-hidden) .bg-white\/\[0\.025\],
+.panel:not(.overflow-hidden) .bg-white\/\[0\.03\],
+.panel:not(.overflow-hidden) .bg-white\/\[0\.04\]{background-color:#f7f9fd!important}
+.panel:not(.overflow-hidden) .bg-white\/10{background-color:var(--bm-line)!important}
+.panel:not(.overflow-hidden) .hover\:bg-white\/\[0\.06\]:hover{background-color:var(--bm-mist)!important}
+.panel:not(.overflow-hidden) .bg-lab-300\/60{background-color:#b9c3da!important}
+.panel:not(.overflow-hidden) .rounded-2xl{border-radius:12px}
+/* Band / status colours: darker shades so they read on white */
+.panel .text-\[\#ff7a59\]{color:#e04a2a!important}
+.panel .text-\[\#ffa27a\]{color:#d9541e!important}
+.panel .text-\[\#fbb817\]{color:#a87600!important}
+.panel .text-\[\#6bd36a\],.panel .text-\[\#8be08a\]{color:#2f8f2c!important}
+.panel .text-\[\#3cc1d4\]{color:#16808f!important}
+.panel .text-\[\#a98cf0\],.panel .text-\[\#c2b2ff\]{color:#6c4bd6!important}
+/* Buttons: pills */
+.btn,.btn-ghost,.btn-coral{border-radius:50px!important;font-family:var(--bm-font)!important;font-size:13px!important;font-weight:600!important;letter-spacing:.3px!important;padding:.6rem 1.15rem!important}
+.btn-coral{background-color:var(--bm-coral)!important;color:#fff!important;box-shadow:0 4px 12px rgba(247,134,119,.35)!important}
+.btn-coral:hover{background-color:var(--bm-coral-hover)!important}
+.btn-ghost{background:#fff!important;border:2px solid var(--bm-mist)!important;color:var(--bm-navy)!important}
+.btn-ghost:hover{border-color:var(--bm-coral)!important;color:var(--bm-coral)!important}
+#root header .btn-ghost{background:rgba(255,255,255,.08)!important;border-color:rgba(255,255,255,.35)!important;color:#fff!important}
+#root header .btn-ghost:hover{border-color:var(--bm-coral)!important;background:rgba(247,134,119,.15)!important}
+.panel .btn.border{border-width:2px}
+.panel .btn.border-\[\#f26522\]\/50{background:#fff3ec!important;border-color:#f8b48f!important;color:#c2410c!important}
+.panel .btn.border-\[\#f26522\]\/50:hover{background:#ffe4d4!important}
+.panel .btn.border-\[\#6c4bd6\]\/60{background:#f1edff!important;border-color:#bfaef0!important;color:#5a3bc4!important}
+.panel .btn.border-\[\#6c4bd6\]\/60:hover{background:#e5ddff!important}
+.panel .btn.border-aqua\/50{background:#eaf7ff!important;border-color:#9fd8f7!important;color:#1d6f9e!important}
+.panel .btn.border-aqua\/50:hover{background:#d8f0ff!important}
+/* Chips & segmented controls */
+.chip{border-radius:50px!important;border:2px solid var(--bm-mist)!important;background:#fff!important;color:var(--bm-navy)!important;font-size:12px!important}
+.chip:hover{border-color:var(--bm-coral)!important;color:var(--bm-coral)!important}
+.chip[aria-pressed=true]{background:var(--bm-navy)!important;border-color:var(--bm-navy)!important;color:#fff!important}
+.panel [role=radiogroup]{border-radius:50px!important}
+.panel [role=radio]{border-radius:50px!important}
+.panel [role=radio].bg-coral{background:var(--bm-navy)!important;color:#fff!important}
+.bg-coral\/15{background-color:rgba(247,134,119,.12)}
+/* Substance list items */
+.panel button.rounded-2xl{border-radius:12px!important;border-width:2px!important}
+/* pH slider thumb */
+.ph-range::-webkit-slider-thumb{border-radius:50%!important;border:3px solid #fff!important;box-shadow:0 2px 8px rgba(48,65,105,.35)!important;width:28px!important;height:28px!important;margin-top:-8px!important}
+.ph-range::-moz-range-thumb{border:3px solid #fff!important;box-shadow:0 2px 8px rgba(48,65,105,.35)}
+.ph-range:focus-visible::-webkit-slider-thumb{outline:3px solid var(--bm-coral);outline-offset:2px}
+/* 3D scene panel: navy glass overlays, rounded */
+.panel.overflow-hidden .bg-lab-950\/60,.panel.overflow-hidden .bg-lab-950\/65,.panel.overflow-hidden .bg-lab-950\/70,.bg-lab-950\/85{background-color:rgba(30,42,71,.72)!important}
+.panel.overflow-hidden .rounded-lg,.panel.overflow-hidden .rounded-md{border-radius:12px}
+.panel.overflow-hidden .text-lab-400{color:rgba(255,255,255,.7)}
+/* Selected chips / radios on white cards */
+.panel:not(.overflow-hidden) .chip.text-white,.panel:not(.overflow-hidden) [role=radio].text-white{color:#fff!important}
+.panel:not(.overflow-hidden) .chip.border-coral{background:var(--bm-navy)!important;border-color:var(--bm-navy)!important}
+/* Focus */
+.btn:focus-visible,.btn-ghost:focus-visible,.btn-coral:focus-visible,.chip:focus-visible,button:focus-visible{outline:3px solid var(--bm-coral)!important;outline-offset:2px;box-shadow:none}

@@ -25,11 +25,10 @@ Side lengths live on a 0.01 grid, and squares are computed in integer ten-thousa
 
 ## Branding & fonts
 
-Styled after The Brain Maze logo: coral `#F37367` and navy `#232F5B`, squared corners.
-Headings, buttons and labels use the **Brain** typeface (`src/assets/fonts/Brain.woff2`, © Vladimir Nikolic),
-which is inlined into the CSS at build time. Brain is capitals-only and has no math symbols, so math
-(`a² + b² = c²`, side names) is set in **Saira Semi Condensed**, and any character Brain lacks falls
-back to Saira automatically.
+Styled after The Brain Maze site (thebrainmaze.com): a navy hero band with the Brain Maze logo
+(`public/brainmaze-logo.png`, linking to the site), white cards, navy `#304169` text, coral `#F78677`
+accents and pill buttons. All text uses **Poppins** (Google Fonts). Colour tokens and fonts are in
+`tailwind.config.js` and `src/lib/theme.ts`; the remaining skin rules are in `src/index.css`.
 
 ## Getting started
 
