@@ -55,9 +55,9 @@ function ObjectPanel({ obj }: { obj: SceneObject }) {
 
   return (
     <div>
-      <div className="border-b border-white/[0.06] px-4 pb-3 pt-4">
+      <div className="border-b border-bm-line px-4 pb-3 pt-4">
         <div className="mb-2 flex items-center justify-between">
-          <span className="brand-label text-[13px] text-coral-500">{KIND_LABEL[obj.kind]}</span>
+          <span className="brand-label text-[13px] text-bm-coral-text">{KIND_LABEL[obj.kind]}</span>
           <div className="flex items-center">
             <IconButton title="Bring to front (Medium on top)" onClick={() => reorder(obj.id, 'front')}>
               <ArrowUpToLine className="h-3.5 w-3.5" />
@@ -74,13 +74,13 @@ function ObjectPanel({ obj }: { obj: SceneObject }) {
           </div>
         </div>
         <input
-          className="h-8 w-full rounded-md border border-white/10 bg-ink-950/70 px-2.5 text-[13px] font-medium text-slate-100 outline-none hover:border-white/20 focus:border-coral-500/70"
+          className="h-8 w-full rounded-[10px] border-2 border-bm-mist bg-white px-2.5 text-[13px] font-medium text-bm-navy outline-none hover:border-bm-coral focus:border-bm-coral"
           value={obj.name}
           maxLength={80}
           onChange={(e) => up({ name: e.target.value }, 'name')}
         />
         {warnings.map((w) => (
-          <p key={w} className="mt-2 rounded-md bg-amber-500/10 px-2 py-1 text-[11px] text-amber-300">
+          <p key={w} className="mt-2 rounded-md bg-amber-500/10 px-2 py-1 text-[11px] text-[#b7791f]">
             {w}
           </p>
         ))}
@@ -89,11 +89,11 @@ function ObjectPanel({ obj }: { obj: SceneObject }) {
       <Section title="Transform">
         <div className="grid grid-cols-2 gap-2">
           <div className="space-y-1">
-            <span className="text-[11px] text-slate-400">X</span>
+            <span className="text-[11px] text-bm-muted">X</span>
             <NumberInput value={obj.x} onChange={(v) => up({ x: v }, 'x')} unit="mm" precision={1} min={-1e5} max={1e5} />
           </div>
           <div className="space-y-1">
-            <span className="text-[11px] text-slate-400">Y</span>
+            <span className="text-[11px] text-bm-muted">Y</span>
             <NumberInput value={obj.y} onChange={(v) => up({ y: v }, 'y')} unit="mm" precision={1} min={-1e5} max={1e5} />
           </div>
         </div>
@@ -214,7 +214,7 @@ function MirrorProps({ o, up }: { o: MirrorObject; up: Up }) {
         <SliderRow label="Focal length" value={o.focalLength} onChange={(v) => up({ focalLength: v }, 'focalLength')} min={5} max={1000} hardMax={1e5} step={1} unit="mm" precision={1} />
       )}
       {(o.shape === 'concave' || o.shape === 'convex') && (
-        <InfoRow label="Focal length (R/2)" value={`${o.shape === 'convex' ? '−' : ''}${(o.radius / 2).toFixed(1)} mm`} tone="text-pink-300" />
+        <InfoRow label="Focal length (R/2)" value={`${o.shape === 'convex' ? '−' : ''}${(o.radius / 2).toFixed(1)} mm`} tone="text-[#c2416b]" />
       )}
       <SliderRow label="Reflectivity" value={o.reflectivity} onChange={(v) => up({ reflectivity: v }, 'reflectivity')} min={0} max={1} step={0.01} precision={2} />
       <SliderRow label="Surface roughness" value={o.roughness} onChange={(v) => up({ roughness: v }, 'roughness')} min={0} max={1} step={0.01} precision={2} />
@@ -234,7 +234,7 @@ function LensSurface({ label, r, onChange, minR }: { label: string; r: number; o
   const kind = surfaceKind(r);
   const mag = Math.abs(r) || 200;
   return (
-    <div className="space-y-1.5 rounded-lg border border-white/[0.06] bg-white/[0.015] p-2">
+    <div className="space-y-1.5 rounded-lg border border-bm-line bg-bm-mist p-2">
       <FieldRow label={label}>
         <SelectInput<SurfaceKind>
           className="w-[110px]"
@@ -310,7 +310,7 @@ function BodyProps({ o, up }: { o: BodyObject; up: Up }) {
                 const s = n * Math.sin(A / 2);
                 return s < 1 ? `${rad2deg(2 * Math.asin(s) - A).toFixed(2)}°` : 'none (TIR)';
               })()}
-              tone="text-pink-300"
+              tone="text-[#c2416b]"
             />
           </>
         )}
@@ -323,7 +323,7 @@ function BodyProps({ o, up }: { o: BodyObject; up: Up }) {
             {lensInfo && (
               <>
                 <InfoRow label="Lens type" value={lensInfo.label} />
-                <InfoRow label="Focal length (lensmaker)" value={Number.isFinite(lensInfo.f) ? `${lensInfo.f.toFixed(1)} mm` : '∞'} tone="text-pink-300" />
+                <InfoRow label="Focal length (lensmaker)" value={Number.isFinite(lensInfo.f) ? `${lensInfo.f.toFixed(1)} mm` : '∞'} tone="text-[#c2416b]" />
                 <InfoRow label="Optical power" value={Number.isFinite(lensInfo.f) ? `${(1000 / lensInfo.f).toFixed(2)} D` : '0 D'} />
               </>
             )}
@@ -358,7 +358,7 @@ function MaterialEditor({ m, onChange, onReplace }: { m: Material; onChange: (p:
       title="Material"
       right={
         modified ? (
-          <button type="button" className="flex items-center gap-1 text-[10.5px] text-amber-300/90 hover:text-amber-200" onClick={() => onReplace({ ...makeMaterial(m.preset), color: m.color })} title="Restore library values">
+          <button type="button" className="flex items-center gap-1 text-[10.5px] text-[#b7791f] hover:text-amber-200" onClick={() => onReplace({ ...makeMaterial(m.preset), color: m.color })} title="Restore library values">
             <RotateCcw className="h-3 w-3" /> modified
           </button>
         ) : null
@@ -368,7 +368,7 @@ function MaterialEditor({ m, onChange, onReplace }: { m: Material; onChange: (p:
         <div className="flex items-center gap-2">
           <input
             type="color"
-            className="h-7 w-7 cursor-pointer rounded-md border border-white/10 bg-transparent p-0.5"
+            className="h-7 w-7 cursor-pointer rounded-md border border-bm-line bg-transparent p-0.5"
             value={m.color}
             onChange={(e) => onChange({ color: e.target.value }, 'color')}
             title="Display colour"
@@ -388,10 +388,10 @@ function MaterialEditor({ m, onChange, onReplace }: { m: Material; onChange: (p:
       <SliderRow label="Absorption coeff." value={m.absorption} onChange={(v) => onChange({ absorption: v }, 'absorption')} min={0} max={2} hardMax={50} step={0.005} unit="/cm" precision={3} disabled={opaque} hint="Beer–Lambert attenuation inside the material" />
       <SliderRow label="Surface roughness" value={m.roughness} onChange={(v) => onChange({ roughness: v }, 'roughness')} min={0} max={1} step={0.01} precision={2} />
       {!opaque ? (
-        <div className="space-y-1 rounded-lg border border-white/[0.06] bg-white/[0.015] p-2">
+        <div className="space-y-1 rounded-lg border border-bm-line bg-bm-mist p-2">
           <InfoRow label="n @ 450 / 550 / 650 nm" value={`${n(450).toFixed(4)} / ${n(550).toFixed(4)} / ${n(650).toFixed(4)}`} />
           <InfoRow label="Abbe number V_d" value={Number.isFinite(abbe) ? abbe.toFixed(1) : '∞'} />
-          <InfoRow label="Critical angle (→ air)" value={crit !== null ? `${rad2deg(crit).toFixed(2)}°` : '—'} tone="text-pink-300" />
+          <InfoRow label="Critical angle (→ air)" value={crit !== null ? `${rad2deg(crit).toFixed(2)}°` : '—'} tone="text-[#c2416b]" />
           <InfoRow label="Brewster angle" value={`${rad2deg(brewsterAngle(1, m.ior)).toFixed(2)}°`} />
           <InfoRow label="Normal-incidence R" value={`${(fresnelReflectance(1, m.ior, 1, 'unpolarized') * 100).toFixed(2)} %`} />
         </div>
@@ -422,8 +422,8 @@ function ThinLensProps({ o, up }: { o: ThinLensObject; up: Up }) {
       />
       <SliderRow label="Aperture" value={o.aperture} onChange={(v) => up({ aperture: v }, 'aperture')} min={5} max={800} hardMax={1e4} step={1} unit="mm" precision={1} />
       <InfoRow label="Type" value={o.focalLength > 0 ? 'Converging' : 'Diverging'} />
-      <InfoRow label="Optical power" value={`${(1000 / o.focalLength).toFixed(2)} D`} tone="text-pink-300" />
-      <p className="text-[10.5px] leading-relaxed text-slate-500">Paraxial model: every ray is redirected toward the point where the parallel chief ray meets the focal plane. No aberrations or dispersion.</p>
+      <InfoRow label="Optical power" value={`${(1000 / o.focalLength).toFixed(2)} D`} tone="text-[#c2416b]" />
+      <p className="text-[10.5px] leading-relaxed text-bm-faint">Paraxial model: every ray is redirected toward the point where the parallel chief ray meets the focal plane. No aberrations or dispersion.</p>
     </Section>
   );
 }
@@ -434,11 +434,11 @@ function DetectorProps({ o, up }: { o: DetectorObject; up: Up }) {
     <Section title="Detector">
       <SliderRow label="Length" value={o.length} onChange={(v) => up({ length: v }, 'length')} min={5} max={800} hardMax={1e4} step={1} unit="mm" precision={1} />
       <div className="rounded-lg border border-amber-500/20 bg-amber-500/[0.06] p-3">
-        <div className="text-[10.5px] uppercase tracking-wider text-amber-300/70">Incident power</div>
-        <div className="font-mono text-2xl text-amber-200">{reading ? reading.power.toFixed(4) : '—'}</div>
-        <div className="text-[11px] text-slate-400">{reading ? `${reading.rays} ray hits` : 'No data'}</div>
+        <div className="text-[10.5px] uppercase tracking-wider text-[#c9953f]">Incident power</div>
+        <div className="font-mono text-2xl text-[#b7791f]">{reading ? reading.power.toFixed(4) : '—'}</div>
+        <div className="text-[11px] text-bm-muted">{reading ? `${reading.rays} ray hits` : 'No data'}</div>
       </div>
-      <p className="text-[10.5px] leading-relaxed text-slate-500">Sum of the relative intensities of all rays absorbed by the detector (both faces).</p>
+      <p className="text-[10.5px] leading-relaxed text-bm-faint">Sum of the relative intensities of all rays absorbed by the detector (both faces).</p>
     </Section>
   );
 }
@@ -451,7 +451,7 @@ function RulerProps({ o, up }: { o: RulerObject; up: Up }) {
       <SliderRow label="Length" value={o.length} onChange={(v) => up({ length: v }, 'length')} min={5} max={1500} hardMax={1e5} step={1} unit="mm" precision={1} />
       <InfoRow label="Start" value={`(${o.x.toFixed(1)}, ${o.y.toFixed(1)})`} />
       <InfoRow label="End" value={`(${ex.toFixed(1)}, ${ey.toFixed(1)})`} />
-      <p className="text-[10.5px] text-slate-500">Drag the yellow endpoints to measure. Hold Shift to snap angle to 15°.</p>
+      <p className="text-[10.5px] text-bm-faint">Drag the yellow endpoints to measure. Hold Shift to snap angle to 15°.</p>
     </Section>
   );
 }
@@ -462,7 +462,7 @@ function ProtractorProps({ o, up }: { o: ProtractorObject; up: Up }) {
       <SliderRow label="First arm direction" value={o.rotation} onChange={(v) => up({ rotation: v }, 'rotation')} min={-180} max={180} step={0.5} unit="°" precision={1} />
       <SliderRow label="Measured angle" value={o.angle} onChange={(v) => up({ angle: v }, 'angle')} min={0} max={360} step={0.5} unit="°" precision={1} />
       <SliderRow label="Arm length" value={o.radius} onChange={(v) => up({ radius: v }, 'radius')} min={15} max={500} hardMax={1e4} step={1} unit="mm" precision={1} />
-      <p className="text-[10.5px] text-slate-500">Drag the arm handles to align with rays or surfaces.</p>
+      <p className="text-[10.5px] text-bm-faint">Drag the arm handles to align with rays or surfaces.</p>
     </Section>
   );
 }
@@ -482,9 +482,9 @@ function ScenePanel() {
 
   return (
     <div>
-      <div className="border-b border-white/[0.06] px-4 pb-3 pt-4">
-        <div className="brand-label text-[13px] text-coral-500">Scene</div>
-        <p className="mt-1 text-[11.5px] leading-relaxed text-slate-400">Select an object to edit its properties. These settings control the ray-tracing engine.</p>
+      <div className="border-b border-bm-line px-4 pb-3 pt-4">
+        <div className="brand-label text-[13px] text-bm-coral-text">Scene</div>
+        <p className="mt-1 text-[11.5px] leading-relaxed text-bm-muted">Select an object to edit its properties. These settings control the ray-tracing engine.</p>
       </div>
       <Section title="Ray Tracing">
         <SliderRow label="Max ray depth" value={settings.maxDepth} onChange={set('maxDepth')} min={1} max={200} hardMax={1000} step={1} integer precision={0} hint="Maximum interactions per ray path" />
@@ -510,32 +510,32 @@ function ScenePanel() {
         {st ? (
           <>
             <InfoRow label="Emitted" value={st.emitted.toFixed(3)} />
-            <InfoRow label="Escaped scene" value={pct(st.escaped)} tone="text-coral-300" />
-            <InfoRow label="Absorbed" value={pct(st.absorbed)} tone="text-rose-300" />
-            <InfoRow label="Detected" value={pct(st.detected)} tone="text-amber-300" />
+            <InfoRow label="Escaped scene" value={pct(st.escaped)} tone="text-bm-coral-text" />
+            <InfoRow label="Absorbed" value={pct(st.absorbed)} tone="text-[#c2416b]" />
+            <InfoRow label="Detected" value={pct(st.detected)} tone="text-[#b7791f]" />
             <InfoRow label="Below cutoff / depth" value={pct(st.truncated)} />
-            <div className="my-1 h-px bg-white/[0.06]" />
+            <div className="my-1 h-px bg-bm-line" />
             <InfoRow label="Primary rays" value={st.primaryRays} />
-            <InfoRow label="Segments" value={`${st.segments}${st.limitReached ? ' (budget hit)' : ''}`} tone={st.limitReached ? 'text-amber-300' : undefined} />
+            <InfoRow label="Segments" value={`${st.segments}${st.limitReached ? ' (budget hit)' : ''}`} tone={st.limitReached ? 'text-[#b7791f]' : undefined} />
             <InfoRow label="Interactions" value={st.interactions} />
             <InfoRow label="TIR events" value={st.tirEvents} />
             <InfoRow label="Trace time" value={`${result!.timeMs.toFixed(2)} ms`} />
           </>
         ) : (
-          <p className="text-[11px] text-slate-500">No trace yet.</p>
+          <p className="text-[11px] text-bm-faint">No trace yet.</p>
         )}
       </Section>
       <Section title={`Objects (${objects.length})`}>
         <ul className="space-y-0.5">
           {[...objects].reverse().map((o) => (
             <li key={o.id}>
-              <div className="group flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/[0.05]">
-                <button type="button" className="flex-1 truncate text-left text-[11.5px] text-slate-300 group-hover:text-white" onClick={() => select(o.id)}>
+              <div className="group flex items-center gap-2 rounded-md px-2 py-1 hover:bg-bm-mist">
+                <button type="button" className="flex-1 truncate text-left text-[11.5px] text-bm-slate group-hover:text-bm-coral-text" onClick={() => select(o.id)}>
                   {o.name}
                 </button>
-                <span className="text-[10px] text-slate-600">{KIND_LABEL[o.kind]}</span>
+                <span className="text-[10px] text-bm-pale">{KIND_LABEL[o.kind]}</span>
                 {o.kind === 'source' && (
-                  <button type="button" className="text-slate-500 hover:text-slate-200" title={o.enabled ? 'Turn off' : 'Turn on'} onClick={() => updateObject(o.id, { enabled: !o.enabled })}>
+                  <button type="button" className="text-bm-faint hover:text-bm-coral-text" title={o.enabled ? 'Turn off' : 'Turn on'} onClick={() => updateObject(o.id, { enabled: !o.enabled })}>
                     {o.enabled ? <Eye className="h-3.5 w-3.5" /> : <EyeOff className="h-3.5 w-3.5" />}
                   </button>
                 )}
@@ -543,7 +543,7 @@ function ScenePanel() {
             </li>
           ))}
         </ul>
-        <p className="text-[10.5px] text-slate-500">Top of the list is drawn on top. Where bodies overlap, the topmost body defines the medium.</p>
+        <p className="text-[10.5px] text-bm-faint">Top of the list is drawn on top. Where bodies overlap, the topmost body defines the medium.</p>
       </Section>
     </div>
   );

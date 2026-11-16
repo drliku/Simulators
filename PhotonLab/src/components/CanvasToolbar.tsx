@@ -8,7 +8,7 @@ export function CanvasToolbar() {
   const setUI = useStore((s) => s.setUI);
   return (
     <div className="pointer-events-none absolute inset-x-3 top-3 flex flex-wrap items-start justify-between gap-2">
-      <div className="pointer-events-auto flex items-center gap-0.5 rounded-xl border border-white/10 bg-ink-900/85 p-1 shadow-lg shadow-black/40 backdrop-blur">
+      <div className="pointer-events-auto flex items-center gap-0.5 rounded-full border border-transparent bg-white/[0.97] px-1.5 py-1 shadow-bm-float">
         <IconButton title="Toggle ray paths" active={ui.showRays} onClick={() => setUI({ showRays: !ui.showRays })}>
           <Activity className="h-4 w-4" />
           <span className="hidden xl:inline">Rays</span>
@@ -21,7 +21,7 @@ export function CanvasToolbar() {
           <Triangle className="h-4 w-4" />
           <span className="hidden xl:inline">Angles</span>
         </IconButton>
-        <div className="mx-0.5 h-5 w-px bg-white/10" />
+        <div className="mx-0.5 h-5 w-px bg-bm-line" />
         <IconButton title="Toggle grid" active={ui.showGrid} onClick={() => setUI({ showGrid: !ui.showGrid })}>
           <Grid3x3 className="h-4 w-4" />
         </IconButton>
@@ -29,7 +29,7 @@ export function CanvasToolbar() {
           <Magnet className="h-4 w-4" />
         </IconButton>
       </div>
-      <div className="pointer-events-auto flex items-center gap-0.5 rounded-xl border border-white/10 bg-ink-900/85 p-1 shadow-lg shadow-black/40 backdrop-blur">
+      <div className="pointer-events-auto flex items-center gap-0.5 rounded-full border border-transparent bg-white/[0.97] px-1.5 py-1 shadow-bm-float">
         <IconButton title="Zoom out (-)" onClick={() => canvasApi.zoomBy(1 / 1.25)}>
           <ZoomOut className="h-4 w-4" />
         </IconButton>
@@ -40,7 +40,7 @@ export function CanvasToolbar() {
         <IconButton title="Fit view to scene (F)" onClick={() => canvasApi.fit()}>
           <Maximize className="h-4 w-4" />
         </IconButton>
-        <div className="mx-0.5 h-5 w-px bg-white/10" />
+        <div className="mx-0.5 h-5 w-px bg-bm-line" />
         <IconButton title={ui.paused ? 'Resume simulation (P)' : 'Pause simulation (P)'} active={ui.paused} onClick={() => setUI({ paused: !ui.paused })}>
           {ui.paused ? <Play className="h-4 w-4" /> : <Pause className="h-4 w-4" />}
           <span className="hidden xl:inline">{ui.paused ? 'Resume' : 'Pause'}</span>
@@ -52,7 +52,7 @@ export function CanvasToolbar() {
 
 function ZoomReadout() {
   const zoom = useStore((s) => s.view.zoom);
-  return <span className="w-14 text-center font-mono text-[11px] text-slate-400">{Math.round(zoom * 100)}%</span>;
+  return <span className="w-14 text-center font-mono text-[11px] text-bm-muted">{Math.round(zoom * 100)}%</span>;
 }
 
 export function StatusBar() {
@@ -63,7 +63,7 @@ export function StatusBar() {
   const count = useStore((s) => s.objects.length);
   const st = result?.stats;
   return (
-    <footer className="flex h-7 shrink-0 items-center gap-4 overflow-hidden whitespace-nowrap border-t border-white/[0.07] bg-ink-900/80 px-3 font-mono text-[10.5px] text-slate-500">
+    <footer className="flex h-7 shrink-0 items-center gap-4 overflow-hidden whitespace-nowrap border-t border-bm-line bg-white px-3 font-mono text-[10.5px] text-bm-faint">
       <span className="w-40 max-sm:w-auto">{cursor ? `x ${cursor.x.toFixed(1)}  y ${cursor.y.toFixed(1)} mm` : 'x —  y —'}</span>
       <span>{count} objects</span>
       {st && (
@@ -76,8 +76,8 @@ export function StatusBar() {
         </>
       )}
       <span className="hidden sm:inline">render {renderMs.toFixed(1)} ms</span>
-      <span className={fps && fps < 45 ? 'text-amber-400' : 'text-emerald-400/80'}>{fps} fps</span>
-      <span className="ml-auto hidden text-slate-600 lg:inline">Drag empty space to pan · wheel to zoom · Del delete · Ctrl+D duplicate · R rotate</span>
+      <span className={fps && fps < 45 ? 'text-amber-400' : 'text-[#1f9d6b]'}>{fps} fps</span>
+      <span className="ml-auto hidden text-bm-pale lg:inline">Drag empty space to pan · wheel to zoom · Del delete · Ctrl+D duplicate · R rotate</span>
     </footer>
   );
 }

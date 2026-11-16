@@ -3,7 +3,7 @@ import ControlPanel from './ui/ControlPanel.jsx'
 import { ProcessPanel, InfoCard } from './ui/ProcessPanel.jsx'
 import MoleculeViewer from './ui/MoleculeViewer.jsx'
 import { useSim } from './sim/store.js'
-import brainMark from './assets/brain-mark.png'
+import brainMazeLogo from './assets/brainmaze-logo.png'
 
 function Readouts() {
   const snap = useSim((s) => s.snapshot)
@@ -41,11 +41,13 @@ export default function App() {
               <span>Simulator</span>
             </div>
             <p>
-              By The Brain Maze · drag to orbit, <span className="only-mouse">scroll</span>
+              Drag to orbit, <span className="only-mouse">scroll</span>
               <span className="only-touch">pinch</span> to zoom
             </p>
           </div>
-          <img className="mark" src={brainMark} alt="The Brain Maze logo" width="64" height="64" />
+          <a className="mark-link" href="https://thebrainmaze.com/" target="_top">
+            <img className="mark" src={brainMazeLogo} alt="The Brain Maze" width="111" height="34" />
+          </a>
         </header>
         <Readouts />
         <ControlPanel />

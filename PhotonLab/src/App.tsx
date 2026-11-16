@@ -65,7 +65,7 @@ function Toasts() {
         <div
           key={t.id}
           className={`toast-in rounded-lg border px-3 py-2 text-[12px] shadow-xl backdrop-blur ${
-            t.tone === 'error' ? 'border-red-500/40 bg-red-950/90 text-red-200' : 'border-white/10 bg-ink-800/95 text-slate-200'
+            t.tone === 'error' ? 'border-red-500/40 bg-red-950/90 text-white' : 'border-bm-line bg-white text-bm-navy'
           }`}
         >
           {t.text}
@@ -80,15 +80,15 @@ function ExportPreview() {
   if (!url) return null;
   const close = () => useExportImage.setState({ url: null });
   return (
-    <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={close}>
-      <div className="flex max-h-full w-full max-w-4xl flex-col gap-3 rounded-xl border border-white/10 bg-ink-900 p-4" onClick={(e) => e.stopPropagation()}>
+    <div className="absolute inset-0 z-50 flex items-center justify-center bg-bm-navy-deep/55 p-4" onClick={close}>
+      <div className="flex max-h-full w-full max-w-4xl flex-col gap-3 rounded-xl border border-bm-line bg-white p-4" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between gap-3">
-          <p className="text-[12.5px] text-slate-300">Right-click the image (or long-press on a phone) and choose “Save image”.</p>
-          <button type="button" onClick={close} className="tap shrink-0 rounded-lg px-3 py-1.5 text-[12px] text-slate-300 hover:bg-white/10">
+          <p className="text-[12.5px] text-bm-slate">Right-click the image (or long-press on a phone) and choose “Save image”.</p>
+          <button type="button" onClick={close} className="tap shrink-0 rounded-lg px-3 py-1.5 text-[12px] text-bm-slate hover:bg-bm-mist">
             Close
           </button>
         </div>
-        <img src={url} alt="Exported simulation canvas" className="min-h-0 rounded-lg border border-white/10 object-contain" />
+        <img src={url} alt="Exported simulation canvas" className="min-h-0 rounded-lg border border-bm-line object-contain" />
       </div>
     </div>
   );
@@ -115,14 +115,14 @@ export default function App() {
   };
 
   return (
-    <div className="flex h-full flex-col bg-ink-950 text-slate-200">
+    <div className="flex h-full flex-col bg-bm-mist text-bm-navy">
       <TopBar />
       <div className="relative flex min-h-0 flex-1">
         {(showLeft || showRight) && (
           <div className="absolute inset-0 z-20 bg-black/40 lg:hidden" aria-hidden="true" onClick={closePanels} />
         )}
         {showLeft && (
-          <div className="absolute inset-y-0 left-0 z-30 w-[248px] max-w-[85vw] shrink-0 border-r border-white/[0.07] bg-ink-900/95 backdrop-blur lg:static lg:z-auto lg:bg-ink-900/70">
+          <div className="absolute inset-y-0 left-0 z-30 w-[248px] max-w-[85vw] shrink-0 border-r border-bm-line bg-white lg:static lg:z-auto">
             <Library onAdd={() => narrow() && setShowLeft(false)} />
           </div>
         )}
@@ -134,7 +134,7 @@ export default function App() {
               type="button"
               title="Toggle object library"
               onClick={toggleLeft}
-              className="tap flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-ink-900/85 text-slate-300 hover:text-white"
+              className="tap flex h-8 w-8 items-center justify-center rounded-full border border-transparent bg-white/[0.97] shadow-bm-float text-bm-slate hover:text-bm-coral-text"
             >
               <PanelLeft className="h-4 w-4" />
             </button>
@@ -142,7 +142,7 @@ export default function App() {
               type="button"
               title="Toggle properties panel"
               onClick={toggleRight}
-              className="tap flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-ink-900/85 text-slate-300 hover:text-white"
+              className="tap flex h-8 w-8 items-center justify-center rounded-full border border-transparent bg-white/[0.97] shadow-bm-float text-bm-slate hover:text-bm-coral-text"
             >
               <PanelRight className="h-4 w-4" />
             </button>
@@ -151,7 +151,7 @@ export default function App() {
           <ExportPreview />
         </main>
         {showRight && (
-          <div className="absolute inset-y-0 right-0 z-30 w-[300px] max-w-[85vw] shrink-0 border-l border-white/[0.07] bg-ink-900/95 backdrop-blur lg:static lg:z-auto lg:bg-ink-900/70">
+          <div className="absolute inset-y-0 right-0 z-30 w-[300px] max-w-[85vw] shrink-0 border-l border-bm-line bg-white lg:static lg:z-auto">
             <PropertiesPanel />
           </div>
         )}

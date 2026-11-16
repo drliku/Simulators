@@ -12,7 +12,10 @@ const script = readFileSync(join(dir, js), 'utf8').replace(/<\/script/gi, '<\\/s
 const style = readFileSync(join(dir, css), 'utf8').replace(/<\/style/gi, '<\\/style');
 
 const page = `<title>Photon Lab</title>
-<meta name="theme-color" content="#070d1a">
+<meta name="theme-color" content="#304169">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>${style}</style>
 <div id="root"></div>
 <script type="module">${script}</script>

@@ -30,11 +30,11 @@ export function Library({ onAdd }: { onAdd?: () => void } = {}) {
 
   return (
     <aside className="flex h-full w-full flex-col">
-      <div className="border-b border-white/[0.06] p-3">
-        <div className="flex h-8 items-center gap-2 rounded-lg border border-white/10 bg-ink-950/60 px-2.5 focus-within:border-coral-500/60">
-          <Search className="h-3.5 w-3.5 text-slate-500" />
+      <div className="border-b border-bm-line p-3">
+        <div className="flex h-8 items-center gap-2 rounded-[10px] border-2 border-bm-mist bg-white px-2.5 focus-within:border-bm-coral">
+          <Search className="h-3.5 w-3.5 text-bm-faint" />
           <input
-            className="w-full bg-transparent text-[12px] text-slate-200 outline-none placeholder:text-slate-600"
+            className="w-full bg-transparent text-[12px] text-bm-navy outline-none placeholder:text-bm-pale"
             placeholder="Search components…"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -46,12 +46,12 @@ export function Library({ onAdd }: { onAdd?: () => void } = {}) {
           <div key={cat} className="px-3 pt-3">
             <button
               type="button"
-              className="mb-2 flex w-full items-center gap-1.5 brand-label text-[12.5px] text-slate-400 hover:text-coral-300"
+              className="mb-2 flex w-full items-center gap-1.5 brand-label text-[12.5px] text-bm-muted hover:text-bm-coral-text"
               onClick={() => setCollapsed((c) => ({ ...c, [cat]: !c[cat] }))}
             >
               <ChevronDown className={`h-3 w-3 transition-transform ${collapsed[cat] ? '-rotate-90' : ''}`} />
               {CATEGORY_LABELS[cat]}
-              <span className="ml-auto font-mono text-[10px] text-slate-600">{items.length}</span>
+              <span className="ml-auto font-mono text-[10px] text-bm-pale">{items.length}</span>
             </button>
             {!collapsed[cat] && (
               <div className="grid grid-cols-3 gap-1.5">
@@ -66,19 +66,19 @@ export function Library({ onAdd }: { onAdd?: () => void } = {}) {
                     }}
                     onClick={() => add(item)}
                     title={`${item.label} — ${item.hint}\nClick to add, or drag onto the canvas`}
-                    className="group flex aspect-square cursor-grab flex-col items-center justify-center gap-1 rounded-lg border border-white/[0.06] bg-white/[0.025] p-1 text-center transition-all hover:-translate-y-px hover:border-coral-400/40 hover:bg-coral-400/[0.07] active:cursor-grabbing"
+                    className="group flex aspect-square cursor-grab flex-col items-center justify-center gap-1 rounded-xl border-2 border-transparent bg-bm-mist p-1 text-center transition-all hover:-translate-y-px hover:border-bm-coral hover:bg-white hover:shadow-bm active:cursor-grabbing"
                   >
                     <ItemIcon icon={item.icon} swatch={item.swatch} />
-                    <span className="line-clamp-2 text-[10px] leading-tight text-slate-400 group-hover:text-slate-200">{item.label}</span>
+                    <span className="line-clamp-2 text-[10px] leading-tight text-bm-muted group-hover:text-bm-coral-text">{item.label}</span>
                   </button>
                 ))}
               </div>
             )}
           </div>
         ))}
-        {!groups.length && <p className="p-6 text-center text-[12px] text-slate-500">No components match “{query}”.</p>}
+        {!groups.length && <p className="p-6 text-center text-[12px] text-bm-faint">No components match “{query}”.</p>}
       </div>
-      <div className="border-t border-white/[0.06] p-3 text-[10.5px] leading-relaxed text-slate-500">
+      <div className="border-t border-bm-line p-3 text-[10.5px] leading-relaxed text-bm-faint">
         Click to add at view centre or drag onto the canvas.
       </div>
     </aside>

@@ -1,4 +1,4 @@
-/** Small schematic glyphs for the object library. */
+/** Small schematic glyphs for the object library: light, colour-coded strokes on a small navy tile. */
 export function ItemIcon({ icon, swatch }: { icon: string; swatch?: string }) {
   const s = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.6, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const };
   const glass = { fill: 'rgba(125,211,252,0.18)', stroke: '#7dd3fc', strokeWidth: 1.4 };
@@ -157,7 +157,7 @@ export function ItemIcon({ icon, swatch }: { icon: string; swatch?: string }) {
       body = <circle cx="12" cy="12" r="6" {...s} />;
   }
   return (
-    <svg viewBox="0 0 24 24" className="h-6 w-6 text-slate-300" aria-hidden>
+    <svg viewBox="0 0 24 24" className="box-content h-6 w-6 rounded-[9px] bg-bm-navy-deep p-[5px] text-slate-300" aria-hidden>
       {body}
     </svg>
   );

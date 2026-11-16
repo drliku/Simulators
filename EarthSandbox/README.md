@@ -4,7 +4,7 @@ A 2D world-building simulator. It starts on the **real Earth**: shape continents
 climate, and watch rivers, lakes, forests, deserts and ice sheets respond over time. You can also
 generate random planets.
 
-Open `index.html` in a browser. There is no build step, and it works offline (the Barlow body font
+Open `index.html` in a browser. There is no build step, and it works offline (the Poppins font
 loads from Google Fonts when online and falls back to a system font).
 
 ## Controls

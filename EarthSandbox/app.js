@@ -1119,7 +1119,7 @@
   // ---------------------------------------------------------------------------
   const pointer = { x: -1, y: -1, inside: false, painting: false, panning: false }
   const BRUSH_COLORS = {
-    raise: '#f37064',
+    raise: '#f78677',
     lower: '#6fa8ff',
     water: '#5fd3f3',
     temp: ['#ff8a5c', '#7cc0ff'],
@@ -1130,7 +1130,7 @@
     const cw = canvas.width
     const ch = canvas.height
     ctx.setTransform(1, 0, 0, 1, 0, 0)
-    ctx.fillStyle = '#0b1120'
+    ctx.fillStyle = '#1e2a47'
     ctx.fillRect(0, 0, cw, ch)
     // map in world coordinates
     ctx.setTransform(dpr * view.s, 0, 0, dpr * view.s, dpr * view.ox, dpr * view.oy)

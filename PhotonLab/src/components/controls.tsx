@@ -52,13 +52,13 @@ export function NumberInput({ value, onChange, min, max, step = 1, precision = 2
 
   return (
     <div
-      className={`flex h-7 items-center rounded-md border bg-ink-950/70 transition-colors focus-within:border-coral-500/70 ${
-        invalid ? 'border-red-500/80' : 'border-white/10 hover:border-white/20'
+      className={`flex h-7 items-center rounded-[10px] border-2 bg-white transition-colors focus-within:border-bm-coral ${
+        invalid ? 'border-red-500/80' : 'border-bm-mist hover:border-bm-coral'
       } ${disabled ? 'opacity-40' : ''} ${className ?? ''}`}
       title={title}
     >
       <input
-        className="w-full min-w-0 bg-transparent px-2 text-right font-mono text-[11.5px] text-slate-100 outline-none"
+        className="w-full min-w-0 bg-transparent px-2 text-right font-mono text-[11.5px] text-bm-navy outline-none"
         value={text}
         disabled={disabled}
         inputMode="decimal"
@@ -86,7 +86,7 @@ export function NumberInput({ value, onChange, min, max, step = 1, precision = 2
           }
         }}
       />
-      {unit && <span className="pr-2 text-[10.5px] text-slate-500">{unit}</span>}
+      {unit && <span className="pr-2 text-[10.5px] text-bm-faint">{unit}</span>}
     </div>
   );
 }
@@ -113,7 +113,7 @@ export function SliderRow({ label, value, onChange, min, max, step = 0.01, hardM
   return (
     <div className={`space-y-1 ${disabled ? 'pointer-events-none opacity-40' : ''}`}>
       <div className="flex items-center justify-between gap-2">
-        <label className="truncate text-[11px] text-slate-400" title={hint}>
+        <label className="truncate text-[11px] text-bm-muted" title={hint}>
           {label}
         </label>
         <NumberInput
@@ -145,7 +145,7 @@ export function SliderRow({ label, value, onChange, min, max, step = 0.01, hardM
 export function FieldRow({ label, children, hint }: { label: string; children: ReactNode; hint?: string }) {
   return (
     <div className="flex items-center justify-between gap-2">
-      <label className="truncate text-[11px] text-slate-400" title={hint}>
+      <label className="truncate text-[11px] text-bm-muted" title={hint}>
         {label}
       </label>
       <div className="shrink-0">{children}</div>
@@ -167,17 +167,17 @@ export function SelectInput<T extends string>({
   return (
     <div className={`relative ${className ?? ''}`}>
       <select
-        className="h-7 w-full cursor-pointer appearance-none rounded-md border border-white/10 bg-ink-950/70 pl-2 pr-7 text-[11.5px] text-slate-100 outline-none hover:border-white/20 focus:border-coral-500/70"
+        className="h-7 w-full cursor-pointer appearance-none rounded-[10px] border-2 border-bm-mist bg-white pl-2 pr-7 text-[11.5px] text-bm-navy outline-none hover:border-bm-coral focus:border-bm-coral"
         value={value}
         onChange={(e) => onChange(e.target.value as T)}
       >
         {options.map((o) => (
-          <option key={o.value} value={o.value} className="bg-ink-900">
+          <option key={o.value} value={o.value} className="bg-white">
             {o.label}
           </option>
         ))}
       </select>
-      <ChevronDown className="pointer-events-none absolute right-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-500" />
+      <ChevronDown className="pointer-events-none absolute right-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-bm-faint" />
     </div>
   );
 }
@@ -185,8 +185,8 @@ export function SelectInput<T extends string>({
 export function Toggle({ checked, onChange, label, hint }: { checked: boolean; onChange: (v: boolean) => void; label: string; hint?: string }) {
   return (
     <button type="button" className="group flex w-full items-center justify-between gap-2 py-0.5 text-left [@media(pointer:coarse)]:min-h-[36px]" onClick={() => onChange(!checked)} title={hint}>
-      <span className="text-[11px] text-slate-400 group-hover:text-slate-300">{label}</span>
-      <span className={`relative h-[18px] w-8 shrink-0 rounded-full transition-colors ${checked ? 'bg-coral-500' : 'bg-white/10'}`}>
+      <span className="text-[11px] text-bm-muted group-hover:text-bm-coral-text">{label}</span>
+      <span className={`relative h-[18px] w-8 shrink-0 rounded-full transition-colors ${checked ? 'bg-bm-coral' : 'bg-bm-line'}`}>
         <span className={`absolute top-[2px] h-[14px] w-[14px] rounded-full bg-white shadow transition-all ${checked ? 'left-[16px]' : 'left-[2px]'}`} />
       </span>
     </button>
@@ -196,9 +196,9 @@ export function Toggle({ checked, onChange, label, hint }: { checked: boolean; o
 export function Section({ title, children, right, defaultOpen = true }: { title: string; children: ReactNode; right?: ReactNode; defaultOpen?: boolean }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <section className="border-b border-white/[0.06] px-4 py-3">
+    <section className="border-b border-bm-line px-4 py-3">
       <div className="mb-2 flex items-center justify-between">
-        <button type="button" className="flex items-center gap-1.5 brand-label text-[12.5px] text-slate-400 hover:text-coral-300 [@media(pointer:coarse)]:min-h-[36px]" onClick={() => setOpen(!open)}>
+        <button type="button" className="flex items-center gap-1.5 brand-label text-[12.5px] text-bm-muted hover:text-bm-coral-text [@media(pointer:coarse)]:min-h-[36px]" onClick={() => setOpen(!open)}>
           <ChevronDown className={`h-3 w-3 transition-transform ${open ? '' : '-rotate-90'}`} />
           {title}
         </button>
@@ -212,8 +212,8 @@ export function Section({ title, children, right, defaultOpen = true }: { title:
 export function InfoRow({ label, value, tone }: { label: string; value: ReactNode; tone?: string }) {
   return (
     <div className="flex items-center justify-between gap-2 text-[11px]">
-      <span className="text-slate-500">{label}</span>
-      <span className={`font-mono ${tone ?? 'text-slate-300'}`}>{value}</span>
+      <span className="text-bm-faint">{label}</span>
+      <span className={`font-mono ${tone ?? 'text-bm-slate'}`}>{value}</span>
     </div>
   );
 }
@@ -240,8 +240,8 @@ export function IconButton({
       aria-label={title}
       disabled={disabled}
       onClick={onClick}
-      className={`tap flex h-8 min-w-8 items-center justify-center gap-1.5 rounded-lg px-2 text-[11.5px] transition-colors disabled:cursor-not-allowed disabled:opacity-35 ${
-        active ? 'bg-coral-500/20 text-coral-300 ring-1 ring-inset ring-coral-500/40' : 'text-slate-300 hover:bg-white/[0.07] hover:text-white'
+      className={`tap flex h-8 min-w-8 items-center justify-center gap-1.5 rounded-full px-2 text-[11.5px] transition-colors disabled:cursor-not-allowed disabled:opacity-35 ${
+        active ? 'bg-bm-navy text-white' : 'text-bm-slate hover:bg-bm-mist hover:text-bm-coral-text'
       } ${className ?? ''}`}
     >
       {children}

@@ -5,7 +5,7 @@ import { parseScene, serializeScene } from '../scene/serialize';
 import { useStore, useToasts } from '../state/store';
 import { canvasApi } from './CanvasView';
 import { IconButton } from './controls';
-import brainMark from '../assets/brain-mark.png';
+import brainMazeLogo from '../assets/brainmaze-logo.png';
 
 /** Shared (sandboxed) builds cannot trigger downloads, so they use the clipboard and an image preview instead. */
 export const SANDBOXED = import.meta.env.VITE_SANDBOXED === '1';
@@ -51,14 +51,14 @@ function PresetMenu() {
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="tap flex h-8 max-w-full items-center gap-2 rounded-md border border-white/15 bg-ink-900/40 px-3 text-[13px] font-medium text-slate-100 hover:border-coral-400/60 hover:bg-ink-900/60"
+        className="tap flex h-8 max-w-full items-center gap-2 rounded-full border-2 border-bm-mist bg-white px-3.5 text-[13px] font-semibold text-bm-navy transition-colors hover:border-bm-coral"
       >
-        <FlaskConical className="h-3.5 w-3.5 shrink-0 text-coral-400" />
+        <FlaskConical className="h-3.5 w-3.5 shrink-0 text-bm-coral-text" />
         <span className="max-w-[220px] truncate">{current ? current.name : 'Experiments'}</span>
-        <ChevronDown className="h-3.5 w-3.5 shrink-0 text-slate-500" />
+        <ChevronDown className="h-3.5 w-3.5 shrink-0 text-bm-faint" />
       </button>
       {open && (
-        <div className="scroll-thin absolute left-0 top-11 z-50 max-h-[70vh] w-[360px] overflow-y-auto max-sm:fixed max-sm:inset-x-2 max-sm:top-[60px] max-sm:w-auto max-sm:max-h-[calc(100dvh-72px)] rounded-xl border border-white/10 bg-ink-900/95 p-1.5 shadow-2xl shadow-black/60 backdrop-blur">
+        <div className="scroll-thin absolute left-0 top-11 z-50 max-h-[70vh] w-[360px] overflow-y-auto max-sm:fixed max-sm:inset-x-2 max-sm:top-[60px] max-sm:w-auto max-sm:max-h-[calc(100dvh-72px)] rounded-xl border border-bm-line bg-white p-1.5 shadow-bm-hover">
           {PRESETS.map((p, i) => (
             <button
               key={p.id}
@@ -67,12 +67,12 @@ function PresetMenu() {
                 loadPreset(p.id);
                 setOpen(false);
               }}
-              className={`flex w-full gap-3 rounded-lg px-3 py-2 text-left max-sm:py-2.5 hover:bg-white/[0.06] ${p.id === presetId ? 'bg-coral-500/10' : ''}`}
+              className={`flex w-full gap-3 rounded-lg px-3 py-2 text-left max-sm:py-2.5 hover:bg-bm-mist ${p.id === presetId ? 'bg-bm-blush' : ''}`}
             >
-              <span className="brand-label mt-0.5 text-[12px] text-coral-500/80">{String(i + 1).padStart(2, '0')}</span>
+              <span className="brand-label mt-0.5 text-[12px] text-bm-coral-text/80">{String(i + 1).padStart(2, '0')}</span>
               <span>
-                <span className="block text-[12.5px] text-slate-100">{p.name}</span>
-                <span className="block text-[11px] leading-snug text-slate-500">{p.description}</span>
+                <span className="block text-[12.5px] text-bm-navy">{p.name}</span>
+                <span className="block text-[11px] leading-snug text-bm-faint">{p.description}</span>
               </span>
             </button>
           ))}
@@ -111,7 +111,7 @@ function FileMenu({ onOpen }: { onOpen: () => void }) {
         <MoreHorizontal className="h-4 w-4" />
       </IconButton>
       {open && (
-        <div className="absolute right-0 top-11 z-50 w-52 rounded-xl border border-white/10 bg-ink-900/95 p-1.5 shadow-2xl shadow-black/60 backdrop-blur">
+        <div className="absolute right-0 top-11 z-50 w-52 rounded-xl border border-bm-line bg-white p-1.5 shadow-bm-hover">
           {items.map(({ label, icon: Icon, run }) => (
             <button
               key={label}
@@ -120,9 +120,9 @@ function FileMenu({ onOpen }: { onOpen: () => void }) {
                 setOpen(false);
                 run();
               }}
-              className="flex h-11 w-full items-center gap-3 rounded-lg px-3 text-left text-[14px] text-slate-200 hover:bg-white/[0.06]"
+              className="flex h-11 w-full items-center gap-3 rounded-lg px-3 text-left text-[14px] text-bm-navy hover:bg-bm-mist"
             >
-              <Icon className="h-4 w-4 text-slate-400" />
+              <Icon className="h-4 w-4 text-bm-muted" />
               {label}
             </button>
           ))}
@@ -151,19 +151,17 @@ export function TopBar() {
   };
 
   return (
-    <header className="relative z-40 flex h-14 shrink-0 items-center gap-2 border-b-2 border-coral-500/70 bg-ink-700 pr-2 sm:gap-3 sm:pr-3">
-      {/* Brand lock-up mirrors the logo: coral brain square, wordmark, rule + sub-name */}
-      <div className="flex h-full shrink-0 items-center gap-3 pr-1">
-        <img src={brainMark} alt="The Brain Maze" className="h-full w-14 bg-coral-500 object-contain" />
-        <div className="hidden leading-none sm:block">
-          <div className="brand-label text-[19px] text-coral-500">The Brain Maze</div>
-          <div className="mt-1 hidden items-center gap-2 sm:flex">
-            <span className="h-[3px] w-7 bg-coral-500" />
-            <span className="brand-label text-[11px] text-coral-200">Photon Lab</span>
-          </div>
-        </div>
-      </div>
-      <div className="hidden h-7 w-px shrink-0 bg-white/15 sm:block" />
+    <header className="relative z-40 flex h-14 shrink-0 items-center gap-2 bg-white pr-2 shadow-[0_2px_10px_rgba(48,65,105,0.08)] sm:gap-3 sm:pr-3">
+      {/* Brand lock-up: The Brain Maze logo (links to the site) + the simulation name */}
+      <a
+        href="https://thebrainmaze.com/"
+        target="_top"
+        className="flex h-full shrink-0 items-center gap-3 pl-4 pr-1 max-sm:pl-3"
+      >
+        <img src={brainMazeLogo} alt="The Brain Maze" width={111} height={34} className="block h-[34px] w-auto max-sm:h-7" />
+        <span className="brand-label hidden border-l-2 border-bm-line pl-3 leading-none text-bm-coral-text sm:block">Photon Lab</span>
+      </a>
+      <div className="hidden h-7 w-px shrink-0 bg-bm-line sm:block" />
       <PresetMenu />
       <div className="ml-auto flex shrink-0 items-center gap-0.5">
         <IconButton title="Undo (Ctrl+Z)" onClick={undo} disabled={!canUndo}>
@@ -172,7 +170,7 @@ export function TopBar() {
         <IconButton title="Redo (Ctrl+Y)" onClick={redo} disabled={!canRedo}>
           <Redo2 className="h-4 w-4" />
         </IconButton>
-        <div className="mx-1 h-6 w-px bg-white/10" />
+        <div className="mx-1 h-6 w-px bg-bm-line" />
         <FileMenu onOpen={() => fileRef.current?.click()} />
         <div className="hidden items-center gap-0.5 sm:flex">
           <IconButton title="Reset scene to its initial state" onClick={resetScene}>

@@ -27,7 +27,7 @@ export interface RenderInput {
 type Ctx = CanvasRenderingContext2D;
 
 const MONO = '10px "JetBrains Mono", ui-monospace, Consolas, monospace';
-const SANS = '12px Barlow, ui-sans-serif, system-ui, sans-serif';
+const SANS = '12px Poppins, ui-sans-serif, system-ui, sans-serif';
 
 export function hexToRgba(hex: string, a: number): string {
   const h = hex.replace('#', '');
